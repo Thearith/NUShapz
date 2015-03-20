@@ -14,28 +14,28 @@ Dashboard to curate and monitor new events posting.
 
 <b>Technology:</b><br/>
 <ul>
-<li>
-Front-end: 
-<ul>
-<ol>HTML CSS, Javascript</ol>
-<ol>Bootstrap</ol>
-<ol>Font-awesome</ol>
-<ol>Flexbox</ol>
-</ul>
-</li>
-<li>
-Back-end: 
-<ul>
-<ol>PHP</ol>
-<ol>MySQL</ol>
-</ul>
-</li>
-<li>
-Misc:
-<ul>
-<ol>Hosting: Sunfire Server </ol>
-<ol>Domain: Godaddy.com</ol>
-<ol>Github</ol>
-</ul>
-</li>
+  <li>
+  Front-end: 
+    <ul>
+      <ol>HTML CSS, Javascript</ol>
+      <ol>Bootstrap</ol>
+      <ol>Font-awesome</ol>
+      <ol>Flexbox</ol>
+    </ul>
+  </li>
+  <li>
+  Back-end: 
+    <ul>
+      <ol>PHP</ol>
+      <ol>MySQL</ol>
+    </ul>
+    </li>
+  <li>
+  Misc:
+    <ul>
+      <ol>Hosting: Sunfire Server </ol>
+      <ol>Domain: Godaddy.com</ol>
+      <ol>Github</ol>
+    </ul>
+  </li>
 </ul>

@@ -12,7 +12,8 @@ A one-stop service for anything NUS
 
 Dashboard to curate and monitor new events posting. 
 
-Technology:
+Technology:<br/>
+
 Front-end: 
 HTML CSS, Javascript
 Bootstrap

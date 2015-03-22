@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.center { 
+	margin: 0 auto; 
+}
+
+.content{ 
+	margin: 0 auto; 
+	width: 960px; 
+}
+
+.clear { 
+	clear: both; 
+}

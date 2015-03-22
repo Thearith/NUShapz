@@ -1,0 +1,140 @@
+#title h2 {
+	font-family:"Arvo";
+	font-weight: normal;
+  	font-size: 30px;
+  	text-align: center;
+  	margin: 0;
+  	padding: 0;
+  	font-weight: 600;
+  	/*text-shadow: 1px 1px #333;*/
+}
+
+li {
+	list-style: none;
+}
+
+hr {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border-top: 2px solid #eee;
+}
+
+.card-title hr {
+	margin-top: 2%;
+	margin-bottom: 5%;
+}
+
+.center { 
+	margin: 0 auto; 
+}
+
+.clear { 
+	clear: both; 
+}
+
+.card {
+	width: 329px;
+	height: 300px;
+
+	border-radius: 2%;
+	box-shadow: 2px 2px 2px 2px #666666;
+
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	letter-spacing: 0.5px;
+
+}
+
+.card-title {
+	height: 30%;
+	background-color: #1fa67a;
+	border-top-left-radius: 5px;
+  	border-top-right-radius: 5px;
+  	color: #1a1a1a;
+
+  	padding-top: 4%;
+}
+
+#title {
+	width: 80%;
+	text-align: center;
+	background-color: white;
+	padding-top: 10px;
+	margin-top: 5%;
+	border-radius: 7px;
+}
+
+#organizer {
+	font-size: 12px;
+	margin-right: 10px;
+	margin-top: 5px;
+	text-align: right;
+}
+
+#organizer p {
+	display: inline;
+	text-transform: uppercase;
+}
+
+.card-body {
+	margin-left: 15px;
+	padding: 5%;
+	padding-top: 8%;
+	margin-top: 10%;
+
+	width: 100%;
+	height: 45%;
+
+	font-family: 'Raleway';
+	font-size: 17px;
+}
+
+.card-body div {
+	margin-bottom: 2%;
+}
+
+.card-body p {
+	display: inline;
+}
+
+.card-body .icon {
+	width: 20px;
+}
+
+.card-body #contact a {
+	opacity: 0.6;
+  	text-decoration: none;
+  	color: black;
+}
+
+.card-body #contact a:hover {
+	opacity: 1;
+}
+
+.card-footer {
+	height: 15%;
+	width: 100%;
+
+	padding: 10px;
+
+	background-color: #1fa67a;
+
+	border-bottom-left-radius: 5px;
+  	border-bottom-right-radius: 5px;
+
+}
+
+.card-footer p{
+	display: inline;
+	margin-left: 5px;
+}
+
+.card-footer p a {
+	margin-right: 5%;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #666666;
+}
+
+.card-footer button {
+	float: right;
+}

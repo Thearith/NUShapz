@@ -24,6 +24,7 @@ Dashboard to curate and monitor new events posting.
     </ol>
   </li>
   <li>
+  <br/>
   <i>Back-end: </i>
     <ol>
       <li>PHP</li>
@@ -31,6 +32,7 @@ Dashboard to curate and monitor new events posting.
     </ol>
   </li>
   <li>
+  <br/>
   <i>Misc:</i>
     <ol>
       <li>Hosting: Sunfire Server </li>

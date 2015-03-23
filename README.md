@@ -1,6 +1,8 @@
 # NUShapz
 IVLE Event Web Application
 
+Go to https://drive.google.com/drive/#folders/0B3VJI1Sg8Z0LaTVrbFpERVdsbnM for more details
+
 <b>Project Description:</b>
 
 “NUShapz” brings students together to discover the latest NUS happenings and events as a community. Building on the concept of unity in diversity, we aim to showcase the vibrancy that the NUS campus life has to offer and allow students to more effectively reach out and invite their friends to join them in whatever they do. In not limiting to just official school events, we create opportunities for increase participation and awareness of anything that is fun and enriching within NUS.

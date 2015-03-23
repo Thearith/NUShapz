@@ -23,16 +23,16 @@ Dashboard to curate and monitor new events posting.
       <li>Flexbox</li>
     </ol>
   </li>
-  <li>
   <br/>
+  <li>
   <i>Back-end: </i>
     <ol>
       <li>PHP</li>
       <li>MySQL</li>
     </ol>
   </li>
-  <li>
   <br/>
+  <li>
   <i>Misc:</i>
     <ol>
       <li>Hosting: Sunfire Server </li>

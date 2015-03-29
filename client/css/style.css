@@ -1,7 +1,18 @@
+/*general styling*/
+
 body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
+	font-family:"Raleway", "Arvo";
+}
+
+ul {
+	padding-left: 5px;
+}
+
+li {
+	list-style: none;
 }
 
 .center { 
@@ -15,4 +26,243 @@ body {
 
 .clear { 
 	clear: both; 
+}
+
+/*navigation bar*/
+
+.searchbar-size {
+	display: table; 
+	width:40%; 
+	margin: 0 auto;
+}
+
+/*.btn {
+  border-radius:                    0px;
+  -webkit-border-radius:            0px;
+  -moz-border-radius:               0px;
+}*/
+
+.centre {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 50px;
+    height: 75px; 
+    padding-top: 10px;
+}
+
+.navbar-inner {
+  background-color: #000; 
+  background-image: none;
+  background-repeat: no-repeat;
+  filter: none;
+}
+
+.navbar-custom {
+    background-color:#f8f8f8; 
+    color:#000000;
+    border-radius:0px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.navbar-custom .navbar-nav > li > a {
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	text-transform: capitalize;
+    color:#9f9f9f;
+    background-color:transparent;
+	border-left: 3px solid #f8f8f8;
+	border-right: 3px solid #f8f8f8;
+}
+
+.navbar-custom .navbar-nav > li > a:hover {
+	color:#777777;
+	border-bottom: 3px solid #bec3c7;
+	border-left: 3px solid #f8f8f8;
+	border-right: 3px solid #f8f8f8;
+}
+
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color:#333333;
+    background-color:transparent;
+    font-weight: bold;
+    border-bottom: 3px solid #bec3c7;
+}
+.navbar-custom .navbar-brand {
+    color:#ffffff;
+}
+
+.navbar-form {
+	margin-top: 20px;
+}
+
+/*styling container*/
+
+#main-container {
+	position: relative;
+	padding-top: 20px;
+  	top: 80px;
+}
+
+.section {
+	margin-top: 30px;
+}
+
+.left-sidebar {
+	text-align: center;
+}
+
+.left-sidebar h3 {
+	margin-top: 0px;
+}
+
+.cards {
+	text-align: left;
+}
+
+.right-sidebar {
+	position: fixed;
+	top: 130px;
+	padding-left: 1%;
+	font-size: 17px;
+}
+
+
+/*styling card*/
+
+.card h1 {
+	font-style: bold;
+	font-size: 35px;
+}
+
+.card {
+	box-shadow: 1px 1px 1px 1px #666;
+  	border: 1px solid black;
+  	border: 2px;
+  	padding-top: 10px;
+  	padding-left: 15px;
+  	background: #fff;
+
+  	margin-bottom: 30px;
+}
+
+.organizer p, .datetime p, .venue p{
+	display: inline;
+}
+
+.time {
+	font-weight: bold;
+	margin-right: 5px;
+}
+
+.date {
+	margin-left: 5px;
+}
+
+.card-body i {
+	width: 20px;
+	margin-right: 5px;
+}
+
+.card-content {
+	margin-left: 20px;
+}
+
+.card-title {
+}
+
+.organizer {
+	font-size: 14px;
+}
+
+.favorite {
+	display: inline;
+	text-align: right;
+}
+
+.fav-img {
+	width: 40%;
+	height: 40%;
+}
+
+.card-body {
+	margin-top: 20px;
+	font-size: 17px;
+}
+
+.social-media {
+	font-size: 17px;
+}
+
+.social-media span {
+	margin-left: 10px;
+}
+
+.card-footer p{
+	display: inline;
+	margin-left: 5px;
+	margin-bottom: 2%;
+}
+
+.card-footer p a {
+	margin-right: 5%;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #666666;
+	margin-right: 1%;
+	margin-bottom: 2%;
+}
+
+.description-img {
+	margin-top: 20px;
+}
+
+.description-text  {
+	margin-top: 30px;
+}
+
+/*styling sidebar*/
+
+.right-sidebar a {
+	opacity: 0.6;
+  	text-decoration: none;
+  	color: black;
+}
+
+.right-sidebar a:hover {
+	opacity: 1;
+	text-decoration: none;
+}
+
+#sidebar-title {
+	margin-bottom: 20px;
+}
+
+#sidebar-arrow {
+	display: inline;
+	margin-bottom: 3%;
+}
+
+#title {
+	display: inline;
+	margin-right: 5px;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.sidebar {
+	border-left: 5px solid #eee;
+}
+
+.right-sidebar li {
+	margin-bottom: 15px;
+}
+
+.right-sidebar li a {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }

@@ -1,6 +1,7 @@
 /*general styling*/
 
 body {
+	position: relative;
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -13,6 +14,16 @@ ul {
 
 li {
 	list-style: none;
+}
+
+li.active, li.active:hover, li.active:focus, li:hover {
+	border-left: 3px solid orange;
+	opacity: 1;
+}
+
+li.active a {
+	font-weight: 600;
+	opacity: 1;
 }
 
 .center { 
@@ -100,25 +111,6 @@ li {
 
 .navbar-form {
 	margin-top: 20px;
-}
-
-/*styling form*/
-
-.modal-body {
-	width: 100%;
-}
-
-.form-group {
-	width: 100%;
-	margin-top: 10px;
-}
-
-.form-group div input {
-	width: 100%;
-}
-
-.modal-header .close {
-	font-size: 30px;
 }
 
 /*styling container*/
@@ -246,10 +238,14 @@ li {
 
 /*styling sidebar*/
 
-.right-sidebar a {
+.right-sidebar li a, #sidebar-title a {
 	opacity: 0.6;
   	text-decoration: none;
   	color: black;
+}
+
+#sidebar-title {
+	opacity: 1;
 }
 
 .right-sidebar a:hover {

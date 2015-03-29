@@ -16,7 +16,7 @@ li {
 	list-style: none;
 }
 
-li.active, li.active:hover, li.active:focus, li:hover {
+li.active, li.active:focus {
 	border-left: 3px solid orange;
 	opacity: 1;
 }
@@ -46,12 +46,6 @@ li.active a {
 	width:40%; 
 	margin: 0 auto;
 }
-
-/*.btn {
-  border-radius:                    0px;
-  -webkit-border-radius:            0px;
-  -moz-border-radius:               0px;
-}*/
 
 .centre {
     position: absolute;
@@ -122,7 +116,7 @@ li.active a {
 }
 
 .section {
-	margin-top: 30px;
+	min-height: 1500px;
 }
 
 .left-sidebar {
@@ -161,6 +155,10 @@ li.active a {
   	background: #fff;
 
   	margin-bottom: 30px;
+}
+
+.section-date {
+	margin-top: 20px;
 }
 
 .organizer p, .datetime p, .venue p{
@@ -236,6 +234,21 @@ li.active a {
 	margin-top: 30px;
 }
 
+.description hr {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.contact ul, .contact i, .contact p, .contact li:first-child{
+	display: inline;
+}
+
+.email li:nth-child(n+2) {
+	margin-left: 25px;
+}
+
+
+
 /*styling sidebar*/
 
 .right-sidebar li a, #sidebar-title a {
@@ -257,7 +270,7 @@ li.active a {
 	margin-bottom: 20px;
 }
 
-#sidebar-arrow {
+#sidebar-arrow img{
 	display: inline;
 	margin-bottom: 3%;
 }

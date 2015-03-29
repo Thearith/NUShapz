@@ -12,4 +12,7 @@ $(document).ready(function(){
 		else
 			$(this).attr('src', 'image/star.png');
 	});
+
+	$("#inputDate").datepicker();
+
 });

@@ -60,7 +60,14 @@
 
 			      	</ul>
 
-			      	<div class="navbar-form navbar-right input-group"><button type="submit" class="btn btn-warning"><i class="glyphicon glyphicon-plus"></i> Create Event</button></div>
+			      	<div class="navbar-form navbar-right input-group">
+			      		<!-- button -->
+			      		<button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#createEvent">
+			      			<i class="glyphicon glyphicon-plus"> </i>
+			      			Create Event
+			      		</button>
+
+			      	</div>
 
 			    </div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
@@ -220,7 +227,101 @@
 			</div>
 		</div>
 			
+		<!-- Modal -->
+		<div class="modal fade" id="createEvent" tabindex="-1" 
+			role="dialog" aria-labelledby="createEvent" aria-hidden="true" style="display:none;">
+		  
+		  	<div class="modal-dialog">
+		    	<div class="modal-content">
 
+		      		<div class="modal-header">
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        			<span aria-hidden="true">&times;</span>
+		        		</button>
+		        		<h3 class="modal-title" id="modalLabel">Create Event</h3>
+		      		</div>
+		      		
+		      		<div class="modal-body">
+		        		<form class="form-horizontal">
+						  	
+						  	<div class="form-group">
+						    	<label for="inputTitle" class="col-sm-3 control-label">Title</label>
+						    	<div class="col-sm-9">
+						      		<input type="text" class="form-control" id="inputTitle" placeholder="Title">
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputOrganization" class="col-sm-3 control-label">Organization</label>
+						    	<div class="col-sm-9">
+						      		<input type="text" class="form-control" id="inputOrganization" placeholder="Organization">
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputDescription" class="col-sm-3 control-label">Description</label>
+						    	<div class="col-sm-9">
+						      		<!-- <input type="text" class="form-control" id="inputDescription" placeholder="Description"> -->
+						      		<textarea rows="8" class="form-control" id="inputDescription" placeholder="Description"></textarea>
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputTime" class="col-sm-3 control-label">Time</label>
+						    	<div class="col-sm-9">
+						      		<input type="time" class="form-control" id="inputTime" placeholder="Time">
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputDate" class="col-sm-3 control-label">Date</label>
+						    	<div class="col-sm-9">
+						      		<input type="datetime" class="form-control" id="inputDate" placeholder="Click to enter date">
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputPrice" class="col-sm-3 control-label">Price</label>
+						    	<div class="col-sm-9">
+						      		<input type="text" class="form-control" id="inputPrice" placeholder="Price">
+						    	</div>
+						  	</div>
+
+						  	<hr/>
+
+						  	<div class="form-group">
+						    	<label for="inputEmail" class="col-sm-3 control-label">Email</label>
+						    	<div class="col-sm-9">
+						      		<input type="email" class="form-control" id="inputEmail" placeholder="Email">
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputContact" class="col-sm-3 control-label">Phone Number</label>
+						    	<div class="col-sm-9">
+						      		<input type="number" class="form-control" id="inputContact" placeholder="Phone Number">
+						    	</div>
+						  	</div>
+
+						  	<div class="form-group">
+						    	<label for="inputUrl" class="col-sm-3 control-label">Url</label>
+						    	<div class="col-sm-9">
+						      		<input type="url" class="form-control" id="inputUrl" placeholder="Additional link if available">
+						    	</div>
+						  	</div>
+						  	
+						</form>
+
+		      		</div>
+		      		
+		      		<div class="modal-footer">
+		        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        		<button type="button" class="btn btn-primary">Submit</button>
+		      		</div>
+		    	
+		    	</div>
+		 	</div>
+		</div>
 		
 		<!-- js libraries -->
 		<script src="libs/jquery/jquery.min.js"></script>

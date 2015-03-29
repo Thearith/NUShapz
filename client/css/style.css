@@ -102,6 +102,25 @@ li {
 	margin-top: 20px;
 }
 
+/*styling form*/
+
+.modal-body {
+	width: 100%;
+}
+
+.form-group {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.form-group div input {
+	width: 100%;
+}
+
+.modal-header .close {
+	font-size: 30px;
+}
+
 /*styling container*/
 
 #main-container {

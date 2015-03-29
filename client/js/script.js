@@ -11,6 +11,12 @@ $(document).ready(function(){
 
 	var SIDEBAR_TITLE = ['Timeline', 'Category'];
 
+	//var CARD_DESCRIPTION_SHOW = "description-show";
+
+	// constant integers
+	var TIMELINE = 0;
+	var CATEGORY = 1;
+
 	// states
 	var isTimeline = 0;
 
@@ -31,7 +37,7 @@ $(document).ready(function(){
 	}
 
 	function initStates() {
-
+		isTimeline = TIMELINE;
 	}
 
 	function initHTMLDivs() {
@@ -54,6 +60,10 @@ $(document).ready(function(){
 		$card.click(function() {
 			var description = $(this).find('.description');
 			description.toggle('slow');
+			// if($card.hasClass(CARD_DESCRIPTION_SHOW))
+			// 	$card.removeClass(CARD_DESCRIPTION_SHOW);
+			// else
+			// 	$card.addClass(CARD_DESCRIPTION_SHOW);
 		});
 	}
 
@@ -91,6 +101,8 @@ $(document).ready(function(){
 
 	function initializeParallax() {
 		$navsidebarLink.bind('click',function(event){
+			// $('.card .' + CARD_DESCRIPTION_SHOW).hide();
+
 	 		var $anchor = $(this);
 	 
 			$('html, body').stop().animate(

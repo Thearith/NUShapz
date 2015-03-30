@@ -49,12 +49,11 @@ Dashboard to curate and monitor new events posting.
 <p> Run ssh -i nushapz.pem ec2-user@52.74.127.35 with nushapz.pem place in currently working directory </p>
 <h6> PuTTy (Windows) </h6>
 <p> Run PuTTy, set ip as 52.74.127.35, set nushapz.ppk key under Auth/SSH, connect as ec2-user. </p>
-<br>
 <h6> AWS working directory </h6>
 <p> cd /var/www/html </p>
-<br>
-<h6> Adding files to AWS </h6>
-<p> Get FileZilla, set host as 52.74.127.35, protocol: STFP, logon type interactive, user: ec2-user and add keyfile(nushapz.ppk) in Settings/FTP/SFTP </p>
-<br>
+<h6> Adding files to AWS via FileZilla </h6>
+<p> Set host as 52.74.127.35, protocol: STFP, logon type interactive, user: ec2-user and add keyfile(nushapz.ppk) in Settings/FTP/SFTP </p>
+<p> Upload files in /var/www/html/ </p>
+
 
 

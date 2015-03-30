@@ -54,6 +54,8 @@ Dashboard to curate and monitor new events posting.
 <h6> Adding files to AWS via FileZilla </h6>
 <p> Set host as 52.74.127.35, protocol: STFP, logon type interactive, user: ec2-user and add keyfile(nushapz.ppk) in Settings/FTP/SFTP </p>
 <p> Upload files in /var/www/html/ </p>
+<h6> Database </h6>
+<p> Enter database at http://tinyurl.com/nushapz/phpmyadmin </p>
 
 
 

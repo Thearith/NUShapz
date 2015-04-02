@@ -1,0 +1,53 @@
+{
+	"data" : {
+		"Response" : "Valid",
+		"Timeline" : [
+			{
+				"Today" : [
+					{
+						"Category" : "Social",
+						"Events" : [
+							{
+								"ID" : "ID1",
+								"Title" : "Do you believe in Kenson?",
+								"Description" : "Do you really believe in Kenson?",
+								"DateAndTime" : "1 April 2015 16:00-17:00",
+								"Organizer" : "Kenson",
+								"Contact" : "kensondabeliever@u.nus.edu"
+							},
+							{
+								"ID" : "ID2",
+								"Title" : "Do you not believe in Kenson?",
+								"Description" : "Do you really not believe in Kenson?",
+								"DateAndTime" : "1 April 2015 17:00-18:00",
+								"Organizer" : "Kenson",
+								"Contact" : "kensondabeliever@u.nus.edu"
+							}]
+					},
+					{
+						"Category" : "Dance",
+						"Events" : [
+							{
+								"ID" : "ID3",
+								"Title" : "Cha Cha By Nigel Da Dance Machine",
+								"Description" : "Master the art of Cha Cha with the great Nigel for free!",
+								"DateAndTime" : "1 April 2015 12:00-17:00",
+								"Organizer" : "Nigel",
+								"Contact" : "dmnigel@u.nus.edu"
+							}
+						]
+					}
+				]
+			},
+			{
+				"Tomorrow" : []
+			},
+			{
+				"In a few days" : []
+			},
+			{
+				"And more" : []
+			}
+		]
+	}
+}

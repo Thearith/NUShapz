@@ -56,6 +56,5 @@ Dashboard to curate and monitor new events posting.
 <p> Upload files in /var/www/html/ </p>
 <h6> Database </h6>
 <p> Enter database at http://tinyurl.com/nushapz/phpmyadmin </p>
-
-
-
+<h6> Timeline JSON </h6>
+<a href="http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline">http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline</a>

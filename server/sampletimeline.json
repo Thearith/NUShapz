@@ -46,7 +46,37 @@
 				]
 			},
 			{
-				"Tomorrow" : []
+				"Tomorrow" : [
+					{
+						"Category" : "Education",
+						"Events" : [
+							{
+								"ID" : "ID4",
+								"Title" : "AngularJS by Thearith",
+								"Description" : "Prof. Thearith will be giving a talk on AngularJS.",
+								"DateAndTime" : "2 April 2015 10:00-13:00",
+								"Venue" : "NUS",
+								"Price" : "Free",
+								"Organizer" : "Comp Club",
+								"Contact" : "compclub@u.nus.edu"
+							}]
+					},
+					{
+						"Category" : "Dance",
+						"Events" : [
+							{
+								"ID" : "ID5",
+								"Title" : "Cha Cha By Nigel Da Dance Machine",
+								"Description" : "Master the art of Cha Cha with the great Nigel for free!",
+								"DateAndTime" : "2 April 2015 12:00-17:00",
+								"Venue" : "Nigel's House",
+								"Price" : "Free",
+								"Organizer" : "Nigel",
+								"Contact" : "dmnigel@u.nus.edu"
+							}
+						]
+					}
+				]
 			},
 			{
 				"In a few days" : []

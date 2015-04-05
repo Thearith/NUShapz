@@ -1,43 +1,43 @@
 <?php
 
 require_once	'../db/db.php';
-
+date_default_timezone_set("UTC");
 define("UTCtoGMT8", "28800");
 define("DATEFORMAT", "j F Y, g:i a");
 
+	// Test for NUS COE
+	// use this format
+	// echo 'Now: (GMT8):'.date('j F Y, g:i a',time()+UTCtoGMT8)."\r\n";
 
-if(isset($_GET["cmd"])) {
-	$cmd = $_GET["cmd"];
-}
-if(isset($_GET["cat"])) {
-	$cat = $_GET["cat"];
-}
+	// $testtime = strtotime("Wed, 22 Apr 2015 09:00:00 +0800");
+	// echo 'Test: '.date('j F Y, g:i a',$testtime+UTCtoGMT8)."\n";
 
-header('Content-Type: application/json');
 
-switch($cmd) {
-	case "timeline":
-		echo getEventsByTimelineSAMPLE();
-		break;
-	case "categories":
-		echo getEventsByCategorySAMPLE($cat);
-		break;
-	case "muahahahaha":
-		echo test();
-		break; 
-	default:
-		break;
-}
+	// $testtime = strtotime("Wed, 22 Apr 2015 09:00:00");
+	// echo 'Test: '.date('j F Y, g:i a',$testtime)."\n";
 
-function getInvalidData() {
-	$invalid = file_get_contents("sample/sampleinvalid.json");
-	return $invalid;
-}
 
-function getEventsByTimelineSAMPLE() {
-	$sampletimeline = file_get_contents("sample/sampletimeline.json");
-	return $sampletimeline;
-}
+//TIME
+// $currentTime = time() + UTCtoGMT8;
+
+// $beginOfDay = strtotime("midnight", $currentTime);
+// $endOfDay = strtotime("tomorrow", $beginOfDay) - 1;
+
+// $beginOfTomorrow = $endOfDay + 1;
+// $endOfTomorrow = strtotime("tomorrow", $beginOfTomorrow) - 1;
+
+// $beginOfDayAfterTomorrow = $endOfTomorrow + 1;
+// $endOfThisWeek = strtotime("+7 days", $endOfDay);
+
+// $afterThisWeek = $endOfThisWeek + 1;
+
+// echo "beginOfDay: ".$beginOfDay."\n";
+// echo "endOfDay: ".$endOfDay."\n";
+// echo "beginOfTomorrow: ".$beginOfTomorrow."\n";
+// echo "endOfTomorrow: ".$endOfTomorrow."\n";
+// echo "beginOfDayAfterTomorrow: ".$beginOfDayAfterTomorrow."\n";
+// echo "endOfThisWeek: ".$endOfThisWeek."\n";
+// echo "afterThisWeek: ".$afterThisWeek."\n";
 
 function test() {
 	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, NULL AS Price, NULL AS Organizer, NULL AS Contact FROM NUSCOEEVENTS";
@@ -193,30 +193,7 @@ function dateCompare($a, $b) {
 	return ($a['DateAndTime'] < $b['DateAndTime']) ? -1 : 1;
 }
 
-
-
-function getEventsByCategorySAMPLE($cat) {
-	switch($cat) {
-		case "0":
-			echo "hehe";
-			break;
-		case "1":
-			echo "hoho";
-			break;
-		case "2":
-			echo "haha";
-			break;
-		default:
-			return getInvalidData();
-	}
-}
-
-function getEventsByTimeline() {
-	return "Not done";
-}
-function getEventsByCategory() {
-	return "Not done";
-}
+test();
 
 
 ?>

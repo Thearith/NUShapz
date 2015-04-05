@@ -17,8 +17,15 @@ function connectToDB() {
   */
 function databaseQuery($query) {
 	$db = connectToDB();
-	if ($result = $db->query($query) !== TRUE) {
-		echo "Error: " . $db->error;
+	$result = $db->query($query);
+
+	if ($result->num_rows > 0) {
+		return $result;
+	}
+
+	if ($result !== TRUE) {
+		$result = "Error: " . $db->error . "\n";
+		echo $result;
 	}
 	$db->close();
 	return $result;
@@ -109,6 +116,7 @@ function createNUSCOETable() {
 			ID VARCHAR(36) PRIMARY KEY,
 			Title TEXT,
 			Description TEXT,
+			Category TEXT,
 			Venue TEXT,
 			EventDateTime TEXT)";
 

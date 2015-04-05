@@ -19,7 +19,7 @@ function databaseQuery($query) {
 	$db = connectToDB();
 	$result = $db->query($query);
 
-	if ($result->num_rows > 0) {
+	if (is_object($result) && $result->num_rows > 0) {
 		return $result;
 	}
 
@@ -118,7 +118,8 @@ function createNUSCOETable() {
 			Description TEXT,
 			Category TEXT,
 			Venue TEXT,
-			EventDateTime TEXT)";
+			EventDateTime TEXT,
+			Price TEXT)";
 
 	databaseQuery($create_event_nuscoe_table);
 }

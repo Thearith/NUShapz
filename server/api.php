@@ -2,6 +2,8 @@
 
 require_once	'../db/db.php';
 
+date_default_timezone_set("UTC");
+
 define("UTCtoGMT8", "28800");
 define("DATEFORMAT", "j F Y, g:i a");
 
@@ -40,7 +42,7 @@ function getEventsByTimelineSAMPLE() {
 }
 
 function test() {
-	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, NULL AS Price, NULL AS Organizer, NULL AS Contact FROM NUSCOEEVENTS";
+	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, NULL AS Organizer, NULL AS Contact FROM NUSCOEEVENTS";
 	$result = databaseQuery($query);
 
 	// TIMINGS

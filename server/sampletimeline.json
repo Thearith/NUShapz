@@ -12,6 +12,8 @@
 								"Title" : "Do you believe in Kenson?",
 								"Description" : "Do you really believe in Kenson?",
 								"DateAndTime" : "1 April 2015 16:00-17:00",
+								"Venue" : "Kenson's House",
+								"Price" : "Free",
 								"Organizer" : "Kenson",
 								"Contact" : "kensondabeliever@u.nus.edu"
 							},
@@ -20,6 +22,8 @@
 								"Title" : "Do you not believe in Kenson?",
 								"Description" : "Do you really not believe in Kenson?",
 								"DateAndTime" : "1 April 2015 17:00-18:00",
+								"Venue" : "Kenson's House",
+								"Price" : "Free",
 								"Organizer" : "Kenson",
 								"Contact" : "kensondabeliever@u.nus.edu"
 							}]
@@ -32,6 +36,8 @@
 								"Title" : "Cha Cha By Nigel Da Dance Machine",
 								"Description" : "Master the art of Cha Cha with the great Nigel for free!",
 								"DateAndTime" : "1 April 2015 12:00-17:00",
+								"Venue" : "Nigel's House",
+								"Price" : "Free",
 								"Organizer" : "Nigel",
 								"Contact" : "dmnigel@u.nus.edu"
 							}

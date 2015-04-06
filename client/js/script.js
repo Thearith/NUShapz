@@ -42,6 +42,7 @@ $(document).ready(function(){
 
 	function initHTMLDivs() {		
 		initializeForm();
+		initializeScrollspy();
 		initializeClicks();
 	}
 
@@ -54,7 +55,6 @@ $(document).ready(function(){
 		initializeDatePicker();
 
 		initializeParallax();
-		initializeScrolling();
 	}
 
 	function initializeForm() {
@@ -63,6 +63,10 @@ $(document).ready(function(){
    			selectMonths: true, // Creates a dropdown to control month
     		selectYears: 3 // Creates a dropdown of 15 years to control year
   		});
+	}
+
+	function initializeScrollspy() {
+		$('.scrollspy').scrollSpy();
 	}
 
 	function toggleDescription() {
@@ -129,10 +133,6 @@ $(document).ready(function(){
 
  			event.preventDefault();
  		});
-	}
-
-	function initializeScrolling() {
-		$body.scrollspy({ target: '#navsidebar', offset : 400 });
 	}
 
 	function postToServer(cardID, name, value) {

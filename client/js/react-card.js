@@ -2,26 +2,49 @@
 var events;
 
 // virtual doms
-var Timeline; //contains timeline sections
+var Timeline; 
+
+var Loading;
+var TimelineSections; //contains timeline sections
+
 var TimelineSection; //contains categories within the same timeline section
+var LeftSideBar;
+var CategorySections;
 var CategorySection; // contains events of the same category
+var EventSection;
 var Event;
+var EventHeader;
+var EventContent;
+var EventReveal;
+
 var EventTitle;
-var EventBody;
-var FavoriteImage;
-var EventFooter;
+var EventOrganizer;
+var EventBottom;
+
+var EventInformation;
+var EventStar;
+
 var EventDateTime;
-var	EventVenue;
-var EventDescriptionText;
+var EventVenue;
+
+var Title;
+var EventDescription;
 var EventContact;
 
-var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=muahahahaha";
-// outer
-var DATA = "data";
+
+var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 
 //section
 var TIMELINE = "Timeline";
-var TIMELINE_INDEX = ["Today", "Tomorrow", "In a few days" "And more"];
+var TODAY_INDEX = 0;
+var TOMORROW_INDEX = 1;
+var FEW_DAYS_INDEX = 2;
+var MORE_INDEX = 3;
+var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "AndMore"];
+var MONTHS = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var NON_IDENTIFIED = "N/A";
+
+var TITLE_MAXIMUM_LENGTH = 40;
 
 //section-category
 var CATEGORY = 'Category';
@@ -38,362 +61,411 @@ var ORGANIZER = 'Organizer';
 var CONTACT = 'Contact'
 var VENUE = 'Venue';
 
+// check null objects
+function isRealValue(obj){
+	return obj && obj !== "null" && obj!== "undefined";
+}
+
+
 /*
  * Create Event doms 
 */
 
-//create title doms
-createEventTitle();
+Timeline = React.createClass({
+	getInitialState: function() {
+		return {data: []};
+	},
+	componentWillMount: function() {
+		console.log("Timeline is initialized");
+	},
+	componentDidMount: function() {
+	    $.ajax({
+			type: 'GET',
+	     	url: this.props.url,
+	      	dataType: 'json',
+	      	success: function(data) {
+	      		console.log(data);
+	      		events = data;
+	      		this.setState({data: data});
+	      	}.bind(this),
+	      	error: function(xhr, status, err) {
+	        	console.error(this.props.url, status, err.toString());
+	      	}.bind(this)
+	    });
+	},
 
-// create body doms
-createEventDateTime();
-createEventVenue();
-createEventDescriptionText();
-createEventContact();
-createEventDescription();
+	render: function() {
+		console.log(Object.keys(this.state.data).length != 0);
+		return (
+			<div>
+				{ Object.keys(this.state.data).length != 0 ?  
+					<TimelineSections timelines={this.state.data[TIMELINE]} /> : 
+					<Loading /> 
+				}
+			</div>
 
-createEventBody();
+		);
+	}
 
-//create Footer
-createEventFooter();
+});
 
-//create Favorite Image
-createFavoriteImage();
+Loading = React.createClass({
+	render: function() {
+		return (
+			<div className="preloader-wrapper big active loading">
+	    		<div className="spinner-layer spinner-blue-only">
+	      			<div className="circle-clipper left">
+	        			<div className="circle"></div>
+	      			</div>
+	      		</div>
+	      	</div>
+      	);
+	}
+});
+	
+TimelineSections = React.createClass({
+	componentWillMount: function() {
+		console.log("TimelineSections is initialized");
+	},
+	render: function() {
+		console.log(this.props);
+		return (
+			<div>
+				<div className="section scrollspy" id="section-1">
+					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[TODAY_INDEX]]}
+						index={0} />
+				</div>
 
-createEvent();
+				<div className="section scrollspy" id="section-2">
+					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[TOMORROW_INDEX]]} 
+						index={1}/>
+				</div>
 
-createCategorySection();
+				<div className="section scrollspy" id="section-3">
+					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[FEW_DAYS_INDEX]]}
+						index={2} />
+				</div>
 
-createTimelineSection();
+				<div className="section" id="section-4">
+					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[MORE_INDEX]]} 
+						index={3} />
+				</div>
+			</div>
+		);
+	}
+});
 
-createTimeline();
+// contains a timeline with leftsidebar and a lot of categorysections
+TimelineSection = React.createClass({
+	componentWillMount: function() {
+		console.log("TimelineSection is initialized");
+	},
+	render: function() {
+		return (
+			<div className="row">
+				<LeftSideBar index = {this.props.index} />
+				<CategorySections categories = {this.props.categories} />
+			</div>
+		);
+	}
+});
+
+
+LeftSideBar = React.createClass({
+	componentWillMount: function() {
+		console.log("LeftSideBar is initialized");
+	},
+	render: function() {
+		var date = new Date();
+		var text;
+		var day;
+
+		switch(this.props.index) {
+			case TODAY_INDEX:
+				day = date.getDate();
+				text = date.getDate() + " " + MONTHS[date.getMonth()];
+				break;
+
+			case TOMORROW_INDEX:
+				var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+				day = tmrDate.getDate();
+				text = tmrDate.getDate() + " " + MONTHS[tmrDate.getMonth()];
+				break;
+
+			case FEW_DAYS_INDEX:
+				var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
+				var weekDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+				day = fewDaysDate.getDate();
+				text = fewDaysDate.getDate() + " " + MONTHS[fewDaysDate.getMonth()] + " - " +
+					weekDate.getDate() + " " + MONTHS[weekDate.getMonth()];
+				break;
+
+			case MORE_INDEX:
+				day = "+";
+				text = "And More";
+				break;
+		}
+
+		return (
+			<div className="col s2 left-sidebar">
+				<h4>{text}</h4>
+				<div className="center img-responsive calendar">
+					<span className="calendar-day">{day}</span>
+				</div>
+			</div>
+		);
+	}
+});
+
+//contains a lot of categories
+CategorySections = React.createClass({
+	componentWillMount: function() {
+		console.log("CategorySections is initialized");
+	},
+	render: function() {
+		var CategorySectionNode = this.props.categories.map(function(category, index) {
+      		return ( 
+      			<CategorySection category={category} key={index} />
+		    );
+		});
+		return (
+			<div className="col s10 section-category cards">
+				{CategorySectionNode}
+			</div>
+		);
+	}
+});
+
+// contains a lot of events
+CategorySection = React.createClass({
+	componentWillMount: function() {
+		console.log("CategorySection is initialized");
+	},
+	render: function(){
+		return (
+			<EventSection events={this.props.category[EVENTS]} />
+		);
+	}
+});
+
+EventSection = React.createClass({
+	componentWillMount: function() {
+		console.log("EventSection is initialized");
+	},
+	render: function() {
+		var EventNode = this.props.events.map(function(data, index) {
+			return (
+				<Event data={data} key={index}/>
+			);
+		});
+
+		return (
+			<div>
+				{EventNode}
+			</div>
+		);
+	}
+});
+
+Event = React.createClass({
+	componentWillMount: function() {
+		console.log("Event is initialized");
+	},
+	render: function() {
+		return (
+			<div className="card small" id={this.props.data[EVENT_ID]} >
+				<EventHeader category={this.props.data[CATEGORY]} />
+				<EventContent data={this.props.data} />
+				<EventReveal data={this.props.data} />
+			</div>
+		);
+	}
+});
+
+EventHeader = React.createClass({
+	componentWillMount: function() {
+		console.log("EventHeader is initialized");
+	},
+	render: function() {
+		return (
+			<div className="card-image waves-effect waves-block waves-light">
+				<div className="category-title">{this.props.category}</div>
+				<img className="activator" src={"http://materializecss.com/images/office.jpg"}/>
+			</div>
+		);
+	}
+});
+
+EventContent = React.createClass({
+	componentWillMount: function() {
+		console.log("EventContent is initialized");
+	},
+	render: function() {
+		return (
+			<div className="card-content">
+				<EventTitle title={this.props.data[TITLE]} />
+				<EventOrganizer organizer={this.props.data[ORGANIZER]} />
+				<EventBottom data={this.props.data} />
+			</div>
+		);
+	}
+});
+
+EventTitle = React.createClass({
+	componentWillMount: function() {
+		console.log("EventTitle is initialized");
+	},
+	render: function() {
+		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
+					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
+		return (
+			<span className="card-title activator grey-text text-darken-4">
+				{title} 
+				<i className="mdi-navigation-more-vert right"></i>
+			</span>
+		);
+	}
+
+});
+
+EventOrganizer = React.createClass({
+	componentWillMount: function() {
+		console.log("EventOrganizer is initialized");
+	},
+	render: function() {
+		var organizer = isRealValue(this.props.organizer) ?
+			this.props.organizer : NON_IDENTIFIED;
+		return (
+			<div className="organizer">
+				<i className="fa fa-university"></i>
+				<p className="organizer-title">{organizer}</p>
+			</div>
+		);
+	}
+});
+
+EventBottom = React.createClass({
+	componentWillMount: function() {
+		console.log("EventBottom is initialized");
+	},
+	render: function() {
+		return (
+			<div className="row">
+				<EventInformation date={this.props.data[DATETIME]} venue={this.props.data[VENUE]}/>
+				<EventStar />
+			</div>
+		);
+	}
+});
+
+EventInformation = React.createClass({
+	render: function() {
+		return (
+			<div className="col s10 information">
+				<EventDateTime date={this.props.date} />
+				<EventVenue venue = {this.props.venue} />
+			</div>
+		);
+	}
+});
+
+EventDateTime = React.createClass({
+	render: function() {
+		return (
+			<div className="datetime">
+				<i className="fa fa-clock-o"></i>
+				{this.props.date}			
+			</div>
+		);
+	}
+});
+
+EventVenue = React.createClass({
+	render: function() {
+		return (
+			<div className="venue">
+				<i className="fa fa-map-marker"></i>
+				<p>{this.props.venue}</p>
+			</div>
+		);
+	}
+});
+
+EventStar = React.createClass({
+	render: function() {
+		return (
+			<div className="col s2 favorite-container">
+				<a className="btn-floating btn-large waves-effect waves-light right favorite">
+				 	<i className="mdi-action-stars"></i>
+				</a>
+			</div>
+		);
+	}
+});
+
+EventReveal = React.createClass({
+	componentWillMount: function() {
+		console.log("EventReveal is initialized");
+	},
+	render: function() {
+		return (
+			<div className="card-reveal">
+				<Title title={this.props.data[TITLE]} />
+				<hr />
+
+				<EventDescription description={this.props.data[DESCRIPTION]} />
+				<hr />
+
+				<EventContact contact={this.props.data[CONTACT]} />
+			</div>
+		);
+	}
+});
+
+Title = React.createClass({
+	componentWillMount: function() {
+		console.log("Title is initialized");
+	},
+	render: function() {
+		return (
+			<span className="card-title grey-text text-darken-4">
+				{this.props.title}
+				<i className="mdi-navigation-close right"></i>
+			</span>
+		);
+	}
+});
+
+EventDescription = React.createClass({
+	componentWillMount: function() {
+		console.log("EventDescription is initialized");
+	},
+	render: function() {
+		return (
+			<div className="description">
+				{this.props.description}
+			</div>
+		);
+	}
+});
+
+EventContact = React.createClass({
+	componentWillMount: function() {
+		console.log("EventContact is initialized");
+	},
+	render: function() {
+		var contact = isRealValue(this.props.contact) ?
+				this.props.contact : NON_IDENTIFIED;
+		return (
+			<div className="contact">
+				<i className="fa fa-envelope"></i>
+				{contact}
+			</div>
+		);
+	}
+});
 
 React.render(
   <Timeline url={SERVER} />,
   document.getElementById('content')
 );
-
-
-function createTimeline() {
-	Timeline = React.createClass({
-		getInitialState: function() {
-    		return {data: []};
-  		},
-  		componentDidMount: function() {
-		    $.ajax({
-		     	url: this.props.url,
-		      	dataType: 'json',
-		      	success: function(data) {
-		      		events = data;
-		      		this.setState({data: data});
-		      	}.bind(this),
-		      	error: function(xhr, status, err) {
-		        	console.error(this.props.url, status, err.toString());
-		      	}.bind(this)
-		    });
-  		},
-
-  		render: function() {
-  			<div>
-  				<TimelineSection data={this.state.data}/>
-  			</div>
-  		}
-
-	});
-}
-
-function createTimelineSection() {
-	TimelineSection = React.createClass({
-		render: function() {
-			var timeline
-		}
-	});
-}
-
-function createCategorySection() {
-
-}
-<div id="section-1" class="section">
-	<div class="section-category row">
-		<div class="col-md-2 left-sidebar">
-			<h4>March 30th</h4>
-			<img src="image/calendar.png" class="center img-responsive"/>
-		</div>
-
-		<div class="col-md-10 cards">
-			<div class="card z-depth-2" id="1">
-				<div class="row">
-					<div class="col-md-10">
-						<div class="card-title card-content">
-							<div>
-								<h1>Do You Believe In Love?</h1>
-								<div class="organizer" >
-									<i class="fa fa-university"></i>
-									<p>NUS Centre For the Arts</p>
-								</div>
-							</div>
-						</div>
-
-						<div class="card-body card-content">
-
-							<div class="category">
-								<i class="fa fa-globe"></i>
-								Social
-							</div>
-
-							<div class="datetime">
-								<i class="fa fa-clock-o"></i>
-								Mon, 30th March 1.30pm
-									
-							</div>
-
-							<div class="venue">
-								<i class="fa fa-map-marker"></i>
-								<p>Ngee Ann Kongsi Auditorium</p>
-							</div>
-
-							<div class="description disappear" style="display:none;">
-								<hr/>
-								<img src="http://www.nus.edu.sg/cfa/NAF_2015/images/pg/film/film_doyoubelieveinlove_indiv.jpg" class="img-responsive clearfix center description-img" />
-
-								<div class="description-text">
-									<p>DO YOU BELIEVE IN LOVE? </p>
-									
-									<p>Thu 26 Mar | 7.30pm | Ngee Ann Kongsi Auditorium </p>
-
-									<p>Free admission with registration.</p>
-									<p>Register</p>
-
-
-									<p>Dan Wasserman | Israel | 2013</p>
-									<p>50 mins | Rating to be advised | Hebrew with English subtitles</p>
-
-									<p>Even though Tova does not believe in love, she has had remarkable success as a matchmaker. Tova, who is paralyzed, specializes in finding matches for people with disabilities. Her tough-love approach leads to a unique matchmaking style but her passion for the work and clients is undeniable. Do You Believe in Love? follows Tova over the course of a year and invites us to join in on her pain, humour, love, and enormous lust for life.</p>
-
-									<p>Commemorate International Women’s Day at the post-film panel discussion, “A Life Beyond Limits”, where we applaud women overcoming physical adversity.</p>
-
-
-									<p>Awards:</p>
-									<p>§  Silver Horn Award, Krakow International Film Festival 2014, Poland</p>
-									<p>§  Special Mention Award, BOSIFEST 2014, Serbia</p>
-
-
-									<p>For more information and updates, please visit nusartsfestival.com or follow us on Facebook!
-									Enquiries are welcome at nusartsfestival@nus.edu.sg. </p>
-								</div>
-
-								<hr/>
-
-								<div class="contact">
-
-									<div>
-										<i class="fa fa-envelope"></i>
-										nusartsfestival@nus.edu.sg
-									</div>
-								</div>
-
-							</div>
-						</div>
-
-					</div>
-					<div class="col-md-2">	
-						<div class="favorite">
-							<img src="image/star.png" class="img-responsive center fav-img">
-						</div>
-					</div>
-				</div>
-				<hr/>
-
-				<div class="card-footer card-content">
-					<div class="social-media">
-						<p>
-							Share via
-							<span class="social-media-btns">
-								<a href="https://twitter.com/home?status=https://cp3101b.comp.nus.edu.sg/~sothearith/lab7/" title="Share on Twitter" target="_blank" class="btn btn-social btn-twitter text-center waves-effect waves-light">
-									<i class="fa fa-twitter"></i>
-									Twitter
-								</a>
-								<a href="https://www.facebook.com/sharer/sharer.php?u=https://cp3101b.comp.nus.edu.sg/~sothearith/lab7/" target="_blank" class="btn btn-social btn-facebook waves-effect waves-light">
-									<i class="fa fa-facebook"></i>
-									Facebook
-								</a>
-								<a href="https://plus.google.com/share?url=https://cp3101b.comp.nus.edu.sg/~sothearith/lab7/" target="_blank" class="btn btn-social btn-googleplus waves-effect waves-light">
-									<i class="fa fa-google-plus"></i>
-									Google+
-								</a>
-							</span>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div
-
-function createEvent() {
-	Event = React.createClass({
-		render: function() {
-			return (
-
-				<div className="row">
-					<div className="col-md-10">
-						<EventTitle/>
-						<EventBody />
-					</div>
-
-					<div className="col-md-2">
-						<div className="favorite">
-							<FavoriteImage />
-						</div>
-					</div>
-
-				</div>
-
-				<hr/>
-				
-				<EventFooter />
-
-			);
-		}
-
-	});
-}
-
-function createEventTitle() {
-	EventTitle = React.createClass({
-		render: function() {
-			return (
-				<div className="card-title card-content">
-					<h1>{data[TITLE]}</h1>
-					<div className="organizer">
-						<i className="fa fa-university"></i>
-						<p>{data[ORGANIZER]}</p>
-					</div>
-				</div>
-			);
-		}
-	});
-}
-
-function createEventBody() {
-	EventBody = React.createClass({
-		render: function() {
-			return (
-				<div className="card-body card-content">
-					<EventDateTime />
-					<EventVenue />
-					<EventDescription />
-				</div>
-			);
-		}
-	});
-}
-
-function createEventDateTime() {
-	EventDateTime = React.createClass({
-		render: function() {
-			<div className="datetime">
-				<i className="fa fa-clock-o"></i>
-				<p>{data[DATETIME]}</p>
-			</div>
-		}
-	});
-}
-
-function createEventVenue() {
-	EventVenue = React.createClass({
-		render: function() {
-			<div className="venue">
-				<i className="fa fa-map-marker"></i>
-				<p>{data[VENUE]}</p>
-			</div>
-		}
-	});
-}
-
-function createEventDescription(){
-	EventDescription = React.createClass({
-		render: function() {
-			var style = {
-				display: 'none'
-			};
-
-			return (
-				<div className="description" style={style}>
-					<hr/>
-					<EventDescriptionText />
-					<hr/>
-					<EventContact />
-				</div>
-			);
-		}
-	});
-}
-
-function createEventDescriptionText() {
-	EventDescriptionText = React.createClass({
-		render: function() {
-			<div className="description-text">
-				{data[DESCRIPTION_TEXT]}
-			</div>
-		}
-	});
-}
-
-function createEventContact() {
-	EventContact = React.createClass({
-		return (
-			<div className="contact">
-				{data[CONTACT]}
-			</div>
-		);
-	});
-}
-
-function createFavoriteImage() {
-	var FavoriteImage = React.createClass({
-		render: function() {
-			var img_src = "image/star.png";
-			return (
-				<div className="favorite">
-					<img src={img_src} className="img-responsive center fav-img">
-				</div>
-			);
-		}
-	});
-}
-
-function createEventFooter() {
-	var EventFooter = React.createClass({
-		render: function() {
-			var EventPage = HOMEPAGE + "/" + EVENT_ID + "=" + data[EventID];
-			var facebookLink = "https://www.facebook.com/sharer/sharer.php?u=" + EventPage;
-			var twitterLink = "https://twitter.com/home?status=" + EventPage;
-			var googleLink = "https://plus.google.com/share?url=" + EventPage;
-
-			return (
-				<div className="card-footer card-content">
-					<div className="social-media">
-						<p>
-							Share via
-							<span>
-								<a href={twitterLink} title="Share on Twitter" target="_blank" className="btn btn-social btn-twitter text-center waves-effect waves-light">
-									<i className="fa fa-twitter"></i>
-									Twitter
-								</a>
-								<a href={facebookLink} target="_blank" className="btn btn-social btn-facebook waves-effect waves-light">
-									<i className="fa fa-facebook"></i>
-									Facebook
-								</a>
-								<a href={googleLink} target="_blank" className="btn btn-social btn-googleplus waves-effect waves-light">
-									<i className="fa fa-google-plus"></i>
-									Google+
-								</a>
-							</span>
-						</p>
-					</div>
-				</div>
-			);
-		}
-	});
-}

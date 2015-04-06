@@ -436,14 +436,17 @@ Title = React.createClass({
 	}
 });
 
+var converter = new Showdown.converter();
+
 EventDescription = React.createClass({
 	componentWillMount: function() {
 		console.log("EventDescription is initialized");
 	},
 	render: function() {
+		 var rawMarkup = converter.makeHtml(this.props.description.toString());
 		return (
 			<div className="description">
-				{this.props.description}
+				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		);
 	}

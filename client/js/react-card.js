@@ -127,6 +127,9 @@ TimelineSections = React.createClass({
 	componentWillMount: function() {
 		console.log("TimelineSections is initialized");
 	},
+	componentDidMount: function() {
+		$('.scrollspy').scrollSpy();
+	},
 	render: function() {
 		console.log(this.props);
 		return (
@@ -146,7 +149,7 @@ TimelineSections = React.createClass({
 						index={2} />
 				</div>
 
-				<div className="section" id="section-4">
+				<div className="section scrollspy" id="section-4">
 					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[MORE_INDEX]]} 
 						index={3} />
 				</div>

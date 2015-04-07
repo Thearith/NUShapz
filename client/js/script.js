@@ -34,6 +34,7 @@ $(document).ready(function(){
 	function init() {
 		initStates();
 		initHTMLDivs();
+		postToServer();
 	}
 
 	function initStates() {
@@ -47,14 +48,7 @@ $(document).ready(function(){
 	}
 
 	function initializeClicks() {
-		toggleDescription();
 		handleFavoriteClick();
-
-		handleSideBarArrowClick();
-		
-		initializeDatePicker();
-
-		initializeParallax();
 	}
 
 	function initializeForm() {
@@ -69,70 +63,8 @@ $(document).ready(function(){
 		$('.scrollspy').scrollSpy();
 	}
 
-	function toggleDescription() {
-		$cardTitle.click(function() {
-			var parent = $(this).parent('.card');
-			var description = parent.find('.description');
-			description.toggle('slow');
-			
-			if($cardTitle.hasClass(CARD_DESCRIPTION_SHOW)) {
-				$cardTitle.removeClass(CARD_DESCRIPTION_SHOW);
-				$('html, body').stop().animate(
-				{
-					scrollTop: $(this).offset().top-100
-				}, 1000,'easeInOutExpo');
-
-			} else {
-				$cardTitle.addClass(CARD_DESCRIPTION_SHOW);
-			}
-		});
-	}
-
 	function handleFavoriteClick() {
-		$favimg.click(function(){
-			var src = $(this).attr('src');
-			var cardID = $(this).parent().attr('id');
-
-			if(src == "image/star.png") {
-				$(this).attr('src', 'image/star-fav.png');
-				postToServer(cardID, FAVORITE, 1);
-			} else {
-				$(this).attr('src', 'image/star.png');
-				postToServer(cardID, FAVORITE, 0);
-			}
-		});
-	}
-
-	function handleSideBarArrowClick() {
-		$sidebarArrow.click(function(){
-			isTimeline = 1 - isTimeline;
-			$title.html(SIDEBAR_TITLE[isTimeline]);
-
-			for(i=0; i<SIDEBAR[isTimeline].length; i++) {
-				$('#navsidebar ul li:nth(' + i + ') span').html(SIDEBAR[isTimeline][i]);
-			}
-
-			// change events sorting from timeline to category
-		});
-	}
-
-	function initializeDatePicker() {
-		$datepicker.datepicker();
-	}
-
-	function initializeParallax() {
-		$navsidebarLink.bind('click',function(event){
-			// $('.card .' + CARD_DESCRIPTION_SHOW).hide();
-
-	 		var $anchor = $(this);
-	 
-			$('html, body').stop().animate(
-				{
-					scrollTop: $($anchor.attr('href')).offset().top + 400
-				}, 1000,'easeInOutExpo');
-
- 			event.preventDefault();
- 		});
+		
 	}
 
 	function postToServer(cardID, name, value) {

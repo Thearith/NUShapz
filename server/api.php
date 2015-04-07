@@ -30,8 +30,49 @@ switch($cmd) {
 	case "muahahahaha":
 		// echo test();
 		break; 
+	case "nuscoe":
+		echo getNUSCOE();
+		break;
+	case "ivle";
+		echo getIVLE();
+		break;
+	case "post":
+		break; 
+	case "update":
+		//updateEventDB();
+		break;
 	default:
 		break;
+}
+
+function getNUSCOE() {
+	getEvents("NUSCOEEVENTS");
+}
+
+function getIVLE() {
+	getEvents("IVLEEVENTS");
+}
+
+function getEvents($table) {
+	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, NULL AS Organizer, NULL AS Contact FROM $table";
+	$result = databaseQuery($query);
+
+	$returnThis = array();
+	while($row = $result->fetch_assoc()) {
+		array_push($returnThis, $row);
+	}
+
+	foreach ($returnThis as $key => $value) {
+		$returnThis[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
+	}
+
+	$data = array(
+		"Response" => "Valid", 
+		"Events" => $returnThis
+	);
+
+	$json = json_encode($data);
+	echo $json;
 }
 
 function getInvalidData() {

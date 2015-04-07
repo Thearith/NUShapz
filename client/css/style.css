@@ -61,7 +61,7 @@ nav .nav-wrapper i {
 
 #logo{
 	height: 36px;
-	margin-bottom: 15px; 
+	margin-top: 5px;
 }
 
 .navbar-fixed {
@@ -109,7 +109,7 @@ nav .nav-wrapper i {
 	border-radius: 10px;
     background-color: #ffffff;
 	width: 58%;
-	font-weight: 300;
+	font-weight: 400;
 	font-size: 16px !important;
 }
 
@@ -341,11 +341,12 @@ nav .nav-wrapper i {
 }
 
 .browse-events {
-    margin: 20px 0px;
+    margin: 30px 0px;
     padding: 18px;
     color: #000000;
     background-color: #ffcc80;
-    font-weight: 400;
+    font-weight: 500;
+    font-size: 16px;
     padding-left: 60px;
     margin-bottom: 30px;
 }

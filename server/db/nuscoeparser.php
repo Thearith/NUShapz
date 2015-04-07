@@ -38,7 +38,7 @@ function getNUSCOEdata() {
 		foreach ($xml->channel->item as $item) {
 			$id = escapeChar(str_replace($strToRemoveForEventId,"",(string)$item->guid));
 	    	$title = escapeChar((string)$item->title);
-	    	$description = escapeChar(str_replace($strToRemoveForDescription,"",(string)$item->description));
+	    	$description = str_replace($gmtTimeToRemove,"",escapeChar(str_replace($strToRemoveForDescription,"",(string)$item->description)));
 	    	$category = $key;
 	    	$venue = escapeChar((string)$item->venue);
 	    	$eventdatetime = strtotime(str_replace($gmtTimeToRemove,"",escapeChar((string)$item->eventdate)));

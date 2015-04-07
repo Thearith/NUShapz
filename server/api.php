@@ -21,13 +21,14 @@ header('Content-Type: application/json');
 
 switch($cmd) {
 	case "timeline":
-		echo getEventsByTimelineSAMPLE();
+		echo test();
+		// echo getEventsByTimelineSAMPLE();
 		break;
 	case "categories":
 		echo getEventsByCategorySAMPLE($cat);
 		break;
 	case "muahahahaha":
-		echo test();
+		// echo test();
 		break; 
 	default:
 		break;
@@ -75,7 +76,7 @@ function test() {
 			array_push($listOfEventsTomorrow, $row);
 		} else if ($eventdate >= $beginOfDayAfterTomorrow && $eventdate <= $endOfThisWeek) {
 			array_push($listOfEventsInAFewDays, $row);
-		} else {
+		} else if ($eventdate >= $afterThisWeek){
 			array_push($listOfEventsAfterAFewDays, $row);
 		}
 	}
@@ -191,11 +192,13 @@ function test() {
 	);
 	$json = json_encode($data);
 	echo $json;
+
+	function dateCompare($a, $b) {
+		return ($a['DateAndTime'] < $b['DateAndTime']) ? -1 : 1;
+	}
 }
 
-function dateCompare($a, $b) {
-	return ($a['DateAndTime'] < $b['DateAndTime']) ? -1 : 1;
-}
+
 
 
 

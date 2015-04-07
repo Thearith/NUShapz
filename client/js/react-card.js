@@ -289,7 +289,7 @@ EventHeader = React.createClass({
 	render: function() {
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="category-title">{this.props.category}</div>
+				<div className="activator category-title">{this.props.category}</div>
 				<img className="activator" src={"http://materializecss.com/images/office.jpg"}/>
 			</div>
 		);

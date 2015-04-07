@@ -36,14 +36,82 @@ switch($cmd) {
 	case "ivle";
 		echo getIVLE();
 		break;
-	case "post":
+	/*case "post":
+		postNew();
 		break; 
-	case "update":
-		//updateEventDB();
+	case "update_nuscoe":
+		updateNUSCOE();
 		break;
+	case "update_ivle":
+		updateIVLE();
+		break;*/
 	default:
 		break;
 }
+
+/*function postNew() {
+	if(isset($_POST["eventTitle"])) {
+		$eventTitle = $_POST["eventTitle"];
+	}
+	if(isset($_POST["eventCat"])) {
+		$eventCat = $_POST["eventCat"];
+	}
+	if(isset($_POST["eventDes"])) {
+		$eventDes = $_POST["eventDes"];
+	}
+	if(isset($_POST["eventEDT"])) {
+		$eventEDT = $_POST["eventEDT"];
+		$eventEDT = strtotime($eventEDT);
+	}
+	if(isset($_POST["eventOrg"])) {
+		$eventOrg = $_POST["eventOrg"];
+	}
+	if(isset($_POST["eventVen"])) {
+		$eventVen = $_POST["eventVen"];
+	}
+	if(isset($_POST["eventCont"])) {
+		$eventCont = $_POST["eventCont"];
+	}
+	if(isset($_POST["eventPrice"])) {
+		$eventPrice = $_POST["eventPrice"];
+	}
+
+	//@todo - randomise ID and Table??
+	$table;
+	$assigID;
+
+	// ID - Title - Category - Description - EventDateTime - Organizer - Venue - Contact - Price - Flag
+	//$query = "INSERT INTO $table VALUES ('$assigID', '$eventTitle', '$eventDes', '$eventCat',
+	//		 '$eventVen', '$eventEDT', '$eventPrice', '$eventOrg', '$eventCont', '0') ";
+	//$result = databaseQuery($query);
+}
+
+function updateNUSCOE() {
+	updateEventDB("NUSCOEEVENTS");
+}
+
+function updateNUSCOE() {
+	updateEventDB("IVLEEVENTS");
+}
+
+function updateEventDB($table) {
+
+	//Field(s) that NEED updating are Category, EventDateTime
+	$query = "UPDATE $table SET "; 		// " Category = $eventCat, EventDateTime = $eventEDT, WHERE ID = $eventID";
+	if(isset($_POST["eventCat"])) {
+		$eventCat = $_POST["eventCat"];
+		$query = $query . " Category = $eventCat, ";
+	}
+	if(isset($_POST["eventEDT"])) {
+		$eventEDT = $_POST["eventEDT"];
+		$eventEDT = strtotime($eventEDT);
+		$query = $query . " EventDateTime = $eventEDT, ";
+	}
+
+	$eventID = $_POST["eventID"];
+	$query = $query . " SET Flag = 1, WHERE ID = $eventID";		//Set Flag = 1;
+	//$result = databaseQuery($query);
+}*/
 
 function getNUSCOE() {
 	getEvents("NUSCOEEVENTS");

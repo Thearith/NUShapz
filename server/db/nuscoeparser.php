@@ -23,7 +23,7 @@ function getNUSCOEdata() {
 
 	$priceRegex = "/[$] ?[0-9]*[.][0-9]*[^A-Z(\\)]*/";
 
-	$insert_query = "INSERT INTO NUSCOEEVENTS(ID, Title, Description, Category, Venue, EventDateTime, Price) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s') ON DUPLICATE KEY UPDATE ID=ID";
+	$insert_query = "INSERT INTO NUSCOEEVENTS(ID, Title, Description, Category, Venue, EventDateTime, Price, Organizer, Contact, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '-', '-', 0) ON DUPLICATE KEY UPDATE ID=ID";
 
 	$num_of_events = 0;
 
@@ -42,7 +42,7 @@ function getNUSCOEdata() {
 	    	$category = $key;
 	    	$venue = escapeChar((string)$item->venue);
 	    	$eventdatetime = strtotime(str_replace($gmtTimeToRemove,"",escapeChar((string)$item->eventdate)));
-	    	$price = null;
+	    	$price = '-';
     		if(preg_match($priceRegex, $description, $match) == 1) {
     			$price = $match[0];
 	    	}
@@ -53,7 +53,6 @@ function getNUSCOEdata() {
 	}
 
 	echo "Added: ".$num_of_events." events\n";
-
 }
 
 

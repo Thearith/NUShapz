@@ -31,12 +31,12 @@ function getIVLEStudentEventData() {
   * Insert data into NEW table
   */
 function formatCategoryDataAndInsertIntoNewTable($jsonData) {
-	$insert_query = "INSERT INTO IVLEEVENTS(ID, Title, CategoryID, Description, EventDateTime, Organizer, Venue, Contact, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d') ON DUPLICATE KEY UPDATE ID=ID";
+	$insert_query = "INSERT INTO IVLEEVENTS(ID, Title, Description, Category, EventDateTime, Organizer, Venue, Contact, Price, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d') ON DUPLICATE KEY UPDATE ID=ID";
 
 	$number_of_events = 0;
 	$results = json_decode($jsonData)->Results;
 	foreach($results as $category_of_events) {
-		$cat_id = $category_of_events->ID;
+		$cat_title = $category_of_events->Title;
 		$events = $category_of_events->Events;
 		foreach($events as $event) {
 			$title = escapeChar($event->Title);
@@ -44,8 +44,11 @@ function formatCategoryDataAndInsertIntoNewTable($jsonData) {
 			$edatetime = escapeChar($event->EventDateTime);
 			$venue = escapeChar($event->Venue);
 			$organizer = escapeChar($event->Organizer);
-			$flag = 0;
-			$query = sprintf($insert_query, $event->ID, $title, $cat_id, $description, $edatetime, $organizer, $venue, $event->Contact, $flag);
+			$price = escapeChar($event->Price);
+			$contact = escapeChar($event->Contact);
+			$agenda = escapeChar($event->Agenda);
+			$flag = 1;
+			$query = sprintf($insert_query, $event->ID, $title, $description, $cat_title, $edatetime, $organizer, $venue, $contact, $price, $agenda, $flag);
 
 			databaseQuery($query);
 			++$number_of_events;

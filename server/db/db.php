@@ -38,13 +38,15 @@ function createIVLEEventsTable() {
 	$create_new_events_table 
 	= "CREATE TABLE IVLEEVENTS(
 		ID VARCHAR(36) PRIMARY KEY,
-		Title TEXT NOT NULL,
-		CategoryID VARCHAR(5) NOT NULL REFERENCES CATEGORY(ID),
+		Title TEXT,
 		Description TEXT,
-		EventDateTime TEXT,
-		Organizer TEXT,
+		Category TEXT,
 		Venue TEXT,
+		EventDateTime TEXT,
+		Price TEXT,
+		Organizer TEXT,
 		Contact TEXT,
+		Agenda TEXT,
 		Flag TINYINT(1) )";
 
 	databaseQuery($create_new_events_table);
@@ -58,17 +60,18 @@ function createHapzEventTable() {
 	= "CREATE TABLE HAPZEVENTS(
 		ID VARCHAR(36) PRIMARY KEY,
 		Title TEXT NOT NULL,
-		CategoryID VARCHAR(5) NOT NULL REFERENCES CATEGORY(ID),
+		Category TEXT,
 		Description TEXT,
 		EventDateTime TEXT,
-		StartDate DATE,
-		StartTime TIME,
-		EndDate DATE,
-		EventTime TIME,
+		StartDate TEXT,
+		StartTime TEXT,
+		EndDate TEXT,
+		EventTime TEXT,
+		Price TEXT,
 		Organizer TEXT,
 		Venue TEXT,
 		Contact TEXT,
-		Others TEXT )";
+		Flag TINYINT(1) )";
 
 	databaseQuery($create_events_table);
 }
@@ -82,30 +85,30 @@ function createHapzEventTable() {
   * A Education, B Recreation, C Recruitment, D Volunteering, E Misc, F New
   * Mappings - A: 8,9; B: 3,4,5,7; C: 10; D: 12; E: 1,2,6,11,99;
   */
-function createCategoryTable() {
-	$category = array(
-	"1" => "Bashes", "2" => "Bazaar", "3" => "Competition",
-	"4" => "Sports", "5" => "Performance", "6" => "Announcement",
-	"7" => "Excursion", "8" => "Exhibition", "9" => "Course",
-	"10" => "Recruitment", "11" => "Administration", "12" => "Charity",
-	"99" => "Other", 
-	"A" => "Education", "B" => "Recreation", "C" => "Recruitment",
-	"D" => "Volunteering", "E" => "Misc", "F" => "New");
+// function createCategoryTable() {
+// 	$category = array(
+// 	"1" => "Bashes", "2" => "Bazaar", "3" => "Competition",
+// 	"4" => "Sports", "5" => "Performance", "6" => "Announcement",
+// 	"7" => "Excursion", "8" => "Exhibition", "9" => "Course",
+// 	"10" => "Recruitment", "11" => "Administration", "12" => "Charity",
+// 	"99" => "Other", 
+// 	"A" => "Education", "B" => "Recreation", "C" => "Recruitment",
+// 	"D" => "Volunteering", "E" => "Misc", "F" => "New");
 
-	$create_event_category_table
-		= "CREATE TABLE CATEGORY(
-			ID VARCHAR(5) PRIMARY KEY,
-			Type VARCHAR(20) NOT NULL)";
+// 	$create_event_category_table
+// 		= "CREATE TABLE CATEGORY(
+// 			ID VARCHAR(5) PRIMARY KEY,
+// 			Type VARCHAR(20) NOT NULL)";
 
-	$insert_event_category
-		= "INSERT INTO CATEGORY (ID,Type) VALUES ('%s', '%s')";
+// 	$insert_event_category
+// 		= "INSERT INTO CATEGORY (ID,Type) VALUES ('%s', '%s')";
 
-	databaseQuery($create_event_category_table);
-	foreach ($category as $id => $type) {
-		$insert_query = sprintf($insert_event_category, $id, $type);
-		databaseQuery($insert_query);
-	}
-}
+// 	databaseQuery($create_event_category_table);
+// 	foreach ($category as $id => $type) {
+// 		$insert_query = sprintf($insert_event_category, $id, $type);
+// 		databaseQuery($insert_query);
+// 	}
+// }
 
 /**
   * Creates NUSCOEEvents table
@@ -119,7 +122,10 @@ function createNUSCOETable() {
 			Category TEXT,
 			Venue TEXT,
 			EventDateTime TEXT,
-			Price TEXT)";
+			Price TEXT,
+			Organizer TEXT,
+			Contact TEXT,
+			Flag TINYINT(1) )";
 
 	databaseQuery($create_event_nuscoe_table);
 }
@@ -128,7 +134,7 @@ function createNUSCOETable() {
   * Called by initdb.php to initialise database
   */
 function initialiseDatabase() {
-	createCategoryTable();
+	// createCategoryTable();
 	createHapzEventTable();
 	createIVLEEventsTable();
 	createNUSCOETable();
@@ -140,7 +146,7 @@ function initialiseDatabase() {
 function clearDatabase() {
 	$db = connectToDB();
 	$drop_table = "DROP TABLE %s";
-	$table_list = array("IVLEEVENTS","HAPZEVENTS","NUSCOEEVENTS","CATEGORY");
+	$table_list = array("IVLEEVENTS","HAPZEVENTS","NUSCOEEVENTS");
 	foreach($table_list as $table_name) {
 		$query = sprintf($drop_table, $table_name);
 		databaseQuery($query);
@@ -151,8 +157,8 @@ function clearDatabase() {
   * Helper function to escape special characters and deny invalid string entries
   */
 function escapeChar($string) {
-	if (strlen($string) > 2000) {
-		return "";
+	if (strlen($string) > 2000 || strlen($string) == 0) {
+		return "-";
 	}
 	$string = str_replace('\\', '\\\\', $string);
 	$string = str_replace('"', '\"', $string);

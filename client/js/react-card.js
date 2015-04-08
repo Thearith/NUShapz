@@ -707,23 +707,18 @@ EventVenue = React.createClass({
 });
 
 EventStar = React.createClass({
-	componentDidMount: function() {
-		$(this).click(function(){
-			console.log("lel");
-			var child = $(this).children("a");
-			if(child.hasClass(".grey")) {
-				child.removeClass(".grey");
-				child.addClass(".yellow");
-			} else {
-				child.removeClass(".yellow");
-				child.addClass(".grey");
-			}
-		})
+	getInitialState: function() {
+		return {liked : false};
+	},
+	handleClick: function(e) {
+		this.setState({liked: !this.state.liked});
 	},
 	render: function() {
+		var c = this.state.liked ?
+			" amber lighten-1" : " grey lighten-1";
 		return (
-			<div className="col s2 favorite-container">
-				<a className="btn-floating btn-large waves-effect waves-light right favorite grey lighten-2">
+			<div className="col s2 favorite-container" onClick={this.handleClick}>
+				<a className={"btn-floating btn-large waves-effect waves-light right favorite" + c}>
 				 	<i className="mdi-action-grade"></i>
 				</a>
 			</div>

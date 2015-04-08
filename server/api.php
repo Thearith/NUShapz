@@ -113,15 +113,17 @@ function updateEventDB($table) {
 }*/
 
 function getNUSCOE() {
-	getEvents("NUSCOEEVENTS");
+	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, '-' AS Agenda";
+	getEvents($selection, "NUSCOEEVENTS");
 }
 
 function getIVLE() {
-	getEvents("IVLEEVENTS");
+	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, Agenda";
+	getEvents($selection, "IVLEEVENTS");
 }
 
-function getEvents($table) {
-	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, NULL AS Organizer, NULL AS Contact FROM ".$table;
+function getEvents($selection, $table, $shouldFormatDate) {
+	$query = $selection." FROM ".$table;
 	$result = databaseQuery($query);
 
 	$returnThis = array();
@@ -130,7 +132,10 @@ function getEvents($table) {
 	}
 
 	foreach ($returnThis as $key => $value) {
-		$returnThis[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
+		$convertDate = date(DATEFORMAT, $returnThis[$key]['DateAndTime']);
+		if ($convertDate !== false) {
+			$returnThis[$key]['DateAndTime'] = $convertDate;
+		}
 	}
 
 	$data = array(

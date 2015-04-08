@@ -3,6 +3,7 @@
 require_once	'../db/db.php';
 
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 date_default_timezone_set("UTC");
 
@@ -16,8 +17,6 @@ if(isset($_GET["cmd"])) {
 if(isset($_GET["cat"])) {
 	$cat = $_GET["cat"];
 }
-
-header('Content-Type: application/json');
 
 switch($cmd) {
 	case "timeline":
@@ -54,7 +53,7 @@ function getIVLE() {
 }
 
 function getEvents($table) {
-	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, NULL AS Organizer, NULL AS Contact FROM $table";
+	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, NULL AS Organizer, NULL AS Contact FROM ".$table;
 	$result = databaseQuery($query);
 
 	$returnThis = array();
@@ -141,20 +140,6 @@ function test() {
 	foreach($listOfEventsAfterAFewDays as $key => $event) {
 		$listOfEventsAfterAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
 	}
-
-
-	// $timeline = array(
-	// 		"Today" => $listOfEventsToday,
-	// 		"Tomorrow" => $listOfEventsTomorrow,
-	// 		"InAFewDays" => $listOfEventsInAFewDays,
-	// 		"AndMore" => $listOfEventsAfterAFewDays
-	// 	);
-
-	// $data = array(
-	// 	"Response" => "Valid",
-	// 	"Timeline" => $timeline
-	// );
-
 
 	$timeline = array(
 			"Today" => array(),

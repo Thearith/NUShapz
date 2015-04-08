@@ -1,0 +1,81 @@
+<!-- Event Form -->
+<div id="eventform" ng-controller="eventFormController">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Event {{event.ID}}
+            </h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input class="form-control" value={{event.Title}}> 
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" rows="5">{{event.Description}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select class="form-control">
+                                        <option>Education</option>
+                                        <option>Recreation</option>
+                                        <option></option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <p class="help-block">Current Category: {{event.Category}}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Venue</label>
+                                    <input class="form-control" value={{event.Venue}}>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date And Time</label>
+                                    <p class="help-block">Start Date</p>
+                                    <input class="form-control" type="date" class="datepicker">
+
+                                    <p class="help-block">Start Time</p>
+                                    <input class="form-control" type="time" class="timepicker">
+
+                                    <p class="help-block">Current Date And Time: {{event.DateAndTime}}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input class="form-control" value={{event.Price}}>
+                                </div>
+                                <div class="form-group">
+                                    <label>Organizer</label>
+                                    <input class="form-control" value={{event.Organizer}}>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact</label>
+                                    <input class="form-control" value={{event.Contact}}>
+                                </div>
+                                <button type="submit" ng-click="submit()" class="btn btn-default" id="#saveEvent">Save Changes</button>
+                                <button type="reset" ng-click="cancel()" class="btn btn-default">Discard Changes</button>
+                            </form>
+
+                        </div>
+                       
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+<!-- /.row -->
+<!-- Event Form -->

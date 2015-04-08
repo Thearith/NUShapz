@@ -16,6 +16,7 @@ function getNUSCOEdata() {
 		"Social Events" => "7",
 		"Others" => "8");
 
+
 	// GUID
 	$strToRemoveForEventId = "nus:coe:";
 	$strToRemoveForDescription = "Event Description: ";
@@ -35,11 +36,39 @@ function getNUSCOEdata() {
 		$res = file_get_contents($api);
 		$xml = simplexml_load_string($res);
 
+		// Map Category
+		$category = "";
+		switch($value) {
+			case 1:
+				$category = "Recreation";
+				break;
+			case 2:
+				$category = "Education";
+				break;
+			case 3:
+				$category = "Education";
+				break;
+			case 4:
+				$category = "Recreation";
+				break;
+			case 5:
+				$category = "Recreation";
+				break;
+			case 6:
+				$category = "Misc";
+				break;
+			case 7:
+				$category = "Recreation";
+				break;
+			case 8:
+				$category = "Misc";
+				break;
+		}
+
 		foreach ($xml->channel->item as $item) {
 			$id = escapeChar(str_replace($strToRemoveForEventId,"",(string)$item->guid));
 	    	$title = escapeChar((string)$item->title);
 	    	$description = str_replace($gmtTimeToRemove,"",escapeChar(str_replace($strToRemoveForDescription,"",(string)$item->description)));
-	    	$category = $key;
 	    	$venue = escapeChar((string)$item->venue);
 	    	$eventdatetime = strtotime(str_replace($gmtTimeToRemove,"",escapeChar((string)$item->eventdate)));
 	    	$price = '-';

@@ -1,11 +1,24 @@
-// json
-var events;
+// React components
 
-// virtual doms
-var Timeline; 
+var Body;
 
+var App;
 var Loading;
-var TimelineSections; //contains timeline sections
+
+var Navbar;
+var MainContainer;
+var ModalForm;
+
+var Logo;
+var NavbarForm;
+
+var Search;
+var NewEvent;
+
+var Content;
+var Sidebar;
+
+var Timeline;  //contains timeline sections
 
 var TimelineSection; //contains categories within the same timeline section
 var LeftSideBar;
@@ -42,6 +55,10 @@ var TOMORROW_INDEX = 1;
 var FEW_DAYS_INDEX = 2;
 var MORE_INDEX = 3;
 var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "AndMore"];
+
+//Category
+var CATEGORY_ARRAY = ["Education", "Recreation", "Recruitment", "Volunteering", "Misc"];
+var IMAGE_PATH = "../image/category/";
 
 // constants
 var TITLE_MAXIMUM_LENGTH = 40;
@@ -98,15 +115,15 @@ function getDateJSON(date) {
 
 
 /*
- * Create Event doms 
+ * Create React components 
 */
 
-Timeline = React.createClass({
+Body = React.createClass({
 	getInitialState: function() {
 		return {data: []};
 	},
 	componentWillMount: function() {
-		console.log("Timeline is initialized");
+		console.log("Body is initialized");
 	},
 	componentDidMount: function() {
 	    $.ajax({
@@ -115,7 +132,6 @@ Timeline = React.createClass({
 	      	dataType: 'json',
 	      	success: function(data) {
 	      		console.log(data);
-	      		events = data;
 	      		this.setState({data: data});
 	      	}.bind(this),
 	      	error: function(xhr, status, err) {
@@ -123,20 +139,18 @@ Timeline = React.createClass({
 	      	}.bind(this)
 	    });
 	},
-
 	render: function() {
 		console.log(Object.keys(this.state.data).length != 0);
 		return (
 			<div>
 				{ Object.keys(this.state.data).length != 0 ?  
-					<TimelineSections timelines={this.state.data[TIMELINE]} /> : 
+					<App data={this.state.data[TIMELINE]} /> : 
 					<Loading /> 
 				}
 			</div>
 
 		);
 	}
-
 });
 
 Loading = React.createClass({
@@ -162,39 +176,298 @@ Loading = React.createClass({
   		);
 	}
 });
-	
-TimelineSections = React.createClass({
+
+App = React.createClass({
 	componentWillMount: function() {
-		console.log("TimelineSections is initialized");
+		console.log("App is initialized");
+	},
+	render: function() {
+		return (
+			<div>
+				<Navbar data={this.props.data} />
+				<ModalForm data={this.props.data} />
+				<MainContainer data={this.props.data} />
+			</div>
+		);
+	}
+});
+
+Navbar = React.createClass({
+	componentWillMount: function() {
+		console.log("Navbar is initialized");
+	},
+	render: function() {
+		return (
+			<div className="navbar-fixed">
+				<nav>
+    				<div className="nav-wrapper orange">
+						<Logo />
+						<NavbarForm data={this.props.data} />
+					</div>
+				</nav>
+			</div>
+		);
+	}
+});
+
+Logo = React.createClass({
+	componentWillMount: function() {
+		console.log("Navbar is initialized");
+	},
+	render: function() {
+		return (
+			<a href="#" className="brand-logo logo-align">
+				<img src={"image/logo.png"} id="logo" />
+			</a>
+		);
+	}
+});
+
+NavbarForm = React.createClass({
+	componentWillMount: function() {
+		console.log("NavbarForm is initialized");
+	},
+	render: function() {
+		return (
+			<ul id="nav-mobile" className="right hide-on-med-and-down">
+        		<li>
+        			<Search data={this.props.data} />
+        		</li>
+        		<li>
+        			<NewEvent />
+        		</li>
+        	</ul>
+        );
+	}
+});
+
+Search = React.createClass ({
+	componentWillMount: function() {
+		console.log("Search is initialized");
+	}, 
+	render: function() {
+		return (
+			<form>
+	        	<div className="input-field search-outer left">
+	          		<input id="search" type="text" placeholder="Search for events" />
+	          		<label htmlFor="search">
+	          			<i className="mdi-action-search search-icon"></i>
+	          		</label>
+	        	</div>
+			</form>
+		);
+	}
+});
+
+NewEvent = React.createClass({
+	componentWillMount: function() {
+		console.log("NewEvent is initialized");
+	},
+	render: function() {
+		return (
+			<div className="new-event">
+	        	<a className="modal-trigger waves-effect waves-light" href={"#modal-newevent"}>
+	        		<i className="mdi-content-add left newevent-icon"></i>
+	        		<span className="newevent-text">NEW EVENT</span>
+	        	</a>
+			</div>
+		);
+	}
+});
+
+ModalForm = React.createClass({
+	componentWillMount: function() {
+		console.log("ModalForm is initialized");
+	},
+	componentDidMount: function() {
+		$('.modal-trigger').leanModal();
+		$('.datepicker').pickadate({
+   			selectMonths: true, // Creates a dropdown to control month
+    		selectYears: 3 // Creates a dropdown of 15 years to control year
+  		});
+	},
+	render: function() {
+		var redStyle = {
+			color: 'red',
+			fontSize: '14px'
+		};
+
+		var marginRightStyle = {
+			marginRight: '10px'
+		};
+		return (
+			<div id="modal-newevent" className="modal modal-fixed-footer">
+	    		<div className="modal-content">
+	      			<h4>Submit an Event</h4>
+	      			<i style={redStyle}>This feature is not implemented yet. Stay tuned</i>
+
+	  				<div className="row">
+	    				<form className="col s12">
+	      					<div className="row">
+	        					<div className="input-field col s6">
+	          						<i className="mdi-action-announcement prefix"></i>
+	          						<input id="event_title" type="text" className="validate" />
+	          						<label htmlFor="event_title">Event Title</label>
+	        					</div>
+	        					<div className="input-field col s6">
+							        <i className="mdi-action-account-balance prefix"></i>
+							        <input id="organisation" type="text" className="validate" />
+							        <label htmlFor="organisation">Organisation</label>
+	        					</div>
+	      					</div>
+
+	      					<div className="row">
+	        					<div className="input-field col s12">
+	          						<i className="mdi-action-subject prefix"></i>
+	          						<textarea id="event_desc" className="materialize-textarea validate"></textarea>
+	          						<label htmlFor="event_desc">Event Description</label>
+	        					</div>
+	      					</div>
+
+	      					<div className="row">
+	        					<div className="input-field col s4">
+	          						<i className="mdi-notification-event-note prefix"></i>  						
+	          						<input id="event_date" type="date" className="datepicker" />
+	          						<label className="active" htmlFor="event_date">Event Date</label>
+	        					</div>
+
+	        					<div className="input-field col s4">
+	          						<i className="mdi-device-access-time prefix"></i>
+	          						<input id="event_time" type="text" className="validate" />
+	          						<label htmlFor="event_time">Start Time</label>
+	        					</div>
+	        
+	        					<div className="input-field col s4">
+	          						<i className="mdi-maps-place prefix"></i>
+	          						<input id="event_venue" type="text" className="validate" />
+	          						<label htmlFor="event_venue">Event Venue</label>
+	        					</div>
+	      					</div>
+
+	      					<div className="row">
+	        					<div className="input-field col s4">
+	          						<i className="mdi-maps-local-atm prefix"></i>
+							        <input id="event_price" type="text" className="validate" />
+							        <label htmlFor="event_price">Price</label>
+	        					</div>
+						        <div className="input-field col s8">
+						          	<i className="mdi-content-mail prefix"></i>
+						          	<input id="email" type="email" className="validate" />
+						          	<label htmlFor="email">Email</label>
+						        </div>
+						    </div>
+	    				</form>
+	  				</div>  
+
+	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be verified.</p>  
+
+	    		</div>
+
+			    <div className="modal-footer">
+			      	<button className=" modal-action modal-close btn red waves-effect waves-red">
+			      		Cancel
+			      		<i className="mdi-navigation-close right"></i>
+			      	</button>
+			      	<button className=" modal-action modal-close btn waves-effect waves-light" style={marginRightStyle}>
+			      		Submit
+			      		<i className="mdi-content-send right"></i>
+			      	</button>
+			    </div>
+			</div>
+		);
+	}
+});
+
+MainContainer = React.createClass({
+	componentWillMount: function() {
+		console.log("MainContainer is initialized");
+	},
+	render: function() {
+		return (
+			<div className="container-fluid" id="main-container">
+				<div className="row">
+					<Timeline data={this.props.data} />
+					<Sidebar />
+				</div>
+			</div>
+		);
+	}
+});
+
+Sidebar = React.createClass ({
+	componentWillMount: function() {
+		console.log("MainContainer is initialized");
+	},
+	render: function() {
+		return (
+			<div className="col s2">
+				<div className="side-bar z-depth-1">
+					<div className="side-content">
+						<div className="browse-events">Browse Events</div>
+
+			    		<a className="date" href={"#section-1"}>
+			    			<div className="browse-date"><ul>Today</ul></div>
+			    		</a>
+			    		<a className="date" href={"#section-2"}>
+			    			<div className="browse-date"><ul>Tomorrow</ul></div>
+			    		</a>
+			    		<a className="date" href={"#section-3"}>
+			    			<div className="browse-date"><ul>In a few days</ul></div>
+			    		</a>
+			    		<a className="date" href={"#section-4"}>
+			    			<div className="browse-date"><ul>And more</ul></div>
+			    		</a>
+
+					</div>
+				</div>
+			</div>
+		);
+	}
+});
+
+
+Timeline = React.createClass({
+	componentWillMount: function() {
+		console.log("Timeline is initialized");
 	},
 	componentDidMount: function() {
 		$('.scrollspy').scrollSpy();
 	},
 	render: function() {
-		console.log(this.props);
-		return (
-			<div>
+		return (	
+			<div className="col s10" id="content">
 				<div className="section scrollspy" id="section-1">
-					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[TODAY_INDEX]]}
+					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TODAY_INDEX]]}
 						index={0} />
 				</div>
 
 				<div className="section scrollspy" id="section-2">
-					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[TOMORROW_INDEX]]} 
+					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TOMORROW_INDEX]]} 
 						index={1}/>
 				</div>
 
 				<div className="section scrollspy" id="section-3">
-					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[FEW_DAYS_INDEX]]}
+					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[FEW_DAYS_INDEX]]}
 						index={2} />
 				</div>
 
 				<div className="section scrollspy" id="section-4">
-					<TimelineSection categories={this.props.timelines[TIMELINE_ARRAY[MORE_INDEX]]} 
+					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[MORE_INDEX]]} 
 						index={3} />
 				</div>
 			</div>
 		);
+	}
+
+});
+	
+TimelineSections = React.createClass({
+	componentWillMount: function() {
+		console.log("TimelineSections is initialized");
+	},
+	
+	render: function() {
+		
 	}
 });
 
@@ -328,10 +601,11 @@ EventHeader = React.createClass({
 		console.log("EventHeader is initialized");
 	},
 	render: function() {
+		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
 				<div className="activator category-title">{this.props.category}</div>
-				<img className="activator" src={"http://materializecss.com/images/office.jpg"}/>
+				<img className="activator" src={src}/>
 			</div>
 		);
 	}
@@ -433,11 +707,24 @@ EventVenue = React.createClass({
 });
 
 EventStar = React.createClass({
+	componentDidMount: function() {
+		$(this).click(function(){
+			console.log("lel");
+			var child = $(this).children("a");
+			if(child.hasClass(".grey")) {
+				child.removeClass(".grey");
+				child.addClass(".yellow");
+			} else {
+				child.removeClass(".yellow");
+				child.addClass(".grey");
+			}
+		})
+	},
 	render: function() {
 		return (
 			<div className="col s2 favorite-container">
-				<a className="btn-floating btn-large waves-effect waves-light right favorite">
-				 	<i className="mdi-action-stars"></i>
+				<a className="btn-floating btn-large waves-effect waves-light right favorite grey lighten-2">
+				 	<i className="mdi-action-grade"></i>
 				</a>
 			</div>
 		);
@@ -510,6 +797,6 @@ EventContact = React.createClass({
 });
 
 React.render(
-  <Timeline url={SERVER} />,
-  document.getElementById('content')
+  <Body url={SERVER} />,
+  document.body
 );

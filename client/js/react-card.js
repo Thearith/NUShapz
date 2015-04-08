@@ -33,6 +33,7 @@ var EventContact;
 
 
 var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+//var SERVER = "timeline.json";
 
 //Timeline
 var TIMELINE = "Timeline";
@@ -76,22 +77,21 @@ function isRealValue(obj){
 	return obj && obj !== "null" && obj!== "undefined";
 }
 
-function getDate(date) {
+function getDateJSON(date) {
 	if(date != null) {
 		day = date.getDate();
 		weekDay = WEEKDAYS[date.getDay()];
 		month = MONTHS[date.getMonth()];
-
 		return {
-			DAY: day,
-			WEEKDAY: weekday,
-			MONTH: month
+			"day" : day,
+			"weekday" : weekDay,
+			"month" : month
 		};
 	} else {
 		return {
-			DAY : MORE,
-			WEEKDAY: PLUS,
-			MONTH: ""
+			"day" : PLUS,
+			"weekday": MORE,
+			"month" : ""
 		};
 	}
 }
@@ -224,30 +224,32 @@ LeftSideBar = React.createClass({
 
 		switch(this.props.index) {
 			case TODAY_INDEX:
-				json = getDate(date);
+				json = getDateJSON(date);
 				break;
 
 			case TOMORROW_INDEX:
 				var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-				json = getDate(tmrDate);
+				json = getDateJSON(tmrDate);
 				break;
 
 			case FEW_DAYS_INDEX:
 				var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
-				json = getDate(fewDaysDate);
+				json = getDateJSON(fewDaysDate);
 				break;
 
 			case MORE_INDEX:
-				json = getDate(null);
+				json = getDateJSON(null);
 				break;
 		}
+
+		console.log(json);
 
 		return (
 			<div className="col s2">
 				<div className="date-content center">
 					<div className="cal">
-						<div className="cal-day">{json[DAY]}</div>
-						<div className="cal-date">{json[WEEKDAY]}</div>
+						<div className="cal-day">{json[WEEKDAY].toUpperCase()}</div>
+						<div className="cal-date">{json[DAY]}</div>
 						<div className="cal-month">{json[MONTH]}</div>
 					</div>
 				</div>

@@ -166,6 +166,39 @@ nav .nav-wrapper i {
 	margin-bottom: 20px;
 }
 
+/*styling date*/
+
+.date-content {
+	height: 300px;
+	width: 90%;
+}
+.cal {
+	color: #212121;
+	font-weight: 500;
+	background-color: transparent;
+	border-radius: 30px;
+	/*color: #ff9800;*/
+}
+.cal-day {
+	margin: auto;
+	padding-bottom: 10px;
+	font-size: 20px;
+}
+.cal-date {
+	background-image: url("../image/calendar.png");
+	background-position: center top;
+	background-repeat: no-repeat;
+	padding: 14px;
+	font-size: 36px; 
+	font-weight: 700;
+	margin: auto;
+	color:#ff9800;
+}
+.cal-month {
+	margin: auto;
+	font-size: 17px;
+}
+
 /*styling card*/
 
 .card h1 {
@@ -376,9 +409,9 @@ a.active .browse-date {
 }
 
 .modal.modal-fixed-footer {
-	max-height: 88% !important;
-	height: 88% !important;
-	margin-top: -20px !important;
+	max-height: 94% !important;
+	height: 94% !important;
+	margin-top: -35px !important;
 }
 
 .picker__frame {

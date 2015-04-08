@@ -35,6 +35,9 @@ switch($cmd) {
 	case "ivle";
 		echo getIVLE();
 		break;
+	case "new";
+		echo getNewEvents();
+		break;
 	/*case "post":
 		postNew();
 		break; 
@@ -112,18 +115,32 @@ function updateEventDB($table) {
 	//$result = databaseQuery($query);
 }*/
 
+function getNewEvents() {
+	$coeselection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, '-' AS Agenda, Flag";
+	$clause = "Flag = 1";
+	$coeevents = getEvents($coeselection, "NUSCOEEVENTS", $clause);
+
+	$ivleselection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, Agenda, Flag";
+	$ivleevents = getEvents($ivleselection, "IVLEEVENTS", $clause);
+
+
+}
+
 function getNUSCOE() {
-	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, '-' AS Agenda";
-	getEvents($selection, "NUSCOEEVENTS");
+	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, '-' AS Agenda, Flag";
+	return convertToOutputData(getEvents($selection, "NUSCOEEVENTS", null));
 }
 
 function getIVLE() {
-	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, Agenda";
-	getEvents($selection, "IVLEEVENTS");
+	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, Agenda, Flag";
+	return convertToOutputData(getEvents($selection, "IVLEEVENTS", null));
 }
 
-function getEvents($selection, $table, $shouldFormatDate) {
+function getEvents($selection, $table, $clause) {
 	$query = $selection." FROM ".$table;
+	if($clause != null) {
+		$query .= " WHERE ".$clause;
+	}
 	$result = databaseQuery($query);
 
 	$returnThis = array();
@@ -138,13 +155,16 @@ function getEvents($selection, $table, $shouldFormatDate) {
 		}
 	}
 
+	return $returnThis;
+}
+
+function convertToOutputData($events) {
 	$data = array(
 		"Response" => "Valid", 
-		"Events" => $returnThis
+		"Events" => $events
 	);
-
 	$json = json_encode($data);
-	echo $json;
+	return $json;
 }
 
 function getInvalidData() {
@@ -223,14 +243,11 @@ function test() {
 
 	// Sort by Category
 	$categoryList = array(
-		"Arts and Entertainment",
-		"Lectures and Workshops",
-		"Conferences and Seminars",
-		"Fairs and Exhibitions",
-		"Sports and Recreation",
-		"Health and Wellness",
-		"Social Events",
-		"Others");
+		"Education",
+		"Recreation",
+		"Recruitment",
+		"Volunteering",
+		"Misc");
 
 
 	foreach($categoryList as $cat) {

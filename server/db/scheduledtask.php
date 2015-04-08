@@ -36,7 +36,51 @@ function formatCategoryDataAndInsertIntoNewTable($jsonData) {
 	$number_of_events = 0;
 	$results = json_decode($jsonData)->Results;
 	foreach($results as $category_of_events) {
-		$cat_title = $category_of_events->Title;
+		$cat_id = $category_of_events->ID;
+
+		// Map Category
+		$category = "Misc";
+		switch($cat_id) {
+			case 1: // Bashes
+				$category = "Misc";
+				break;
+			case 2: // Bazaars
+				$category = "Misc";
+				break;
+			case 3: // Competitions/Tournament
+				$category = "Recreation";
+				break;
+			case 4: // Sports And Recreation
+				$category = "Recreation";
+				break;
+			case 5: // Performances
+				$category = "Recreation";
+				break;
+			case 6: // Announcements
+				$category = "Misc";
+				break;
+			case 7: // Excursions
+				$category = "Recreation";
+				break;
+			case 8: // Exhibitions
+				$category = "Education";
+				break;
+			case 9: // Courses/Workshops
+				$category = "Education";
+				break;
+			case 10: // Recruitment
+				$category = "Recruitment";
+				break;
+			case 11: // Administration
+				$category = "Misc";
+				break;
+			case 12: // Charity
+				$category = "Volunteering";
+				break;
+			case 99: // Others
+				$category = "Misc";
+		}
+
 		$events = $category_of_events->Events;
 		foreach($events as $event) {
 			$title = escapeChar($event->Title);
@@ -48,7 +92,7 @@ function formatCategoryDataAndInsertIntoNewTable($jsonData) {
 			$contact = escapeChar($event->Contact);
 			$agenda = escapeChar($event->Agenda);
 			$flag = 1;
-			$query = sprintf($insert_query, $event->ID, $title, $description, $cat_title, $edatetime, $organizer, $venue, $contact, $price, $agenda, $flag);
+			$query = sprintf($insert_query, $event->ID, $title, $description, $category, $edatetime, $organizer, $venue, $contact, $price, $agenda, $flag);
 
 			databaseQuery($query);
 			++$number_of_events;

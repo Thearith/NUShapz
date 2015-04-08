@@ -24,7 +24,7 @@ function getNUSCOEdata() {
 
 	$priceRegex = "/[$] ?[0-9]*[.][0-9]*[^A-Z(\\)]*/";
 
-	$insert_query = "INSERT INTO NUSCOEEVENTS(ID, Title, Description, Category, Venue, EventDateTime, Price, Organizer, Contact, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '-', '-', 0) ON DUPLICATE KEY UPDATE ID=ID";
+	$insert_query = "INSERT INTO NUSCOEEVENTS(ID, Title, Description, Category, Venue, DateAndTime, Price, Organizer, Contact, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '-', '-', '-', 0) ON DUPLICATE KEY UPDATE ID=ID";
 
 	$num_of_events = 0;
 
@@ -39,31 +39,32 @@ function getNUSCOEdata() {
 		// Map Category
 		$category = "";
 		switch($value) {
-			case 1:
-				$category = "Recreation";
+			case 1: // Arts and Entertainment
+				$category = "Arts and Entertainment";
 				break;
-			case 2:
-				$category = "Education";
+			case 2: // Lectures and Workshops
+				$category = "Courses and Workshops";
 				break;
-			case 3:
-				$category = "Education";
+			case 3: // Conferences and Seminars
+				$category = "Conferences and Seminars";
 				break;
-			case 4:
-				$category = "Recreation";
+			case 4: // Fairs and Exhibitions
+				$category = "Fairs and Exhibitions";
 				break;
-			case 5:
-				$category = "Recreation";
+			case 5: // Sports and Recreation
+				$category = "Sports and Recreation";
 				break;
-			case 6:
-				$category = "Misc";
+			case 6: // Health and Wellness
+				$category = "Health and Wellness";
 				break;
-			case 7:
-				$category = "Recreation";
+			case 7: // Social Events
+				$category = "Volunteering and Social";
 				break;
-			case 8:
-				$category = "Misc";
+			case 8: // Others
+				$category = "Others";
 				break;
 		}
+
 
 		foreach ($xml->channel->item as $item) {
 			$id = escapeChar(str_replace($strToRemoveForEventId,"",(string)$item->guid));

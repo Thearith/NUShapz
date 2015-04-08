@@ -1,6 +1,6 @@
 var NUSHAPZ_API = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=";
 
-var app = angular.module('nushapz-app', ['ngRoute', 'ngResource']);
+var app = angular.module('nushapz-app', ['ngRoute', 'ngResource', 'datatables']);
 
 app.config(['$routeProvider', function($routeProvider){
 	$routeProvider.
@@ -43,17 +43,22 @@ app.controller('tableController',
 		}
 }]);
 
-app.controller('eventFormController', ['$scope', '$routeParams', 'eventService',
-	function($scope, $routeParams, eventService) {
+app.controller('eventFormController', ['$scope', '$routeParams', 'eventService', '$location', 'EventUpdateAPI',
+	function($scope, $routeParams, eventService, $location, EventUpdateAPI) {
 		if($routeParams.eventid != undefined) {
 			$scope.event = eventService.getEvent();
-			console.log(eventService.getTable());
 			$scope.cancel = function() {
-				console.log('cancel');
+				$location.path('/eventdata/:'+eventService.getTable());
 			};
 
 			$scope.submit = function() {
 				console.log('submit');
+				console.log(JSON.stringify($scope.event));
+				EventUpdateAPI.query({cmd: 'update', event: JSON.stringify($scope.event)}).
+					$promise.then(function(data){
+						console.log(data);
+				});
+
 			};
 		}
 }]);
@@ -71,8 +76,8 @@ app.factory('EventGetAPI', ['$resource', function($resource){
 		{'query':  {method:'GET', isArray:false}});
 }]);
 
-app.factory('EventPostAPI', ['$resource', function($resource){
-	return $resource((NUSHAPZ_API+':eventType'), {eventType : '@eventType'}, 
+app.factory('EventUpdateAPI', ['$resource', function($resource){
+	return $resource((NUSHAPZ_API+':cmd:event'), {cmd : '@cmd', event: '@event'}, 
 		{'query':  {method:'POST', isArray:false}});
 }]);
 

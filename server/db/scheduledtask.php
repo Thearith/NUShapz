@@ -31,7 +31,7 @@ function getIVLEStudentEventData() {
   * Insert data into NEW table
   */
 function formatCategoryDataAndInsertIntoNewTable($jsonData) {
-	$insert_query = "INSERT INTO IVLEEVENTS(ID, Title, Description, Category, EventDateTime, Organizer, Venue, Contact, Price, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d') ON DUPLICATE KEY UPDATE ID=ID";
+	$insert_query = "INSERT INTO IVLEEVENTS(ID, Title, Description, Category, DateAndTime, Organizer, Venue, Contact, Price, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d') ON DUPLICATE KEY UPDATE ID=ID";
 
 	$number_of_events = 0;
 	$results = json_decode($jsonData)->Results;
@@ -42,43 +42,43 @@ function formatCategoryDataAndInsertIntoNewTable($jsonData) {
 		$category = "Misc";
 		switch($cat_id) {
 			case 1: // Bashes
-				$category = "Misc";
+				$category = "Others";
 				break;
 			case 2: // Bazaars
-				$category = "Misc";
+				$category = "Fairs and Exhibitions";
 				break;
 			case 3: // Competitions/Tournament
-				$category = "Recreation";
+				$category = "Competitions and Tournaments";
 				break;
 			case 4: // Sports And Recreation
-				$category = "Recreation";
+				$category = "Sports and Recreation";
 				break;
 			case 5: // Performances
-				$category = "Recreation";
+				$category = "Arts and Entertainment";
 				break;
 			case 6: // Announcements
-				$category = "Misc";
+				$category = "Others";
 				break;
 			case 7: // Excursions
-				$category = "Recreation";
+				$category = "Courses and Workshops";
 				break;
 			case 8: // Exhibitions
-				$category = "Education";
+				$category = "Fairs and Exhibitions";
 				break;
 			case 9: // Courses/Workshops
-				$category = "Education";
+				$category = "Courses and Workshops";
 				break;
 			case 10: // Recruitment
 				$category = "Recruitment";
 				break;
 			case 11: // Administration
-				$category = "Misc";
+				$category = "Others";
 				break;
 			case 12: // Charity
-				$category = "Volunteering";
+				$category = "Volunteering and Social";
 				break;
 			case 99: // Others
-				$category = "Misc";
+				$category = "Others";
 		}
 
 		$events = $category_of_events->Events;

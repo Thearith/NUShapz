@@ -29,9 +29,9 @@
                                     <select class="form-control">
                                         <option>Education</option>
                                         <option>Recreation</option>
-                                        <option></option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                        <option>Recruitment</option>
+                                        <option>Volunteering</option>
+                                        <option>Misc</option>
                                     </select>
                                     <p class="help-block">Current Category: {{event.Category}}</p>
                                 </div>
@@ -60,6 +60,19 @@
                                 <div class="form-group">
                                     <label>Contact</label>
                                     <input class="form-control" value={{event.Contact}}>
+                                </div>
+                                <div class="form-group">
+                                    <label>Agenda</label>
+                                    <input class="form-control" value={{event.Agenda}}>
+                                </div>
+                                <div class="form-group">
+                                    <label>Agenda</label>
+                                    <input class="form-control" value={{event.Agenda}}>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="event.Flag" ng-true-value="'1'" ng-false-value="'0'"> Flag
+                                    </label>
                                 </div>
                                 <button type="submit" ng-click="submit()" class="btn btn-default" id="#saveEvent">Save Changes</button>
                                 <button type="reset" ng-click="cancel()" class="btn btn-default">Discard Changes</button>

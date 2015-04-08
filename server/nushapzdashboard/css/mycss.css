@@ -4,9 +4,9 @@ table {
 	table-layout: fixed;
 }
 
-td {
-	height: 5px;
-	overflow: hidden;
+td div{
+	height: 100px;
+    overflow: hidden;
 }
 
 .dataTables_wrapper .dataTables_filter {

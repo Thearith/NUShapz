@@ -19,7 +19,7 @@ function databaseQuery($query) {
 	$db = connectToDB();
 	$result = $db->query($query);
 
-	if (is_object($result) && $result->num_rows > 0) {
+	if (is_object($result) && $result->num_rows >= 0) {
 		return $result;
 	}
 
@@ -42,7 +42,7 @@ function createIVLEEventsTable() {
 		Description TEXT,
 		Category TEXT,
 		Venue TEXT,
-		EventDateTime TEXT,
+		DateAndTime TEXT,
 		Price TEXT,
 		Organizer TEXT,
 		Contact TEXT,
@@ -62,7 +62,7 @@ function createHapzEventTable() {
 		Title TEXT NOT NULL,
 		Category TEXT,
 		Description TEXT,
-		EventDateTime TEXT,
+		DateAndTime TEXT,
 		StartDate TEXT,
 		StartTime TEXT,
 		EndDate TEXT,
@@ -121,10 +121,11 @@ function createNUSCOETable() {
 			Description TEXT,
 			Category TEXT,
 			Venue TEXT,
-			EventDateTime TEXT,
+			DateAndTime TEXT,
 			Price TEXT,
 			Organizer TEXT,
 			Contact TEXT,
+			Agenda TEXT,
 			Flag TINYINT(1) )";
 
 	databaseQuery($create_event_nuscoe_table);

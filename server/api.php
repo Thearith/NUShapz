@@ -3,6 +3,8 @@
 require_once	'../db/db.php';
 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
 header('Content-Type: application/json');
 
 date_default_timezone_set("UTC");
@@ -14,9 +16,10 @@ define("DATEFORMAT", "j F Y, g:i a");
 if(isset($_GET["cmd"])) {
 	$cmd = $_GET["cmd"];
 }
-if(isset($_GET["cat"])) {
-	$cat = $_GET["cat"];
+if(isset($_POST["cmd"])) {
+	$cmd = $_POST["cmd"];
 }
+
 
 switch($cmd) {
 	case "timeline":
@@ -38,15 +41,15 @@ switch($cmd) {
 	case "new";
 		echo getNewEvents();
 		break;
-	/*case "post":
-		postNew();
-		break; 
-	case "update_nuscoe":
-		updateNUSCOE();
+	case "all";
+		echo getAllEvents();
 		break;
-	case "update_ivle":
-		updateIVLE();
-		break;*/
+	case "adminlogin":
+		echo dashboardLogin($_POST['login']);
+		break;
+	case "update":
+		echo updateEventDB($_POST["event"]);
+		break;
 	default:
 		break;
 }
@@ -87,59 +90,100 @@ switch($cmd) {
 	//		 '$eventVen', '$eventEDT', '$eventPrice', '$eventOrg', '$eventCont', '0') ";
 	//$result = databaseQuery($query);
 }
+*/
+// function updateNUSCOE() {
+// 	updateEventDB("NUSCOEEVENTS");
+// }
 
-function updateNUSCOE() {
-	updateEventDB("NUSCOEEVENTS");
+function dashboardLogin($login) {
+	if(isset($login)) {
+		$login = json_decode($login);
+		if($login->id == 'root' && $login->pw == 'nushapzadmin') {
+			session_start();
+			$_SESSION['login'] = "hapzadmin";
+			return convertToOutputData(array());
+		}
+	}
+	return invalidData();
 }
 
-function updateNUSCOE() {
-	updateEventDB("IVLEEVENTS");
+function updateEventDB($event) {
+	if(!isset($event)) {
+		return invalidData();
+	}
+
+	$event = json_decode($event);
+	$table = "";
+	switch (strlen($event->ID)) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			$table = "HAPZEVENTS";
+			break;
+		case 6:
+		case 7:
+			$table = "NUSCOEEVENTS";
+			break;
+		case 36:
+			$table = "IVLEEVENTS";
+			break;
+		default:
+			return invalidData();
+	}
+	return convertToOutputData($table);
+	// Assume all fields can be updated
+	$update_query = "UPDATE %s SET Title = '%s', Description = '%s', Category = '%s', Venue = '%s', DateAndTime = '%s', Price = '%s', Organizer = '%s', Contact = '%s', Agenda = '%s', Flag = %d WHERE ID = '%s'";
+	
+	$query = sprintf($update_query, $table, escapeChar($event->Title), escapeChar($event->Description), 
+		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
+		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
+		escapeChar($event->Agenda), escapeChar($event->Flag), $event->ID);
+
+
+	$result = databaseQuery($query);
+
+	// return convertToOutputData($result);
 }
 
-function updateEventDB($table) {
+function getAllEvents() {
+	$coeselection = "SELECT *";
+	$coeevents = getEvents($coeselection, "NUSCOEEVENTS", null);
 
-	//Field(s) that NEED updating are Category, EventDateTime
-	$query = "UPDATE $table SET "; 		// " Category = $eventCat, EventDateTime = $eventEDT, WHERE ID = $eventID";
-	if(isset($_POST["eventCat"])) {
-		$eventCat = $_POST["eventCat"];
-		$query = $query . " Category = $eventCat, ";
-	}
-	if(isset($_POST["eventEDT"])) {
-		$eventEDT = $_POST["eventEDT"];
-		$eventEDT = strtotime($eventEDT);
-		$query = $query . " EventDateTime = $eventEDT, ";
-	}
-
-	$eventID = $_POST["eventID"];
-	$query = $query . " SET Flag = 1, WHERE ID = $eventID";		//Set Flag = 1;
-	//$result = databaseQuery($query);
-}*/
+	$ivleselection = "SELECT *";
+	$ivleevents = getEvents($ivleselection, "IVLEEVENTS", null);
+	
+	$returnThis = array_merge($coeevents, $ivleevents);
+	return convertToOutputData($returnThis);
+}
 
 function getNewEvents() {
-	$coeselection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, '-' AS Agenda, Flag";
+	$coeselection = "SELECT *";
 	$clause = "Flag = 1";
 	$coeevents = getEvents($coeselection, "NUSCOEEVENTS", $clause);
 
-	$ivleselection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, Agenda, Flag";
+	$ivleselection = "SELECT *";
 	$ivleevents = getEvents($ivleselection, "IVLEEVENTS", $clause);
-
-
+	
+	$returnThis = array_merge($coeevents, $ivleevents);
+	return convertToOutputData($returnThis);
 }
 
 function getNUSCOE() {
-	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, '-' AS Agenda, Flag";
+	$selection = "SELECT *";
 	return convertToOutputData(getEvents($selection, "NUSCOEEVENTS", null));
 }
 
 function getIVLE() {
-	$selection = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, Organizer, Contact, Agenda, Flag";
+	$selection = "SELECT *";
 	return convertToOutputData(getEvents($selection, "IVLEEVENTS", null));
 }
 
 function getEvents($selection, $table, $clause) {
 	$query = $selection." FROM ".$table;
 	if($clause != null) {
-		$query .= " WHERE ".$clause;
+		$query = $query." WHERE ".$clause;
 	}
 	$result = databaseQuery($query);
 
@@ -167,18 +211,16 @@ function convertToOutputData($events) {
 	return $json;
 }
 
-function getInvalidData() {
-	$invalid = file_get_contents("sample/sampleinvalid.json");
-	return $invalid;
-}
-
-function getEventsByTimelineSAMPLE() {
-	$sampletimeline = file_get_contents("sample/sampletimeline.json");
-	return $sampletimeline;
+function invalidData() {
+	$data = array(
+		"Response" => "Invalid"
+	);
+	$json = json_encode($data);
+	return $json;
 }
 
 function test() {
-	$query = "SELECT ID, Title, Description, Category, Venue, EventDateTime AS DateAndTime, Price, NULL AS Organizer, NULL AS Contact FROM NUSCOEEVENTS ORDER BY EventDateTime ASC , Category ASC ";
+	$query = "SELECT * FROM NUSCOEEVENTS ORDER BY DateAndTime ASC , Category ASC ";
 	$result = databaseQuery($query);
 
 	// TIMINGS

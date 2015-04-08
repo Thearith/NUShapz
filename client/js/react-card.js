@@ -34,17 +34,27 @@ var EventContact;
 
 var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 
-//section
+//Timeline
 var TIMELINE = "Timeline";
 var TODAY_INDEX = 0;
 var TOMORROW_INDEX = 1;
 var FEW_DAYS_INDEX = 2;
 var MORE_INDEX = 3;
 var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "AndMore"];
-var MONTHS = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// constants
+var TITLE_MAXIMUM_LENGTH = 40;
 var NON_IDENTIFIED = "N/A";
 
-var TITLE_MAXIMUM_LENGTH = 40;
+// date
+var MONTHS = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var DAY = "day";
+var WEEKDAY = "weekday";
+var MONTH = "month";
+
+var MORE = "And more";
+var PLUS = "+"; 
 
 //section-category
 var CATEGORY = 'Category';
@@ -64,6 +74,26 @@ var VENUE = 'Venue';
 // check null objects
 function isRealValue(obj){
 	return obj && obj !== "null" && obj!== "undefined";
+}
+
+function getDate(date) {
+	if(date != null) {
+		day = date.getDate();
+		weekDay = WEEKDAYS[date.getDay()];
+		month = MONTHS[date.getMonth()];
+
+		return {
+			DAY: day,
+			WEEKDAY: weekday,
+			MONTH: month
+		};
+	} else {
+		return {
+			DAY : MORE,
+			WEEKDAY: PLUS,
+			MONTH: ""
+		};
+	}
 }
 
 
@@ -190,40 +220,36 @@ LeftSideBar = React.createClass({
 	},
 	render: function() {
 		var date = new Date();
-		var text;
-		var day;
+		var json;
 
 		switch(this.props.index) {
 			case TODAY_INDEX:
-				day = date.getDate();
-				text = date.getDate() + " " + MONTHS[date.getMonth()];
+				json = getDate(date);
 				break;
 
 			case TOMORROW_INDEX:
 				var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-				day = tmrDate.getDate();
-				text = tmrDate.getDate() + " " + MONTHS[tmrDate.getMonth()];
+				json = getDate(tmrDate);
 				break;
 
 			case FEW_DAYS_INDEX:
 				var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
-				var weekDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
-				day = fewDaysDate.getDate();
-				text = fewDaysDate.getDate() + " " + MONTHS[fewDaysDate.getMonth()] + " - " +
-					weekDate.getDate() + " " + MONTHS[weekDate.getMonth()];
+				json = getDate(fewDaysDate);
 				break;
 
 			case MORE_INDEX:
-				day = "+";
-				text = "And More";
+				json = getDate(null);
 				break;
 		}
 
 		return (
-			<div className="col s2 left-sidebar">
-				<h4>{text}</h4>
-				<div className="center img-responsive calendar">
-					<span className="calendar-day">{day}</span>
+			<div className="col s2">
+				<div className="date-content center">
+					<div className="cal">
+						<div className="cal-day">{json[DAY]}</div>
+						<div className="cal-date">{json[WEEKDAY]}</div>
+						<div className="cal-month">{json[MONTH]}</div>
+					</div>
 				</div>
 			</div>
 		);

@@ -266,7 +266,7 @@ NewEvent = React.createClass({
 	render: function() {
 		return (
 			<div className="new-event">
-	        	<a className="modal-trigger waves-effect waves-light" href={"#modal-newevent"}>
+	        	<a className="modal-trigger" href={"#modal-newevent"}>
 	        		<i className="mdi-content-add left newevent-icon"></i>
 	        		<span className="newevent-text">NEW EVENT</span>
 	        	</a>

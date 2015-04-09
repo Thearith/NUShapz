@@ -148,25 +148,22 @@ function updateEventDB($event) {
 }
 
 function getAllEvents() {
-	$coeselection = "SELECT *";
-	$coeevents = getEvents($coeselection, "NUSCOEEVENTS", null);
-
-	$ivleselection = "SELECT *";
-	$ivleevents = getEvents($ivleselection, "IVLEEVENTS", null);
-	
-	$returnThis = array_merge($coeevents, $ivleevents);
+	$query = "(SELECT * FROM NUSCOEEVENTS) UNION (SELECT * FROM IVLEEVENTS) ";
+	$result = databaseQuery($query);
+	$returnThis = array();
+	while($row = $result->fetch_assoc()) {
+		array_push($returnThis, $row);
+	}
 	return convertToOutputData($returnThis);
 }
 
 function getNewEvents() {
-	$coeselection = "SELECT *";
-	$clause = "Flag = 1";
-	$coeevents = getEvents($coeselection, "NUSCOEEVENTS", $clause);
-
-	$ivleselection = "SELECT *";
-	$ivleevents = getEvents($ivleselection, "IVLEEVENTS", $clause);
-	
-	$returnThis = array_merge($coeevents, $ivleevents);
+	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 1) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 1) ";
+	$result = databaseQuery($query);
+	$returnThis = array();
+	while($row = $result->fetch_assoc()) {
+		array_push($returnThis, $row);
+	}
 	return convertToOutputData($returnThis);
 }
 
@@ -220,7 +217,7 @@ function invalidData() {
 }
 
 function test() {
-	$query = "SELECT * FROM NUSCOEEVENTS ORDER BY DateAndTime ASC , Category ASC ";
+	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
 	$result = databaseQuery($query);
 
 	// TIMINGS
@@ -253,7 +250,7 @@ function test() {
 			array_push($listOfEventsInAFewDays, $row);
 		} else if ($eventdate >= $afterThisWeek){
 			array_push($listOfEventsAfterAFewDays, $row);
-		}
+		} 
 	}
 
 	// More sorting by date and time
@@ -285,11 +282,10 @@ function test() {
 
 	// Sort by Category
 	$categoryList = array(
-		"Education",
-		"Recreation",
-		"Recruitment",
-		"Volunteering",
-		"Misc");
+		"Arts", "Workshops", "Conferences",
+		"Competitions", "Fairs", "Recreation",
+		"Wellness", "Social", "Volunteering",
+		"Recruitments", "Others");
 
 
 	foreach($categoryList as $cat) {

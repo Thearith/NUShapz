@@ -521,7 +521,7 @@ LeftSideBar = React.createClass({
 			<div className="col s2">
 				<div className="date-content center">
 					<div className="cal">
-						<div className="cal-day">{json[WEEKDAY].toUpperCase()}</div>
+						<div className="cal-day">{json[WEEKDAY]}</div>
 						<div className="cal-date">{json[DAY]}</div>
 						<div className="cal-month">{json[MONTH]}</div>
 					</div>

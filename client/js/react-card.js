@@ -57,7 +57,7 @@ var MORE_INDEX = 3;
 var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "AndMore"];
 
 //Category
-var CATEGORY_ARRAY = ["Education", "Recreation", "Recruitment", "Volunteering", "Misc"];
+var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
 var IMAGE_PATH = "../image/category/";
 
 // constants

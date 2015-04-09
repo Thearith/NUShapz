@@ -1,45 +1,107 @@
 <?php
 
 require_once	'../db/db.php';
-date_default_timezone_set("UTC");
-define("UTCtoGMT8", "28800");
-define("DATEFORMAT", "j F Y, g:i a");
-
-	// Test for NUS COE
-	// use this format
-	// echo 'Now: (GMT8):'.date('j F Y, g:i a',time()+UTCtoGMT8)."\r\n";
-
-	// $testtime = strtotime("Wed, 22 Apr 2015 09:00:00 +0800");
-	// echo 'Test: '.date('j F Y, g:i a',$testtime+UTCtoGMT8)."\n";
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 
-	// $testtime = strtotime("Wed, 22 Apr 2015 09:00:00");
-	// echo 'Test: '.date('j F Y, g:i a',$testtime)."\n";
+if(isset($_GET["cmd"])) {
+	$cmd = $_GET["cmd"];
+}
+if(isset($_POST["cmd"])) {
+	$cmd = $_POST["cmd"];
+}
 
 
-//TIME
-// $currentTime = time() + UTCtoGMT8;
+switch($cmd) {
+	case "timeline":
+		echo test();
+		// echo getEventsByTimelineSAMPLE();
+		break;
+	case "categories":
+		echo getEventsByCategorySAMPLE($cat);
+		break;
+	case "muahahahaha":
+		// echo test();
+		break; 
+	case "nuscoe":
+		echo getNUSCOE();
+		break;
+	case "ivle";
+		echo getIVLE();
+		break;
+	case "new";
+		echo getNewEvents();
+		break;
+	case "all";
+		echo getAllEvents();
+		break;
+	case "adminlogin":
+		echo dashboardLogin($_POST['login']);
+		break;
+	case "update":
+		echo updateEventDB($_POST['event']);
+		break;
+	default:
+		break;
+}
 
-// $beginOfDay = strtotime("midnight", $currentTime);
-// $endOfDay = strtotime("tomorrow", $beginOfDay) - 1;
+function updateEventDB($event) {
+	if(!isset($event)) {
+		return invalidData();
+	}
 
-// $beginOfTomorrow = $endOfDay + 1;
-// $endOfTomorrow = strtotime("tomorrow", $beginOfTomorrow) - 1;
+	$event = json_decode($event);
 
-// $beginOfDayAfterTomorrow = $endOfTomorrow + 1;
-// $endOfThisWeek = strtotime("+7 days", $endOfDay);
+	$table = "";
+	switch (strlen($event->ID)) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			$table = "HAPZEVENTS";
+			break;
+		case 6:
+		case 7:
+			$table = "NUSCOEEVENTS";
+			break;
+		case 36:
+			$table = "IVLEEVENTS";
+			break;
+		default:
+			return invalidData();
+	}
+	// Assume all fields can be updated
+	$update_query = "UPDATE %s SET Title = '%s', Description = '%s', Category = '%s', Venue = '%s', DateAndTime = '%s', Price = '%s', Organizer = '%s', Contact = '%s', Agenda = '%s', Flag = %s WHERE ID = '%s'";
+		
+	$query = sprintf($update_query, $table, escapeChar($event->Title), escapeChar($event->Description), 
+		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
+		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
+		escapeChar($event->Agenda), escapeChar($event->Flag), $event->ID);
 
-// $afterThisWeek = $endOfThisWeek + 1;
 
-// echo "beginOfDay: ".$beginOfDay."\n";
-// echo "endOfDay: ".$endOfDay."\n";
-// echo "beginOfTomorrow: ".$beginOfTomorrow."\n";
-// echo "endOfTomorrow: ".$endOfTomorrow."\n";
-// echo "beginOfDayAfterTomorrow: ".$beginOfDayAfterTomorrow."\n";
-// echo "endOfThisWeek: ".$endOfThisWeek."\n";
-// echo "afterThisWeek: ".$afterThisWeek."\n";
+	$result = databaseQuery($query);
 
+	return convertToOutputData($result);
+}
 
+function convertToOutputData($events) {
+	$data = array(
+		"Response" => "Valid", 
+		"Events" => $events
+	);
+	$json = json_encode($data);
+	return $json;
+}
+
+function invalidData() {
+	$data = array(
+		"Response" => "Invalid"
+	);
+	$json = json_encode($data);
+	return $json;
+}
 
 
 ?>

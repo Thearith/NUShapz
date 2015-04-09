@@ -132,19 +132,19 @@ function updateEventDB($event) {
 		default:
 			return invalidData();
 	}
-	return convertToOutputData($table);
+
 	// Assume all fields can be updated
-	$update_query = "UPDATE %s SET Title = '%s', Description = '%s', Category = '%s', Venue = '%s', DateAndTime = '%s', Price = '%s', Organizer = '%s', Contact = '%s', Agenda = '%s', Flag = %d WHERE ID = '%s'";
+	$update_query = "UPDATE %s SET Title = '%s', Description = '%s', Category = '%s', Venue = '%s', DateAndTime = '%s', Price = '%s', Organizer = '%s', Contact = '%s', Agenda = '%s', Flag = %s WHERE ID = '%s'";
 	
 	$query = sprintf($update_query, $table, escapeChar($event->Title), escapeChar($event->Description), 
 		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
 		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
-		escapeChar($event->Agenda), escapeChar($event->Flag), $event->ID);
+		escapeChar($event->Agenda), $event->Flag, $event->ID);
 
 
 	$result = databaseQuery($query);
 
-	// return convertToOutputData($result);
+	return convertToOutputData($result);
 }
 
 function getAllEvents() {

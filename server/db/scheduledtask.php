@@ -42,40 +42,40 @@ function formatCategoryDataAndInsertIntoNewTable($jsonData) {
 		$category = "Misc";
 		switch($cat_id) {
 			case 1: // Bashes
-				$category = "Others";
+				$category = "Social";
 				break;
 			case 2: // Bazaars
-				$category = "Fairs and Exhibitions";
+				$category = "Social";
 				break;
 			case 3: // Competitions/Tournament
-				$category = "Competitions and Tournaments";
+				$category = "Competitions";
 				break;
 			case 4: // Sports And Recreation
-				$category = "Sports and Recreation";
+				$category = "Recreation";
 				break;
 			case 5: // Performances
-				$category = "Arts and Entertainment";
+				$category = "Arts";
 				break;
 			case 6: // Announcements
 				$category = "Others";
 				break;
 			case 7: // Excursions
-				$category = "Courses and Workshops";
+				$category = "Recreation";
 				break;
 			case 8: // Exhibitions
-				$category = "Fairs and Exhibitions";
+				$category = "Fairs";
 				break;
 			case 9: // Courses/Workshops
-				$category = "Courses and Workshops";
+				$category = "Workshops";
 				break;
 			case 10: // Recruitment
-				$category = "Recruitment";
+				$category = "Recruitments";
 				break;
 			case 11: // Administration
 				$category = "Others";
 				break;
 			case 12: // Charity
-				$category = "Volunteering and Social";
+				$category = "Volunteering";
 				break;
 			case 99: // Others
 				$category = "Others";

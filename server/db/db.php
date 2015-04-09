@@ -27,6 +27,7 @@ function databaseQuery($query) {
 		$result = "Error: " . $db->error . "\n";
 		echo $result;
 	}
+
 	$db->close();
 	return $result;
 }

@@ -1,5 +1,7 @@
-var NUSHAPZ_API = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=";
+(function(){
 
+var NUSHAPZ_API = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
+var TEST_API = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/test.php";
 var app = angular.module('nushapz-app', ['ngRoute', 'ngResource', 'datatables']);
 
 app.config(['$routeProvider', function($routeProvider){
@@ -26,12 +28,13 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 
 app.controller('tableController', 
-	['$scope', '$routeParams', 'EventGetAPI', '$location', 'eventService',
+	['$scope', '$routeParams', 'EventAPI', '$location', 'eventService',
 	function($scope, $routeParams, EventGetAPI, $location, eventService ){
 		if ($routeParams.eventType != undefined) {
 			$scope.eventType = $routeParams.eventType.substring(1);
 			$scope.eventList = [];
-			EventGetAPI.query({eventType: $scope.eventType}).
+
+			EventGetAPI.query({cmd: $scope.eventType}).
 				$promise.then(function(data){
 					$scope.eventList = data.Events;
 			});
@@ -43,8 +46,8 @@ app.controller('tableController',
 		}
 }]);
 
-app.controller('eventFormController', ['$scope', '$routeParams', 'eventService', '$location', 'EventUpdateAPI',
-	function($scope, $routeParams, eventService, $location, EventUpdateAPI) {
+app.controller('eventFormController', ['$scope', '$routeParams', 'eventService', '$location', 
+	function($scope, $routeParams, eventService, $location) {
 		if($routeParams.eventid != undefined) {
 			$scope.event = eventService.getEvent();
 			$scope.cancel = function() {
@@ -52,13 +55,11 @@ app.controller('eventFormController', ['$scope', '$routeParams', 'eventService',
 			};
 
 			$scope.submit = function() {
-				console.log('submit');
-				console.log(JSON.stringify($scope.event));
-				EventUpdateAPI.query({cmd: 'update', event: JSON.stringify($scope.event)}).
-					$promise.then(function(data){
-						console.log(data);
+				$.post(NUSHAPZ_API, {cmd:'update', event: JSON.stringify($scope.event)}, function(data){
+					if (data.Response == "Valid") {
+						alert("Updated Event " + $scope.event.ID + " - " + $scope.event.Title);
+					}
 				});
-
 			};
 		}
 }]);
@@ -71,15 +72,12 @@ app.controller('createEventController', ['$scope',
 	function($scope) {
 }]);
 
-app.factory('EventGetAPI', ['$resource', function($resource){
-	return $resource((NUSHAPZ_API+':eventType'), {eventType : '@eventType'}, 
-		{'query':  {method:'GET', isArray:false}});
+app.factory('EventAPI', ['$resource', function($resource){
+	return $resource((NUSHAPZ_API+'?cmd=:cmd'), {cmd : '@cmd'}, {
+		'query':  {method:'GET', isArray:false}
+	});
 }]);
 
-app.factory('EventUpdateAPI', ['$resource', function($resource){
-	return $resource((NUSHAPZ_API+':cmd:event'), {cmd : '@cmd', event: '@event'}, 
-		{'query':  {method:'POST', isArray:false}});
-}]);
 
 app.service('eventService', function() {
 	this.event = {};
@@ -134,3 +132,6 @@ $(function() {
         element.addClass('active');
     }
 });
+
+})();
+

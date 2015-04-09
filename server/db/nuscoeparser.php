@@ -40,25 +40,25 @@ function getNUSCOEdata() {
 		$category = "";
 		switch($value) {
 			case 1: // Arts and Entertainment
-				$category = "Arts and Entertainment";
+				$category = "Arts";
 				break;
 			case 2: // Lectures and Workshops
-				$category = "Courses and Workshops";
+				$category = "Workshops";
 				break;
 			case 3: // Conferences and Seminars
-				$category = "Conferences and Seminars";
+				$category = "Conferences";
 				break;
 			case 4: // Fairs and Exhibitions
-				$category = "Fairs and Exhibitions";
+				$category = "Fairs";
 				break;
 			case 5: // Sports and Recreation
-				$category = "Sports and Recreation";
+				$category = "Recreation";
 				break;
 			case 6: // Health and Wellness
-				$category = "Health and Wellness";
+				$category = "Wellness";
 				break;
 			case 7: // Social Events
-				$category = "Volunteering and Social";
+				$category = "Social";
 				break;
 			case 8: // Others
 				$category = "Others";

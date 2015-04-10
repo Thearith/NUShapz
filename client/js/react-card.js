@@ -604,7 +604,7 @@ EventHeader = React.createClass({
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title">{this.props.category}</div>
+				<div className="activator category-title resize-on-xs">{this.props.category}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);

@@ -352,7 +352,9 @@ nav .nav-wrapper i {
 	margin-left: 25px;
 }
 
-
+@media screen and (min-width: 0px) and (max-width: 450px) {
+  .resize-on-xs { font-size: 52px; }  
+}
 
 /*styling sidebar*/
 

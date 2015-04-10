@@ -229,7 +229,7 @@ NavbarForm = React.createClass({
 	},
 	render: function() {
 		return (
-			<ul id="nav-mobile" className="right hide-on-med-and-down">
+			<ul id="nav-mobile" className="right hide-on-small-only">
         		<li>
         			<Search data={this.props.data} />
         		</li>

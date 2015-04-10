@@ -53,8 +53,8 @@ var EventDescription;
 var EventContact;
 
 
-// var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
-var SERVER = "timeline.json";
+ var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+//var SERVER = "timeline.json";
 
 //Timeline
 var TIMELINE = "Timeline";
@@ -99,7 +99,7 @@ var VENUE = 'Venue';
 
 // check null objects
 function isRealValue(obj){
-	return obj && obj !== "null" && obj!== "undefined";
+	return obj && obj !== "null" && obj!== "undefined" && obj !== "-";
 }
 
 function getDateJSON(date) {
@@ -221,6 +221,7 @@ Navbar = React.createClass({
 						<Logo />
 						<SearchForm />
 						<NavbarForm data={this.props.data} />
+						<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 					</div>
 				</nav>
 			</div>
@@ -247,7 +248,6 @@ var SearchForm = React.createClass({
 			<div>
 				<Search />
 				<SearchMobile />
-				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 			</div>
 		);
 	}
@@ -850,7 +850,8 @@ EventDescription = React.createClass({
 		console.log("EventDescription is initialized");
 	},
 	render: function() {
-		var linkified = urlify(this.props.description.toString());
+		var linkified = isRealValue(this.props.description) ?
+			urlify(this.props.description.toString()) : "No information given";
 		var rawMarkup = converter.makeHtml(linkified);
 		return (
 			<div className="description">

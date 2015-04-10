@@ -45,8 +45,8 @@ var EventDescription;
 var EventContact;
 
 
-//var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
-var SERVER = "timeline.json";
+var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+/*var SERVER = "timeline.json";*/
 
 //Timeline
 var TIMELINE = "Timeline";
@@ -230,7 +230,7 @@ NavbarForm = React.createClass({
 	},
 	render: function() {
 		return (
-			<ul id="nav-mobile" className="right hide-on-med-and-down">
+			<ul id="nav-mobile" className="right hide-on-small-only">
         		<li>
         			<NewEvent />
         		</li>

@@ -11,10 +11,13 @@ var ModalForm;
 
 var Logo;
 var NavbarForm;
+var SearchForm;
 
 var Search;
+var SearchMobile;
+
 var NewEvent;
-var MobileNav;
+var NewEventMobile;
 
 var Content;
 var Sidebar;
@@ -23,7 +26,11 @@ var Timeline;  //contains timeline sections
 
 var TimelineSection; //contains categories within the same timeline section
 var LeftSideBar;
+var CategoriesContainer
+
 var CategorySections;
+var NoEvents;
+
 var CategorySection; // contains events of the same category
 var EventSection;
 var Event;
@@ -46,7 +53,7 @@ var EventDescription;
 var EventContact;
 
 
-//var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+// var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER = "timeline.json";
 
 //Timeline
@@ -212,7 +219,7 @@ Navbar = React.createClass({
 				<nav>
     				<div className="nav-wrapper orange">
 						<Logo />
-						<Search />
+						<SearchForm />
 						<NavbarForm data={this.props.data} />
 					</div>
 				</nav>
@@ -234,6 +241,55 @@ Logo = React.createClass({
 	}
 });
 
+var SearchForm = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<Search />
+				<SearchMobile />
+				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
+			</div>
+		);
+	}
+});
+
+Search = React.createClass ({
+	componentWillMount: function() {
+		console.log("Search is initialized");
+	}, 
+	render: function() {
+		return (
+			<form>
+	        	<div className="input-field search-outer left hide-on-small-only">
+	          		<input id="search" type="text" placeholder="Search for events" />
+	          		<label htmlFor="search">
+	          			<i className="mdi-action-search search-icon"></i>
+	          		</label>
+	        	</div>
+			</form>
+		);
+	}
+});
+
+SearchMobile = React.createClass({
+	render:function() {
+		return (
+			<div className="searchbar-mobile input-field hide-on-med-and-up">
+				<div className="searchbar-mobile-size"> 
+					<form>
+						<div className="input-field">
+							<input id="search" type="text" placeholder="Search for events" />
+							<label for="search">
+								<i className="mdi-action-search search-icon"></i>
+							</label>
+						</div>
+					</form>
+				</div>
+			</div>
+		);
+	}
+});
+
 NavbarForm = React.createClass({
 	componentWillMount: function() {
 		console.log("NavbarForm is initialized");
@@ -245,24 +301,6 @@ NavbarForm = React.createClass({
         			<MobileNav />
  				</div>
         );
-	}
-});
-
-Search = React.createClass ({
-	componentWillMount: function() {
-		console.log("Search is initialized");
-	}, 
-	render: function() {
-		return (
-			<form>
-	        	<div className="input-field search-outer left">
-	          		<input id="search" type="text" placeholder="Search for events" />
-	          		<label htmlFor="search">
-	          			<i className="mdi-action-search search-icon"></i>
-	          		</label>
-	        	</div>
-			</form>
-		);
 	}
 });
 
@@ -483,16 +521,6 @@ Timeline = React.createClass({
 	}
 
 });
-	
-TimelineSections = React.createClass({
-	componentWillMount: function() {
-		console.log("TimelineSections is initialized");
-	},
-	
-	render: function() {
-		
-	}
-});
 
 // contains a timeline with leftsidebar and a lot of categorysections
 TimelineSection = React.createClass({
@@ -503,7 +531,7 @@ TimelineSection = React.createClass({
 		return (
 			<div className="row">
 				<LeftSideBar index = {this.props.index} />
-				<CategorySections categories = {this.props.categories} />
+				<CategoriesContainer categories = {this.props.categories} />
 			</div>
 		);
 	}
@@ -549,6 +577,37 @@ LeftSideBar = React.createClass({
 						<div className="cal-month">{json[MONTH]}</div>
 					</div>
 				</div>
+			</div>
+		);
+	}
+});
+
+var CategoriesContainer = React.createClass({
+	hasEvents: function(categories) {
+		for(i in categories) {
+			if(categories[i][EVENTS].length > 0)
+				return true;
+		}
+
+		return false;
+	},
+	render: function() {
+		return (
+			<div>
+				{ this.hasEvents(this.props.categories) ?
+				  <CategorySections categories = {this.props.categories} /> :
+				  <NoEvents />
+				}
+			</div>
+		);
+	}
+});
+
+NoEvents = React.createClass({
+	render: function() {
+		return (
+			<div className="col l10 m12 section-category cards no-events">
+				No Events on this day.
 			</div>
 		);
 	}

@@ -246,7 +246,7 @@ Search = React.createClass ({
 	render: function() {
 		return (
 			<form>
-	        	<div className="input-field search-outer left">
+	        	<div className="input-field search-outer left hide-on-small-only">
 	          		<input id="search" type="text" placeholder="Search for events" />
 	          		<label htmlFor="search">
 	          			<i className="mdi-action-search search-icon"></i>

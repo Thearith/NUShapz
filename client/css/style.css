@@ -71,7 +71,14 @@ nav .nav-wrapper i {
 .logo-align {
 	margin-top: 5px;
 }
-
+/*
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	nav .brand-logo {
+		left: 0% !important;
+		transform: translateX(0%) !important;
+	}  
+}
+*/
 .new-event {
 	background-color: #ff9800;
 	height: 56px;

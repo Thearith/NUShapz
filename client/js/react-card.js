@@ -400,7 +400,7 @@ Sidebar = React.createClass ({
 	},
 	render: function() {
 		return (
-			<div className="col s2">
+			<div className="col l2 m3 hide-on-small-only">
 				<div className="side-bar z-depth-1">
 					<div className="side-content">
 						<div className="browse-events">Browse Events</div>
@@ -435,7 +435,7 @@ Timeline = React.createClass({
 	},
 	render: function() {
 		return (	
-			<div className="col s10" id="content">
+			<div className="col l10 m9 s12" id="content">
 				<div className="section scrollspy" id="section-1">
 					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TODAY_INDEX]]}
 						index={0} />
@@ -518,7 +518,7 @@ LeftSideBar = React.createClass({
 		console.log(json);
 
 		return (
-			<div className="col s2">
+			<div className="col l2 hide-on-med-and-down">
 				<div className="date-content center">
 					<div className="cal">
 						<div className="cal-day">{json[WEEKDAY]}</div>
@@ -543,7 +543,7 @@ CategorySections = React.createClass({
 		    );
 		});
 		return (
-			<div className="col s10 section-category cards">
+			<div className="col l10 m12 section-category cards">
 				{CategorySectionNode}
 			</div>
 		);

@@ -98,9 +98,12 @@ nav .nav-wrapper i {
 	font-size: 12px !important;
 }
 
+
 .search-outer {
 	background-color: #ff9800;
-	width: 900px;
+	width: 40%;
+	left: 50%;
+	transform: translateX(-50%)
 }
 .search-icon {
 	color: #212121 !important;
@@ -108,14 +111,13 @@ nav .nav-wrapper i {
 	font-size: 22px !important;
 }
 
-#search {
+input[type="text"]#search {
 	padding: 1px;
 	padding-left: 40px !important;
 	color: #212121;
 	border: 3px solid #ffffff !important;
 	border-radius: 10px;
     background-color: #ffffff;
-	width: 58%;
 	font-weight: 400;
 	font-size: 16px !important;
 }

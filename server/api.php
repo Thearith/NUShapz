@@ -50,50 +50,40 @@ switch($cmd) {
 	case "update":
 		echo updateEventDB($_POST["event"]);
 		break;
+	case "post":
+		echo postNew($_POST["event"]);
 	default:
 		break;
 }
 
-/*function postNew() {
-	if(isset($_POST["eventTitle"])) {
-		$eventTitle = $_POST["eventTitle"];
-	}
-	if(isset($_POST["eventCat"])) {
-		$eventCat = $_POST["eventCat"];
-	}
-	if(isset($_POST["eventDes"])) {
-		$eventDes = $_POST["eventDes"];
-	}
-	if(isset($_POST["eventEDT"])) {
-		$eventEDT = $_POST["eventEDT"];
-		$eventEDT = strtotime($eventEDT);
-	}
-	if(isset($_POST["eventOrg"])) {
-		$eventOrg = $_POST["eventOrg"];
-	}
-	if(isset($_POST["eventVen"])) {
-		$eventVen = $_POST["eventVen"];
-	}
-	if(isset($_POST["eventCont"])) {
-		$eventCont = $_POST["eventCont"];
-	}
-	if(isset($_POST["eventPrice"])) {
-		$eventPrice = $_POST["eventPrice"];
+function postNew() {
+	if(!isset($event)) {
+		return invalidData();
 	}
 
-	//@todo - randomise ID and Table??
-	$table;
-	$assigID;
+	$event = json_decode($event);
+	
+	$table = "HAPZEVENTS";
 
-	// ID - Title - Category - Description - EventDateTime - Organizer - Venue - Contact - Price - Flag
-	//$query = "INSERT INTO $table VALUES ('$assigID', '$eventTitle', '$eventDes', '$eventCat',
-	//		 '$eventVen', '$eventEDT', '$eventPrice', '$eventOrg', '$eventCont', '0') ";
-	//$result = databaseQuery($query);
+	$id_query = "SELECT * FROM HAPZEVENTS ORDER BY ID DSC";
+	$id_result = databaseQuery($query);
+	$row = $id_result->fetch_assoc();
+	if($row) $eventID = $row['ID'] + 1;
+	else $eventID = 100;
+
+	// ID - Title - Description - Category - Venue - DateAndTime - Price - Organizer - Contact - Agenda - Flag(0)
+	$new_query = "INSERT INTO %s VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '0')";
+
+	$query = sprintf($update_query, $table, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
+		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
+		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
+		escapeChar($event->Agenda));
+
+	$result = databaseQuery($query);
+
+	return convertToOutputData($result);
 }
-*/
-// function updateNUSCOE() {
-// 	updateEventDB("NUSCOEEVENTS");
-// }
+
 
 function dashboardLogin($login) {
 	if(isset($login)) {

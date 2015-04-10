@@ -236,11 +236,11 @@ nav .nav-wrapper i {
 	font-weight: 700;
 }
 
+@media screen and (min-width: 0px) and (max-width: 750px) {
+  .resize-on-medium { font-size: 64px; padding-top: 77px; }  
+}
 @media screen and (min-width: 0px) and (max-width: 450px) {
   .resize-on-xs { font-size: 42px; padding-top: 94px; }  
-}
-@media screen and (min-width: 451px) and (max-width: 750px) {
-  .resize-on-medium { font-size: 64px; padding-top: 77px; }  
 }
 
 .organizer p, .datetime p, .venue p{

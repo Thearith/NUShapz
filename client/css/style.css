@@ -97,7 +97,10 @@ nav .nav-wrapper i {
 	font-weight: 700;
 	font-size: 12px !important;
 }
-
+.newevent-padding-mobile {
+	padding: 0 15px;
+	width: 54px;
+}
 
 .search-outer {
 	background-color: #ff9800;

@@ -353,7 +353,7 @@ nav .nav-wrapper i {
 }
 
 @media screen and (min-width: 0px) and (max-width: 450px) {
-  .resize-on-xs { font-size: 52px; }  
+  .resize-on-xs { font-size: 42px; padding-top: 94px; }  
 }
 
 /*styling sidebar*/

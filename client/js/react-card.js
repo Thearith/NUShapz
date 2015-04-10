@@ -45,8 +45,8 @@ var EventDescription;
 var EventContact;
 
 
-var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
-//var SERVER = "timeline.json";
+//var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+var SERVER = "timeline.json";
 
 //Timeline
 var TIMELINE = "Timeline";
@@ -202,6 +202,7 @@ Navbar = React.createClass({
 				<nav>
     				<div className="nav-wrapper orange">
 						<Logo />
+						<Search />
 						<NavbarForm data={this.props.data} />
 					</div>
 				</nav>
@@ -230,9 +231,6 @@ NavbarForm = React.createClass({
 	render: function() {
 		return (
 			<ul id="nav-mobile" className="right hide-on-med-and-down">
-        		<li>
-        			<Search data={this.props.data} />
-        		</li>
         		<li>
         			<NewEvent />
         		</li>
@@ -751,7 +749,7 @@ Title = React.createClass({
 	},
 	render: function() {
 		return (
-			<span className="card-title grey-text text-darken-4">
+			<span className="card-title grey-text text-darken-4 reveal">
 				{this.props.title}
 				<i className="mdi-navigation-close right"></i>
 			</span>
@@ -768,7 +766,7 @@ EventDescription = React.createClass({
 	render: function() {
 		 var rawMarkup = converter.makeHtml(this.props.description.toString());
 		return (
-			<div className="description">
+			<div className="description reveal">
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		);
@@ -783,7 +781,7 @@ EventContact = React.createClass({
 		var contact = isRealValue(this.props.contact) ?
 				this.props.contact : NON_IDENTIFIED;
 		return (
-			<div className="contact">
+			<div className="contact reveal">
 				<i className="fa fa-envelope"></i>
 				{contact}
 			</div>

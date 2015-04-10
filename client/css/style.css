@@ -297,18 +297,11 @@ input[type="text"]#search {
 	padding-left: 0px;
 }
 
-.card .card-reveal {
-	padding: 0px;
-}
-
-.card .card-reveal .reveal{
+.card .card-reveal{
 	padding-left: 5%;
 	padding-right: 5%;
-}
-
-.card-reveal hr {
-	color: #e5e5e5;
-	height: 1px;
+	padding-bottom: 10px;
+	padding-top:10px;
 }
 
 .card-reveal {
@@ -316,9 +309,24 @@ input[type="text"]#search {
 	transform: translateY(0px);
 }
 
-.card-reveal .contact {
-	background-color: #eeeeee;
-	color: #9e9e9e;
+.card-title {
+	margin-bottom: 10px;
+	line-height: 30px;
+}
+
+.card-title .col {
+	padding: 0px;
+}
+
+.description {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border-top: 1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5;
+}
+
+.contact {
+	margin-top: 10px;
 }
 
 .information {

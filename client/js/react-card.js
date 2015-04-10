@@ -14,6 +14,7 @@ var NavbarForm;
 
 var Search;
 var NewEvent;
+var MobileNav;
 
 var Content;
 var Sidebar;
@@ -111,6 +112,15 @@ function getDateJSON(date) {
 			"month" : ""
 		};
 	}
+}
+
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    })
+    // or alternatively
+    // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
 
@@ -230,11 +240,10 @@ NavbarForm = React.createClass({
 	},
 	render: function() {
 		return (
-			<ul id="nav-mobile" className="right hide-on-med-and-down">
-        		<li>
+				<div>
         			<NewEvent />
-        		</li>
-        	</ul>
+        			<MobileNav />
+ 				</div>
         );
 	}
 });
@@ -263,12 +272,28 @@ NewEvent = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="new-event">
-	        	<a className="modal-trigger" href={"#modal-newevent"}>
-	        		<i className="mdi-content-add left newevent-icon"></i>
-	        		<span className="newevent-text">NEW EVENT</span>
-	        	</a>
-			</div>
+			<ul id="nav-mobile" className="right hide-on-med-and-down">
+        		<li>
+					<div className="new-event">
+			        	<a className="modal-trigger" href={"#modal-newevent"}>
+			        		<i className="mdi-content-add left newevent-icon"></i>
+			        		<span className="newevent-text">NEW EVENT</span>
+			        	</a>
+					</div>
+				</li>
+        	</ul>
+		);
+	}
+});
+
+MobileNav = React.createClass({
+	render: function() {
+		return (
+			<div className="new-event newevent-padding-mobile right hide-on-med-and-up">
+				<a className="modal-trigger" href={"#modal-newevent"}>
+					<i className="mdi-content-add left newevent-icon"></i>
+				</a>
+ 			</div>
 		);
 	}
 });
@@ -732,10 +757,8 @@ EventReveal = React.createClass({
 		return (
 			<div className="card-reveal">
 				<Title title={this.props.data[TITLE]} />
-				<hr />
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
-				<hr />
 
 				<EventContact contact={this.props.data[CONTACT]} />
 			</div>
@@ -749,10 +772,14 @@ Title = React.createClass({
 	},
 	render: function() {
 		return (
-			<span className="card-title grey-text text-darken-4 reveal">
-				{this.props.title}
-				<i className="mdi-navigation-close right"></i>
-			</span>
+			<div className="card-title grey-text text-darken-4 row">
+				<div className="col s11">
+					{this.props.title}
+				</div>
+				<div className="col s1">
+					<i className="mdi-navigation-close right"></i>
+				</div>
+			</div>
 		);
 	}
 });
@@ -764,9 +791,10 @@ EventDescription = React.createClass({
 		console.log("EventDescription is initialized");
 	},
 	render: function() {
-		 var rawMarkup = converter.makeHtml(this.props.description.toString());
+		var linkified = urlify(this.props.description.toString());
+		var rawMarkup = converter.makeHtml(linkified);
 		return (
-			<div className="description reveal">
+			<div className="description">
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		);
@@ -779,9 +807,9 @@ EventContact = React.createClass({
 	},
 	render: function() {
 		var contact = isRealValue(this.props.contact) ?
-				this.props.contact : NON_IDENTIFIED;
+				urlify(this.props.contact) : NON_IDENTIFIED;
 		return (
-			<div className="contact reveal">
+			<div className="contact">
 				<i className="fa fa-envelope"></i>
 				{contact}
 			</div>

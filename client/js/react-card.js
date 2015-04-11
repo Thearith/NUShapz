@@ -52,8 +52,8 @@ var EventDescription;
 var EventContact;
 
 
-//var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
-var SERVER = "timeline.json";
+var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+//var SERVER = "timeline.json";
 
 //Timeline
 var TIMELINE = "Timeline";
@@ -101,7 +101,7 @@ function isRealValue(obj){
 	return obj && obj !== "null" && obj!== "undefined" && obj !== "-";
 }
 
-function getDateJSON(date) {
+function getDateJSON(date, isLeftSidebar) {
 	if(date != null) {
 		day = date.getDate();
 		weekDay = WEEKDAYS[date.getDay()];
@@ -112,35 +112,43 @@ function getDateJSON(date) {
 			"month" : month
 		};
 	} else {
-		return {
-			"day" : PLUS,
-			"weekday": MORE,
-			"month" : ""
-		};
+		if(isLeftSidebar) {
+			return {
+				"day" : PLUS,
+				"weekday": MORE,
+				"month" : ""
+			};
+		} else {
+			return {
+				"day": "\"More",
+				"weekday": '',
+				"month": "Events\""
+			}
+		}
 	}
 }
 
-function getDate(index) {
+function getDate(index, isLeftSidebar) {
 	var date = new Date();
 	var json;
 
 	switch(index) {
 		case TODAY_INDEX:
-			json = getDateJSON(date);
+			json = getDateJSON(date, isLeftSidebar);
 			break;
 
 		case TOMORROW_INDEX:
 			var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-			json = getDateJSON(tmrDate);
+			json = getDateJSON(tmrDate, isLeftSidebar);
 			break;
 
 		case FEW_DAYS_INDEX:
 			var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
-			json = getDateJSON(fewDaysDate);
+			json = getDateJSON(fewDaysDate, isLeftSidebar);
 			break;
 
 		case MORE_INDEX:
-			json = getDateJSON(null);
+			json = getDateJSON(null, isLeftSidebar);
 			break;
 	}
 
@@ -616,7 +624,7 @@ LeftSideBar = React.createClass({
 		console.log("LeftSideBar is initialized");
 	},
 	render: function() {
-		var json = getDate(this.props.index);
+		var json = getDate(this.props.index, true);
 		console.log(json);
 
 		return (
@@ -657,7 +665,7 @@ var CategoriesContainer = React.createClass({
 NoEvents = React.createClass({
 
 	render: function() {
-		var json = getDate(this.props.index);
+		var json = getDate(this.props.index, false);
 		var date = json[DAY] + " " + json[MONTH];
 		return (
 			<div className="col l10 m12 section-category cards no-events">

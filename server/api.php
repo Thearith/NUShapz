@@ -142,7 +142,7 @@ function updateEventDB($event) {
 }
 
 function getAllEvents() {
-	$query = "(SELECT * FROM NUSCOEEVENTS) UNION (SELECT * FROM IVLEEVENTS) ";
+	$query = "(SELECT * FROM NUSCOEEVENTS) UNION (SELECT * FROM IVLEEVENTS) UNION (SELECT * FROM HAPZEVENTS) ";
 	$result = databaseQuery($query);
 	$returnThis = array();
 	while($row = $result->fetch_assoc()) {
@@ -152,7 +152,7 @@ function getAllEvents() {
 }
 
 function getNewEvents() {
-	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 1) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 1) ";
+	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 1) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 1) UNION (SELECT * FROM HAPZEVENTS WHERE Flag = 1) ";
 	$result = databaseQuery($query);
 	$returnThis = array();
 	while($row = $result->fetch_assoc()) {
@@ -216,7 +216,7 @@ function invalidData() {
 }
 
 function test() {
-	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
+	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) UNION (SELECT * FROM HAPZEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
 	$result = databaseQuery($query);
 
 	// TIMINGS

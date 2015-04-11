@@ -56,7 +56,7 @@ switch($cmd) {
 		break;
 }
 
-function postNew() {
+function postNew($event) {
 	if(!isset($event)) {
 		return invalidData();
 	}
@@ -65,8 +65,8 @@ function postNew() {
 	
 	$table = "HAPZEVENTS";
 
-	$id_query = "SELECT * FROM HAPZEVENTS ORDER BY ID DSC";
-	$id_result = databaseQuery($query);
+	$id_query = "SELECT * FROM HAPZEVENTS ORDER BY ID DESC";
+	$id_result = databaseQuery($id_query);
 	$row = $id_result->fetch_assoc();
 	if($row) $eventID = $row['ID'] + 1;
 	else $eventID = 100;

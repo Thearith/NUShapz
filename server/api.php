@@ -32,6 +32,9 @@ switch($cmd) {
 	case "muahahahaha":
 		// echo test();
 		break; 
+	case "hapz":
+		echo getHAPZ();
+		break;
 	case "nuscoe":
 		echo getNUSCOE();
 		break;
@@ -68,16 +71,18 @@ function postNew($event) {
 	$id_query = "SELECT * FROM HAPZEVENTS ORDER BY ID DESC";
 	$id_result = databaseQuery($id_query);
 	$row = $id_result->fetch_assoc();
+	$eventID;
 	if($row) $eventID = $row['ID'] + 1;
 	else $eventID = 100;
 
+	// ID - Title - Category - Description - DateAndTime - StartDate - StartTime - EndDate - EndTime - Price - Organizer - Venue - Contact - Flag(0)
 	// ID - Title - Description - Category - Venue - DateAndTime - Price - Organizer - Contact - Agenda - Flag(0)
-	$new_query = "INSERT INTO %s VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '0')";
+	$new_query = "INSERT INTO 'nushapz'.'%s' ('ID', 'Title', 'Description', 'Category', 'Venue', 'DateAndTime', 'Price', 'Organizer', 'Contact', 'Agenda', 'Flag') VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
 
-	$query = sprintf($update_query, $table, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
+	$query = sprintf($update_query, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
 		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
 		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
-		escapeChar($event->Agenda));
+		escapeChar($event->Agenda), $event->Flag);
 
 	$result = databaseQuery($query);
 
@@ -108,10 +113,10 @@ function updateEventDB($event) {
 		case 1:
 		case 2:
 		case 3:
-		case 4:
-		case 5:
 			$table = "HAPZEVENTS";
 			break;
+		case 4:
+		case 5:
 		case 6:
 		case 7:
 			$table = "NUSCOEEVENTS";
@@ -155,6 +160,11 @@ function getNewEvents() {
 		array_push($returnThis, $row);
 	}
 	return convertToOutputData($returnThis);
+}
+
+function getHAPZ() {
+	$selection = "SELECT *";
+	return convertToOutputData(getEvents($selection, "HAPZEVENTS", null));
 }
 
 function getNUSCOE() {

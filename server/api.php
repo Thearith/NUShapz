@@ -75,16 +75,15 @@ function postNew($event) {
 	if($row) $eventID = $row['ID'] + 1;
 	else $eventID = 100;
 
+	//echo "$event";
 	// ID - Title - Category - Description - DateAndTime - StartDate - StartTime - EndDate - EndTime - Price - Organizer - Venue - Contact - Flag(0)
 	// ID - Title - Description - Category - Venue - DateAndTime - Price - Organizer - Contact - Agenda - Flag(0)
-	$new_query = "INSERT INTO 'nushapz'.'%s' ('ID', 'Title', 'Description', 'Category', 'Venue', 'DateAndTime', 'Price', 'Organizer', 'Contact', 'Agenda', 'Flag') VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
-
-	$query = sprintf($update_query, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
+	$new_query = "INSERT INTO HAPZEVENTS (ID, Title, Description, Category, Venue, DateAndTime, Price, Organizer, Contact, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+	$final_query = sprintf($new_query, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
 		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
 		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
 		escapeChar($event->Agenda), $event->Flag);
-
-	$result = databaseQuery($query);
+	$result = databaseQuery($final_query);
 
 	return convertToOutputData($result);
 }

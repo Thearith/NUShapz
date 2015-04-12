@@ -71,7 +71,12 @@ function getNUSCOEdata() {
 	    	$title = escapeChar((string)$item->title);
 	    	$description = str_replace($gmtTimeToRemove,"",escapeChar(str_replace($strToRemoveForDescription,"",(string)$item->description)));
 	    	$venue = escapeChar((string)$item->venue);
-	    	$eventdatetime = strtotime(str_replace($gmtTimeToRemove,"",escapeChar((string)$item->eventdate)));
+	    	
+
+	    	// $eventdatetime = strtotime(str_replace($gmtTimeToRemove,"",escapeChar((string)$item->eventdate)));
+	    	
+	    	$eventdatetime = getDateAndTime($id);
+
 	    	$price = '-';
     		if(preg_match($priceRegex, $description, $match) == 1) {
     			$price = $match[0];
@@ -85,7 +90,35 @@ function getNUSCOEdata() {
 	echo "Added: ".$num_of_events." events\n";
 }
 
+function getDateAndTime($id) {
+	$nusCoeEventsAPI = "https://myaces.nus.edu.sg/CoE/COEMasterServlet?funId=SEARCHBYEVENTID&funParam=%s&fac=&queryText=&current_page=1&fromAction=null&fromParam=null";
+	
+	$dateRegex = "/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/";
+	$timeRegex = "/[0-9]{2}:[0-9]{2} [A-Z]{2} - [0-9]{2}:[0-9]{2} [A-Z]{2}/";
 
+	$api = sprintf($nusCoeEventsAPI, $id);
+	$html = file_get_contents($api);
 
+	$date = "";
+	$startTime = "";
+	$endTime = "";
+	if(preg_match_all($dateRegex, $html, $match1) == 1) {
+    	$date = str_replace('/','-',$match1[0][0]);
+	}
+	if(preg_match_all($timeRegex, $html, $match2) == 1) {
+		$times = explode(" - ", $match2[0][0]);
+    	$startTime = $times[0];
+    	$endTime = $times[1];
+	}
+	
+	$dateAndTime = array(
+		"Start" => strtotime($date." ".$startTime),
+		"End" => strtotime($date." ".$endTime)
+		);
+	
+	return json_encode($dateAndTime);
+}
+
+// getDateAndTime("66562");
 getNUSCOEdata();
 ?>

@@ -239,16 +239,21 @@ function test() {
 	$listOfEventsInAFewDays = array();
 	$listOfEventsAfterAFewDays = array();
 
+	$listOfUniqueEventTitle = array();
+
+
 	// Sort by date categories
 	while($row = $result->fetch_assoc()) {
-		$eventdate = $row['DateAndTime'];
-		if ($eventdate >= $beginOfDay && $eventdate <= $endOfDay) {
+		// Sort by date categories
+		$eventdatajson = json_decode($row['DateAndTime']);
+		$eventstartdate = $eventdatajson->Start;
+		if ($eventstartdate >= $beginOfDay && $eventstartdate <= $endOfDay) {
 			array_push($listOfEventsToday, $row);
-		} else if ($eventdate >= $beginOfTomorrow && $eventdate <= $endOfTomorrow) {
+		} else if ($eventstartdate >= $beginOfTomorrow && $eventstartdate <= $endOfTomorrow) {
 			array_push($listOfEventsTomorrow, $row);
-		} else if ($eventdate >= $beginOfDayAfterTomorrow && $eventdate <= $endOfThisWeek) {
+		} else if ($eventstartdate >= $beginOfDayAfterTomorrow && $eventstartdate <= $endOfThisWeek) {
 			array_push($listOfEventsInAFewDays, $row);
-		} else if ($eventdate >= $afterThisWeek){
+		} else if ($eventstartdate >= $afterThisWeek){
 			array_push($listOfEventsAfterAFewDays, $row);
 		} 
 	}
@@ -261,16 +266,20 @@ function test() {
 
 	// Convert to normal time format
 	foreach($listOfEventsToday as $key => $event) {
-		$listOfEventsToday[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsToday[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
 	}
 	foreach($listOfEventsTomorrow as $key => $event) {
-		$listOfEventsTomorrow[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsTomorrow[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
 	}
 	foreach($listOfEventsInAFewDays as $key => $event) {
-		$listOfEventsInAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsInAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
 	}
 	foreach($listOfEventsAfterAFewDays as $key => $event) {
-		$listOfEventsAfterAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $event['DateAndTime']);
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsAfterAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
 	}
 
 	$timeline = array(

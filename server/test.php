@@ -4,104 +4,155 @@ require_once	'../db/db.php';
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
+define("UTCtoGMT8", "28800");
+define("DATEFORMAT", "j F Y, g:i a");
 
-if(isset($_GET["cmd"])) {
-	$cmd = $_GET["cmd"];
-}
-if(isset($_POST["cmd"])) {
-	$cmd = $_POST["cmd"];
-}
-
-
-switch($cmd) {
-	case "timeline":
-		echo test();
-		// echo getEventsByTimelineSAMPLE();
-		break;
-	case "categories":
-		echo getEventsByCategorySAMPLE($cat);
-		break;
-	case "muahahahaha":
-		// echo test();
-		break; 
-	case "nuscoe":
-		echo getNUSCOE();
-		break;
-	case "ivle";
-		echo getIVLE();
-		break;
-	case "new";
-		echo getNewEvents();
-		break;
-	case "all";
-		echo getAllEvents();
-		break;
-	case "adminlogin":
-		echo dashboardLogin($_POST['login']);
-		break;
-	case "update":
-		echo updateEventDB($_POST['event']);
-		break;
-	default:
-		break;
-}
-
-function updateEventDB($event) {
-	if(!isset($event)) {
-		return invalidData();
-	}
-
-	$event = json_decode($event);
-
-	$table = "";
-	switch (strlen($event->ID)) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-			$table = "HAPZEVENTS";
-			break;
-		case 6:
-		case 7:
-			$table = "NUSCOEEVENTS";
-			break;
-		case 36:
-			$table = "IVLEEVENTS";
-			break;
-		default:
-			return invalidData();
-	}
-	// Assume all fields can be updated
-	$update_query = "UPDATE %s SET Title = '%s', Description = '%s', Category = '%s', Venue = '%s', DateAndTime = '%s', Price = '%s', Organizer = '%s', Contact = '%s', Agenda = '%s', Flag = %s WHERE ID = '%s'";
-		
-	$query = sprintf($update_query, $table, escapeChar($event->Title), escapeChar($event->Description), 
-		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
-		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
-		escapeChar($event->Agenda), escapeChar($event->Flag), $event->ID);
-
-
+function test() {
+	$query = "(SELECT * FROM NUSCOEEVENTS2 WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
 	$result = databaseQuery($query);
 
-	return convertToOutputData($result);
-}
+	// TIMINGS
+	$currentTime = time() + UTCtoGMT8;
 
-function convertToOutputData($events) {
+	$beginOfDay = strtotime("midnight", $currentTime);
+	$endOfDay = strtotime("tomorrow", $beginOfDay) - 1;
+
+	$beginOfTomorrow = $endOfDay + 1;
+	$endOfTomorrow = strtotime("tomorrow", $beginOfTomorrow) - 1;
+
+	$beginOfDayAfterTomorrow = $endOfTomorrow + 1;
+	$endOfThisWeek = strtotime("+7 days", $endOfDay);
+
+	$afterThisWeek = $endOfThisWeek + 1;
+
+	$listOfEventsToday = array();
+	$listOfEventsTomorrow = array();
+	$listOfEventsInAFewDays = array();
+	$listOfEventsAfterAFewDays = array();
+
+	$listOfUniqueEventTitle = array();
+
+
+	// Sort by date categories
+	while($row = $result->fetch_assoc()) {
+		// Sort by date categories
+		$eventdatajson = json_decode($row['DateAndTime']);
+		$eventstartdate = $eventdatajson->Start;
+		if ($eventstartdate >= $beginOfDay && $eventstartdate <= $endOfDay) {
+			array_push($listOfEventsToday, $row);
+		} else if ($eventstartdate >= $beginOfTomorrow && $eventstartdate <= $endOfTomorrow) {
+			array_push($listOfEventsTomorrow, $row);
+		} else if ($eventstartdate >= $beginOfDayAfterTomorrow && $eventstartdate <= $endOfThisWeek) {
+			array_push($listOfEventsInAFewDays, $row);
+		} else if ($eventstartdate >= $afterThisWeek){
+			array_push($listOfEventsAfterAFewDays, $row);
+		} 
+	}
+
+	// More sorting by date and time
+	usort($listOfEventsToday, "dateCompare");
+	usort($listOfEventsTomorrow, "dateCompare");
+	usort($listOfEventsInAFewDays, "dateCompare");
+	usort($listOfEventsAfterAFewDays, "dateCompare");
+
+	// Convert to normal time format
+	foreach($listOfEventsToday as $key => $event) {
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsToday[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
+	}
+	foreach($listOfEventsTomorrow as $key => $event) {
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsTomorrow[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
+	}
+	foreach($listOfEventsInAFewDays as $key => $event) {
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsInAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
+	}
+	foreach($listOfEventsAfterAFewDays as $key => $event) {
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsAfterAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
+	}
+
+	$timeline = array(
+			"Today" => array(),
+			"Tomorrow" => array(),
+			"InAFewDays" => array(),
+			"AndMore" => array()
+		);
+
+	// Sort by Category
+	$categoryList = array(
+		"Arts", "Workshops", "Conferences",
+		"Competitions", "Fairs", "Recreation",
+		"Wellness", "Social", "Volunteering",
+		"Recruitments", "Others");
+
+
+	foreach($categoryList as $cat) {
+		$catarray = array(
+			'Category' => $cat,
+			'Events' => array());
+
+		foreach($listOfEventsToday as $event) {
+			if($event['Category'] == $cat) {
+				array_push($catarray[Events], $event);
+			}
+		}
+		array_push($timeline["Today"],$catarray);
+	}
+
+	foreach($categoryList as $cat) {
+		$catarray = array(
+			'Category' => $cat,
+			'Events' => array());
+
+		foreach($listOfEventsTomorrow as $event) {
+			if($event['Category'] == $cat) {
+				array_push($catarray[Events], $event);
+			}
+		}
+		array_push($timeline["Tomorrow"],$catarray);
+	}
+
+	foreach($categoryList as $cat) {
+		$catarray = array(
+			'Category' => $cat,
+			'Events' => array());
+
+		foreach($listOfEventsInAFewDays as $event) {
+			if($event['Category'] == $cat) {
+				array_push($catarray[Events], $event);
+			}
+		}
+		array_push($timeline["InAFewDays"],$catarray);
+	}
+
+	foreach($categoryList as $cat) {
+		$catarray = array(
+			'Category' => $cat,
+			'Events' => array());
+
+		foreach($listOfEventsAfterAFewDays as $event) {
+			if($event['Category'] == $cat) {
+				array_push($catarray[Events], $event);
+			}
+		}
+		array_push($timeline["AndMore"],$catarray);
+	}
+
 	$data = array(
-		"Response" => "Valid", 
-		"Events" => $events
+		"Response" => "Valid",
+		"Timeline" => $timeline
 	);
 	$json = json_encode($data);
-	return $json;
+	echo $json;
+
+	function dateCompare($a, $b) {
+		return ($a['DateAndTime'] < $b['DateAndTime']) ? -1 : 1;
+	}
 }
 
-function invalidData() {
-	$data = array(
-		"Response" => "Invalid"
-	);
-	$json = json_encode($data);
-	return $json;
-}
+test();
 
 
 ?>

@@ -18,11 +18,11 @@
                             <form role="form">
                                 <div class="form-group">
                                     <label>Title</label>
-                                    <input class="form-control" value={{event.Title}}> 
+                                    <input class="form-control" ng-model="event.Title"> 
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <textarea class="form-control" rows="5">{{event.Description}}</textarea>
+                                    <textarea class="form-control" rows="5" ng-model="event.Description"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Category</label>
@@ -42,37 +42,65 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Venue</label>
-                                    <input class="form-control" value={{event.Venue}}>
+                                    <input class="form-control" ng-model="event.Venue">
                                 </div>
                                 <div class="form-group">
                                     <label>Date And Time</label>
-                                    <p class="help-block">Start Date</p>
-                                    <input class="form-control" type="date" class="datepicker">
+                                    <p class="help-block">Current Date And Time: {{event.CurrentDateAndTime}}</p>
+                                    <p class="help-block">Previous Date And Time: {{event.PreviousDateAndTime}}</p>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-md-3">
+                                            <label>Start Date</label>
+                                            <p class="input-group">
+                                                <input id="startdate" type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="StartDate" is-open="startdateopened" min-date="minDate" close-text="Close"/>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="openStartDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                            </p>
+                                        </div>
 
-                                    <p class="help-block">Start Time</p>
-                                    <input class="form-control" type="time" class="timepicker">
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label>Start Time</label>
+                                            <timepicker id="starttime" ng-model="StartTime" show-meridian="true"></timepicker>
+                                        </div>
 
-                                    <p class="help-block">Current Date And Time: {{event.DateAndTime}}</p>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-5 col-md-3">
+                                            <label>End Date</label>
+                                            <p class="input-group">
+                                              <input id="enddate" type="text" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="EndDate" is-open="enddateopened" min-date="minDate" close-text="Close"/>
+                                              <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                              </span>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 col-md-4">
+                                            <label>End Time</label>
+                                            <timepicker id="endtime" ng-model="EndTime" show-meridian="true"></timepicker>
+                                        </div>
+                                    </div>
+
+                                    <button ng-click="setdate()" class="btn btn-default">Set Date</button>
+                                    <button ng-click="resetdate()" class="btn btn-default">Reset Date</button>
                                 </div>
                                 <div class="form-group">
                                     <label>Price</label>
-                                    <input class="form-control" value={{event.Price}}>
+                                    <input class="form-control" ng-model="event.Price">
                                 </div>
                                 <div class="form-group">
                                     <label>Organizer</label>
-                                    <input class="form-control" value={{event.Organizer}}>
+                                    <input class="form-control" ng-model="event.Organizer">
                                 </div>
                                 <div class="form-group">
                                     <label>Contact</label>
-                                    <input class="form-control" value={{event.Contact}}>
+                                    <input class="form-control" ng-model="event.Contact">
                                 </div>
                                 <div class="form-group">
                                     <label>Agenda</label>
-                                    <input class="form-control" value={{event.Agenda}}>
-                                </div>
-                                <div class="form-group">
-                                    <label>Agenda</label>
-                                    <input class="form-control" value={{event.Agenda}}>
+                                    <input class="form-control" ng-model="event.Agenda">
                                 </div>
                                 <div class="checkbox">
                                     <label>
@@ -81,6 +109,8 @@
                                 </div>
                                 <button type="submit" ng-click="submit()" class="btn btn-default" id="#saveEvent">Save</button>
                                 <button type="reset" ng-click="cancel()" class="btn btn-default">Back</button>
+                                <button id="deletebutton" type="delete" ng-click="delete()" class="btn btn-default">Delete Event</button>
+
                             </form>
 
                         </div>

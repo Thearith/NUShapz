@@ -23,15 +23,11 @@ if(isset($_POST["cmd"])) {
 
 switch($cmd) {
 	case "timeline":
-		echo test();
-		// echo getEventsByTimelineSAMPLE();
+		echo getEventsByTimeline();
 		break;
 	case "categories":
 		echo getEventsByCategorySAMPLE($cat);
 		break;
-	case "muahahahaha":
-		// echo test();
-		break; 
 	case "hapz":
 		echo getHAPZ();
 		break;
@@ -55,8 +51,42 @@ switch($cmd) {
 		break;
 	case "post":
 		echo postNew($_POST["event"]);
+		break;
+	case "delete":
+		echo deleteEvent($_POST["eventid"]);
+		break;
 	default:
 		break;
+}
+
+function deleteEvent($eventid) {
+	if(!isset($eventid)) {
+		return invalidData();
+	}
+	$table;
+	switch (strlen($eventid)) {
+		case 1:
+		case 2:
+		case 3:
+			$table = "HAPZEVENTS";
+			break;
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+			$table = "NUSCOEEVENTS";
+			break;
+		case 36:
+			$table = "IVLEEVENTS";
+			break;
+		default:
+			return invalidData();
+	}
+
+	$query = "DELETE FROM %s WHERE ID = '%s'";
+	$query = sprintf($query, $table, $eventid);
+	$result = databaseQuery($query);
+	return convertToOutputData($result);
 }
 
 function postNew($event) {
@@ -75,12 +105,22 @@ function postNew($event) {
 	if($row) $eventID = $row['ID'] + 1;
 	else $eventID = 100;
 
+	// Convert time to unix timestamp if possible
+	$dateAndTime = escapeChar($event->DateAndTime);
+	$dates = explode(" - ", $dateAndTime);
+	if (count($dates) > 0) {
+		$dateArray = array();
+		$dateArray['Start'] = strtotime($dates[0]); 
+		$dateArray['End'] = strtotime($dates[1]); 
+		$dateAndTime = json_encode($dateArray);
+	}
+
 	//echo "$event";
 	// ID - Title - Category - Description - DateAndTime - StartDate - StartTime - EndDate - EndTime - Price - Organizer - Venue - Contact - Flag(0)
 	// ID - Title - Description - Category - Venue - DateAndTime - Price - Organizer - Contact - Agenda - Flag(0)
 	$new_query = "INSERT INTO HAPZEVENTS (ID, Title, Description, Category, Venue, DateAndTime, Price, Organizer, Contact, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
 	$final_query = sprintf($new_query, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
-		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
+		escapeChar($event->Category), escapeChar($event->Venue), $dateAndTime, 
 		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
 		escapeChar($event->Agenda), $event->Flag);
 	$result = databaseQuery($final_query);
@@ -127,11 +167,21 @@ function updateEventDB($event) {
 			return invalidData();
 	}
 
+	// Convert time to unix timestamp if possible
+	$dateAndTime = escapeChar($event->DateAndTime);
+	$dates = explode(" - ", $dateAndTime);
+	if (count($dates) > 0) {
+		$dateArray = array();
+		$dateArray['Start'] = strtotime($dates[0]); 
+		$dateArray['End'] = strtotime($dates[1]); 
+		$dateAndTime = json_encode($dateArray);
+	}
+
 	// Assume all fields can be updated
 	$update_query = "UPDATE %s SET Title = '%s', Description = '%s', Category = '%s', Venue = '%s', DateAndTime = '%s', Price = '%s', Organizer = '%s', Contact = '%s', Agenda = '%s', Flag = %s WHERE ID = '%s'";
 	
 	$query = sprintf($update_query, $table, escapeChar($event->Title), escapeChar($event->Description), 
-		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
+		escapeChar($event->Category), escapeChar($event->Venue), $dateAndTime, 
 		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
 		escapeChar($event->Agenda), $event->Flag, $event->ID);
 
@@ -189,9 +239,13 @@ function getEvents($selection, $table, $clause) {
 	}
 
 	foreach ($returnThis as $key => $value) {
-		$convertDate = date(DATEFORMAT, $returnThis[$key]['DateAndTime']);
-		if ($convertDate !== false) {
-			$returnThis[$key]['DateAndTime'] = $convertDate;
+		$dateJSON = json_decode($returnThis[$key]['DateAndTime']);
+		if($dateJSON != null) {
+			$convertStartDate = date(DATEFORMAT, $dateJSON->Start);
+			$convertEndDate = date(DATEFORMAT, $dateJSON->End);
+			if ($convertStartDate !== false) {
+				$returnThis[$key]['DateAndTime'] = $convertStartDate." - ".$convertEndDate;
+			}
 		}
 	}
 
@@ -215,7 +269,7 @@ function invalidData() {
 	return $json;
 }
 
-function test() {
+function getEventsByTimeline() {
 	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) UNION (SELECT * FROM HAPZEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
 	$result = databaseQuery($query);
 
@@ -237,9 +291,6 @@ function test() {
 	$listOfEventsTomorrow = array();
 	$listOfEventsInAFewDays = array();
 	$listOfEventsAfterAFewDays = array();
-
-	$listOfUniqueEventTitle = array();
-
 
 	// Sort by date categories
 	while($row = $result->fetch_assoc()) {
@@ -353,7 +404,7 @@ function test() {
 		"Timeline" => $timeline
 	);
 	$json = json_encode($data);
-	echo $json;
+	return $json;
 
 	function dateCompare($a, $b) {
 		return ($a['DateAndTime'] < $b['DateAndTime']) ? -1 : 1;
@@ -361,28 +412,6 @@ function test() {
 }
 
 
-
-
-
-function getEventsByCategorySAMPLE($cat) {
-	switch($cat) {
-		case "0":
-			echo "hehe";
-			break;
-		case "1":
-			echo "hoho";
-			break;
-		case "2":
-			echo "haha";
-			break;
-		default:
-			return getInvalidData();
-	}
-}
-
-function getEventsByTimeline() {
-	return "Not done";
-}
 function getEventsByCategory() {
 	return "Not done";
 }

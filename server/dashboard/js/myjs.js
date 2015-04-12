@@ -2,7 +2,16 @@
 
 var NUSHAPZ_API = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 var TEST_API = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/test.php";
-var app = angular.module('nushapz-app', ['ngRoute', 'ngResource', 'datatables']);
+
+var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"];
+
+var DATE_DELIMITER = " - ";
+
+var app = angular.module('nushapz-app', ['ngRoute', 'ngResource', 'datatables', 'ui.bootstrap']);
 
 app.config(['$routeProvider', function($routeProvider){
 	$routeProvider.
@@ -24,7 +33,6 @@ app.config(['$routeProvider', function($routeProvider){
 		otherwise({
 			redirectTo: '/home'
 		});
-
 }]);
 
 app.controller('tableController', 
@@ -48,29 +56,172 @@ app.controller('tableController',
 
 app.controller('eventFormController', ['$scope', '$routeParams', 'eventService', '$location', 
 	function($scope, $routeParams, eventService, $location) {
-		if($routeParams.eventid != undefined) {
-			$scope.event = eventService.getEvent();
-			$scope.cancel = function() {
-				$location.path('/eventdata/:'+eventService.getTable());
-			};
+		$scope.cancel = function() {
+			$location.path('/eventdata/:'+eventService.getTable());
+		};
+		$scope.submit = function() {
+			$scope.event.DateAndTime = $scope.event.CurrentDateAndTime;
+			$.post(NUSHAPZ_API, {cmd:'update', event: JSON.stringify($scope.event)}, function(data){
+				if (data.Response == "Valid") {
+					alert("Updated Event " + $scope.event.ID + " - " + $scope.event.Title);
+				}
+			});
+		};
+		$scope.submitnewevent = function() {
+			$scope.event.DateAndTime = $scope.event.CurrentDateAndTime;
+			$.post(NUSHAPZ_API, {cmd:'post', event: JSON.stringify($scope.event)}, function(data){
+				if (data.Response == "Valid") {
+					alert("Created Event " + $scope.event.ID + " - " + $scope.event.Title);
+				}
+			});
+		};
+		$scope.setdate = function() {
+			if(!($scope.EndTime <= $scope.StartTime && $("#startdate").val() >= $("#enddate").val())) {
+				var st = new Date($scope.StartTime);
+				st = formatIntegerToLength(st.getHours(),2)+":"+formatIntegerToLength(st.getMinutes(),2);
+				var et = new Date($scope.EndTime);
+				et = formatIntegerToLength(et.getHours(),2)+":"+formatIntegerToLength(et.getMinutes(),2);
+				$scope.event.PreviousDateAndTime = $scope.event.DateAndTime;
+				$scope.event.CurrentDateAndTime = $("#startdate").val()+" "+st+DATE_DELIMITER+$("#enddate").val()+" "+et;
+			}
+		};
+		$scope.resetdate = function() {
+			if($scope.event.PreviousDateAndTime) {
+				$scope.event.CurrentDateAndTime = $scope.event.PreviousDateAndTime;
+			}
+		};
+		// Datepicker UI
+		$scope.today = function() {
+			var now = new Date();
+			now.setMinutes(0);
+			now.setMilliseconds(0);
+			var datenow = now.getDate()+"-"+monthNames[now.getMonth()]+"-"+now.getFullYear();
+			$scope.StartDate = $scope.EndDate = datenow;
+			$scope.StartTime = $scope.EndTime =  now;
+		};
+		
+		$scope.clear = function () {
+			$scope.StartDate = datenow;
+			$scope.EndDate = datenow;
+			$scope.StartTime = datenow;
+			$scope.dt = null;
+		};
 
-			$scope.submit = function() {
-				$.post(NUSHAPZ_API, {cmd:'update', event: JSON.stringify($scope.event)}, function(data){
-					if (data.Response == "Valid") {
-						alert("Updated Event " + $scope.event.ID + " - " + $scope.event.Title);
+		$scope.toggleMin = function() {
+			$scope.minDate = $scope.minDate ? null : new Date();
+		};
+		$scope.toggleMin();
+
+		$scope.openStartDate = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			$scope.startdateopened = true;
+		};
+		$scope.openEndDate = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			$scope.enddateopened = true;
+		};
+		
+		$scope.initdate = function() {
+			$scope.event.CurrentDateAndTime = $scope.event.DateAndTime;
+			if($scope.event.Flag == 0) {
+				var split = $scope.event.CurrentDateAndTime.split(" - ");
+				$scope.StartDate = split[0].split(",")[0];
+				$scope.StartTime = split[0];
+				$scope.EndDate = split[1].split(",")[0];
+				$scope.EndTime = split[1];
+			} else {
+				$scope.today();
+			}
+		};
+		$scope.delete = function() {
+			var deletepopup = confirm("Delete Event "+$scope.event.ID+" - "+$scope.event.Title+"?");
+			if(deletepopup) {
+				$.post(NUSHAPZ_API, {cmd:'delete', eventid: $scope.event.ID}, function(data){
+					if(data.Response == "Valid") {
+						alert("Deleted event");
+					} else {
+						alert("Error deleting event");
 					}
 				});
-			};
-		}
+			}
+		} 
+
+		$scope.formats = ['dd MMMM yyyy'];
+		$scope.format = $scope.formats[0];
+
+		$scope.event = eventService.getEvent();
+		$scope.initdate();
+		
+}]);
+
+app.controller('createEventController', ['$scope', '$routeParams', 'eventService', '$location', 
+	function($scope, $routeParams, eventService, $location) {
+		$scope.clearform = function() {
+			$scope.event = {ID: "New"};
+		};
+		$scope.submitnewevent = function() {
+			$scope.setdate();
+			$scope.event.DateAndTime = $scope.event.CurrentDateAndTime;
+			$.post(NUSHAPZ_API, {cmd:'post', event: JSON.stringify($scope.event)}, function(data){
+				if (data.Response == "Valid") {
+					alert("Created New Event - " + $scope.event.Title);
+				}
+			});
+		};
+		$scope.setdate = function() {
+			if(!($scope.EndTime <= $scope.StartTime && $("#startdate").val() >= $("#enddate").val())) {
+				var st = new Date($scope.StartTime);
+				st = formatIntegerToLength(st.getHours(),2)+":"+formatIntegerToLength(st.getMinutes(),2);
+				var et = new Date($scope.EndTime);
+				et = formatIntegerToLength(et.getHours(),2)+":"+formatIntegerToLength(et.getMinutes(),2);
+				$scope.event.PreviousDateAndTime = $scope.event.DateAndTime;
+				$scope.event.CurrentDateAndTime = $("#startdate").val()+" "+st+DATE_DELIMITER+$("#enddate").val()+" "+et;
+			}
+		};
+		// Datepicker UI
+		$scope.today = function() {
+			var now = new Date();
+			now.setMinutes(0);
+			now.setMilliseconds(0);
+			var datenow = now.getDate()+"-"+monthNames[now.getMonth()]+"-"+now.getFullYear();
+			$scope.StartDate = $scope.EndDate = datenow;
+			$scope.StartTime = $scope.EndTime =  now;
+		};
+		
+		$scope.clear = function () {
+			$scope.StartDate = datenow;
+			$scope.EndDate = datenow;
+			$scope.StartTime = datenow;
+			$scope.dt = null;
+		};
+
+		$scope.toggleMin = function() {
+			$scope.minDate = $scope.minDate ? null : new Date();
+		};
+		$scope.toggleMin();
+
+		$scope.openStartDate = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			$scope.startdateopened = true;
+		};
+		$scope.openEndDate = function($event) {
+			$event.preventDefault();
+			$event.stopPropagation();
+			$scope.enddateopened = true;
+		};
+		$scope.formats = ['dd MMMM yyyy'];
+		$scope.format = $scope.formats[0];
+		$scope.event = {};
+		$scope.today();
 }]);
 
 app.controller('homeController', ['$scope', 
 	function($scope){
 }])
 
-app.controller('createEventController', ['$scope', 
-	function($scope) {
-}]);
 
 app.factory('EventAPI', ['$resource', function($resource){
 	return $resource((NUSHAPZ_API+'?cmd=:cmd'), {cmd : '@cmd'}, {
@@ -86,6 +237,8 @@ app.service('eventService', function() {
 	this.setEvent = function(table, event) {
 		this.table = table;
 		this.event = event;
+
+
 	}
 
 	this.getEvent = function() {
@@ -96,6 +249,16 @@ app.service('eventService', function() {
 		return this.table;
 	}
 });
+
+// Utility functions
+function formatIntegerToLength(int, length) {
+	var s = int.toString();
+	while(s.length < length) {
+		s = "0"+s;
+	}
+	return s;
+}
+
 
 // Built-in JS
 $(function() {

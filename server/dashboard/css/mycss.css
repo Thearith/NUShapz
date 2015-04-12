@@ -4,20 +4,34 @@ table {
 	table-layout: fixed;
 }
 
+tr {
+    cursor: pointer;
+}
+
 td div{
 	height: 100px;
     overflow: hidden;
 }
 
 .dataTables_wrapper .dataTables_filter {
-  float: right;
-  text-align: right;
+    float: right;
+    text-align: right;
 }
 
 .dataTables_wrapper .dataTables_length {
-  float: left;
+    float: left;
 }
 
+tr.text-center{
+    display: none;
+}
+
+#deletebutton {
+    background:red;
+    color: white;
+    display:block;
+    float:right;
+}
 
 /*!
  * Start Bootstrap - SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)

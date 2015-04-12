@@ -32,6 +32,9 @@ switch($cmd) {
 	case "muahahahaha":
 		// echo test();
 		break; 
+	case "hapz":
+		echo getHAPZ();
+		break;
 	case "nuscoe":
 		echo getNUSCOE();
 		break;
@@ -50,50 +53,41 @@ switch($cmd) {
 	case "update":
 		echo updateEventDB($_POST["event"]);
 		break;
+	case "post":
+		echo postNew($_POST["event"]);
 	default:
 		break;
 }
 
-/*function postNew() {
-	if(isset($_POST["eventTitle"])) {
-		$eventTitle = $_POST["eventTitle"];
-	}
-	if(isset($_POST["eventCat"])) {
-		$eventCat = $_POST["eventCat"];
-	}
-	if(isset($_POST["eventDes"])) {
-		$eventDes = $_POST["eventDes"];
-	}
-	if(isset($_POST["eventEDT"])) {
-		$eventEDT = $_POST["eventEDT"];
-		$eventEDT = strtotime($eventEDT);
-	}
-	if(isset($_POST["eventOrg"])) {
-		$eventOrg = $_POST["eventOrg"];
-	}
-	if(isset($_POST["eventVen"])) {
-		$eventVen = $_POST["eventVen"];
-	}
-	if(isset($_POST["eventCont"])) {
-		$eventCont = $_POST["eventCont"];
-	}
-	if(isset($_POST["eventPrice"])) {
-		$eventPrice = $_POST["eventPrice"];
+function postNew($event) {
+	if(!isset($event)) {
+		return invalidData();
 	}
 
-	//@todo - randomise ID and Table??
-	$table;
-	$assigID;
+	$event = json_decode($event);
+	
+	$table = "HAPZEVENTS";
 
-	// ID - Title - Category - Description - EventDateTime - Organizer - Venue - Contact - Price - Flag
-	//$query = "INSERT INTO $table VALUES ('$assigID', '$eventTitle', '$eventDes', '$eventCat',
-	//		 '$eventVen', '$eventEDT', '$eventPrice', '$eventOrg', '$eventCont', '0') ";
-	//$result = databaseQuery($query);
+	$id_query = "SELECT * FROM HAPZEVENTS ORDER BY ID DESC";
+	$id_result = databaseQuery($id_query);
+	$row = $id_result->fetch_assoc();
+	$eventID;
+	if($row) $eventID = $row['ID'] + 1;
+	else $eventID = 100;
+
+	//echo "$event";
+	// ID - Title - Category - Description - DateAndTime - StartDate - StartTime - EndDate - EndTime - Price - Organizer - Venue - Contact - Flag(0)
+	// ID - Title - Description - Category - Venue - DateAndTime - Price - Organizer - Contact - Agenda - Flag(0)
+	$new_query = "INSERT INTO HAPZEVENTS (ID, Title, Description, Category, Venue, DateAndTime, Price, Organizer, Contact, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+	$final_query = sprintf($new_query, $eventID, escapeChar($event->Title), escapeChar($event->Description), 
+		escapeChar($event->Category), escapeChar($event->Venue), escapeChar($event->DateAndTime), 
+		escapeChar($event->Price), escapeChar($event->Organizer), escapeChar($event->Contact),
+		escapeChar($event->Agenda), $event->Flag);
+	$result = databaseQuery($final_query);
+
+	return convertToOutputData($result);
 }
-*/
-// function updateNUSCOE() {
-// 	updateEventDB("NUSCOEEVENTS");
-// }
+
 
 function dashboardLogin($login) {
 	if(isset($login)) {
@@ -118,10 +112,10 @@ function updateEventDB($event) {
 		case 1:
 		case 2:
 		case 3:
-		case 4:
-		case 5:
 			$table = "HAPZEVENTS";
 			break;
+		case 4:
+		case 5:
 		case 6:
 		case 7:
 			$table = "NUSCOEEVENTS";
@@ -148,7 +142,7 @@ function updateEventDB($event) {
 }
 
 function getAllEvents() {
-	$query = "(SELECT * FROM NUSCOEEVENTS) UNION (SELECT * FROM IVLEEVENTS) ";
+	$query = "(SELECT * FROM NUSCOEEVENTS) UNION (SELECT * FROM IVLEEVENTS) UNION (SELECT * FROM HAPZEVENTS) ";
 	$result = databaseQuery($query);
 	$returnThis = array();
 	while($row = $result->fetch_assoc()) {
@@ -158,13 +152,18 @@ function getAllEvents() {
 }
 
 function getNewEvents() {
-	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 1) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 1) ";
+	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 1) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 1) UNION (SELECT * FROM HAPZEVENTS WHERE Flag = 1) ";
 	$result = databaseQuery($query);
 	$returnThis = array();
 	while($row = $result->fetch_assoc()) {
 		array_push($returnThis, $row);
 	}
 	return convertToOutputData($returnThis);
+}
+
+function getHAPZ() {
+	$selection = "SELECT *";
+	return convertToOutputData(getEvents($selection, "HAPZEVENTS", null));
 }
 
 function getNUSCOE() {
@@ -217,7 +216,7 @@ function invalidData() {
 }
 
 function test() {
-	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
+	$query = "(SELECT * FROM NUSCOEEVENTS WHERE Flag = 0) UNION (SELECT * FROM IVLEEVENTS WHERE Flag = 0) UNION (SELECT * FROM HAPZEVENTS WHERE Flag = 0) ORDER BY DateAndTime ASC , Category ASC ";
 	$result = databaseQuery($query);
 
 	// TIMINGS

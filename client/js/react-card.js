@@ -13,7 +13,10 @@ var Logo;
 var NavbarForm;
 
 var Search;
+var SearchMobile;
+
 var NewEvent;
+var NewEventMobile;
 
 var Content;
 var Sidebar;
@@ -22,7 +25,11 @@ var Timeline;  //contains timeline sections
 
 var TimelineSection; //contains categories within the same timeline section
 var LeftSideBar;
+var CategoriesContainer
+
 var CategorySections;
+var NoEvents;
+
 var CategorySection; // contains events of the same category
 var EventSection;
 var Event;
@@ -91,10 +98,10 @@ var VENUE = 'Venue';
 
 // check null objects
 function isRealValue(obj){
-	return obj && obj !== "null" && obj!== "undefined";
+	return obj && obj !== "null" && obj!== "undefined" && obj !== "-";
 }
 
-function getDateJSON(date) {
+function getDateJSON(date, isLeftSidebar) {
 	if(date != null) {
 		day = date.getDate();
 		weekDay = WEEKDAYS[date.getDay()];
@@ -105,12 +112,56 @@ function getDateJSON(date) {
 			"month" : month
 		};
 	} else {
-		return {
-			"day" : PLUS,
-			"weekday": MORE,
-			"month" : ""
-		};
+		if(isLeftSidebar) {
+			return {
+				"day" : PLUS,
+				"weekday": MORE,
+				"month" : ""
+			};
+		} else {
+			return {
+				"day": "\"More",
+				"weekday": '',
+				"month": "Events\""
+			}
+		}
 	}
+}
+
+function getDate(index, isLeftSidebar) {
+	var date = new Date();
+	var json;
+
+	switch(index) {
+		case TODAY_INDEX:
+			json = getDateJSON(date, isLeftSidebar);
+			break;
+
+		case TOMORROW_INDEX:
+			var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+			json = getDateJSON(tmrDate, isLeftSidebar);
+			break;
+
+		case FEW_DAYS_INDEX:
+			var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
+			json = getDateJSON(fewDaysDate, isLeftSidebar);
+			break;
+
+		case MORE_INDEX:
+			json = getDateJSON(null, isLeftSidebar);
+			break;
+	}
+
+	return json;
+}
+
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    })
+    // or alternatively
+    // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
 
@@ -178,15 +229,62 @@ Loading = React.createClass({
 });
 
 App = React.createClass({
+	 getInitialState:function(){
+        return{
+            query:'',
+            filteredData: this.props.data
+        }
+    },
 	componentWillMount: function() {
 		console.log("App is initialized");
 	},
+
+	doSearch:function(queryText){
+        
+		var queryResult = [];
+		console.log("Searching in app");
+
+        for(i=0; i<TIMELINE_ARRAY.length; i++) {
+	        
+	        var timelineQueryResult=[];
+	        
+	        this.props.data[TIMELINE_ARRAY[i]].forEach(function(category){
+	        	var categoryQueryResult = [];
+	        	category[EVENTS].forEach(function(event) {
+	        		if(event[TITLE].toLowerCase().indexOf(queryText.toLowerCase())!=-1 ||
+	        		   event[ORGANIZER].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
+	        		   event[CATEGORY].toLowerCase().indexOf(queryText.toLowerCase()) != -1) // filtering title and organizer
+	        			categoryQueryResult.push(event);
+	        	});
+
+	        	timelineQueryResult.push({
+	        		"Category": category[CATEGORY],
+	        		"Events": categoryQueryResult
+	        	});
+	        });
+
+	        queryResult.push(timelineQueryResult);
+	    }
+
+	    timelines = {
+	    	"Today" : queryResult[TODAY_INDEX],
+	    	"Tomorrow": queryResult[TOMORROW_INDEX],
+	    	"InAFewDays": queryResult[FEW_DAYS_INDEX],
+	    	"AndMore": queryResult[MORE_INDEX]
+	    };
+ 
+        this.setState({
+            query:queryText,
+            filteredData: timelines
+        })
+    },
+
 	render: function() {
 		return (
 			<div>
-				<Navbar data={this.props.data} />
-				<ModalForm data={this.props.data} />
-				<MainContainer data={this.props.data} />
+				<Navbar query={this.state.query} doSearch={this.doSearch} />
+				<ModalForm />
+				<MainContainer data={this.state.filteredData} />
 			</div>
 		);
 	}
@@ -202,7 +300,10 @@ Navbar = React.createClass({
 				<nav>
     				<div className="nav-wrapper orange">
 						<Logo />
+						<Search query={this.props.query} doSearch={this.props.doSearch} />
+						<SearchMobile query={this.props.query} doSearch={this.props.doSearch}/>
 						<NavbarForm data={this.props.data} />
+						<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 					</div>
 				</nav>
 			</div>
@@ -223,33 +324,21 @@ Logo = React.createClass({
 	}
 });
 
-NavbarForm = React.createClass({
-	componentWillMount: function() {
-		console.log("NavbarForm is initialized");
-	},
-	render: function() {
-		return (
-			<ul id="nav-mobile" className="right hide-on-med-and-down">
-        		<li>
-        			<Search data={this.props.data} />
-        		</li>
-        		<li>
-        			<NewEvent />
-        		</li>
-        	</ul>
-        );
-	}
-});
-
 Search = React.createClass ({
 	componentWillMount: function() {
 		console.log("Search is initialized");
 	}, 
+	doSearch:function(){
+        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
+        this.props.doSearch(query);
+    },
 	render: function() {
 		return (
 			<form>
-	        	<div className="input-field search-outer left">
-	          		<input id="search" type="text" placeholder="Search for events" />
+	        	<div className="input-field search-outer left hide-on-small-only">
+	          		
+	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+
 	          		<label htmlFor="search">
 	          			<i className="mdi-action-search search-icon"></i>
 	          		</label>
@@ -259,18 +348,71 @@ Search = React.createClass ({
 	}
 });
 
+SearchMobile = React.createClass({
+	doSearch:function(){
+        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
+        this.props.doSearch(query);
+    },
+	render:function() {
+		return (
+			<div className="searchbar-mobile input-field hide-on-med-and-up">
+				<div className="searchbar-mobile-size"> 
+					<form>
+						<div className="input-field">
+							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+							<label for="search">
+								<i className="mdi-action-search search-icon"></i>
+							</label>
+						</div>
+					</form>
+				</div>
+			</div>
+		);
+	}
+});
+
+NavbarForm = React.createClass({
+	componentWillMount: function() {
+		console.log("NavbarForm is initialized");
+	},
+	render: function() {
+		return (
+				<div>
+        			<NewEvent />
+        			<MobileNav />
+ 				</div>
+        );
+	}
+});
+
 NewEvent = React.createClass({
 	componentWillMount: function() {
 		console.log("NewEvent is initialized");
 	},
 	render: function() {
 		return (
-			<div className="new-event">
-	        	<a className="modal-trigger" href={"#modal-newevent"}>
-	        		<i className="mdi-content-add left newevent-icon"></i>
-	        		<span className="newevent-text">NEW EVENT</span>
-	        	</a>
-			</div>
+			<ul id="nav-mobile" className="right hide-on-med-and-down">
+        		<li>
+					<div className="new-event">
+			        	<a className="modal-trigger" href={"#modal-newevent"}>
+			        		<i className="mdi-content-add left newevent-icon"></i>
+			        		<span className="newevent-text">NEW EVENT</span>
+			        	</a>
+					</div>
+				</li>
+        	</ul>
+		);
+	}
+});
+
+MobileNav = React.createClass({
+	render: function() {
+		return (
+			<div className="new-event newevent-padding-mobile right hide-on-med-and-up">
+				<a className="modal-trigger" href={"#modal-newevent"}>
+					<i className="mdi-content-add left newevent-icon"></i>
+				</a>
+ 			</div>
 		);
 	}
 });
@@ -400,7 +542,7 @@ Sidebar = React.createClass ({
 	},
 	render: function() {
 		return (
-			<div className="col s2">
+			<div className="col l2 m3 hide-on-small-only">
 				<div className="side-bar z-depth-1">
 					<div className="side-content">
 						<div className="browse-events">Browse Events</div>
@@ -435,7 +577,7 @@ Timeline = React.createClass({
 	},
 	render: function() {
 		return (	
-			<div className="col s10" id="content">
+			<div className="col l10 m9 s12" id="content">
 				<div className="section scrollspy" id="section-1">
 					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TODAY_INDEX]]}
 						index={0} />
@@ -460,16 +602,6 @@ Timeline = React.createClass({
 	}
 
 });
-	
-TimelineSections = React.createClass({
-	componentWillMount: function() {
-		console.log("TimelineSections is initialized");
-	},
-	
-	render: function() {
-		
-	}
-});
 
 // contains a timeline with leftsidebar and a lot of categorysections
 TimelineSection = React.createClass({
@@ -480,7 +612,7 @@ TimelineSection = React.createClass({
 		return (
 			<div className="row">
 				<LeftSideBar index = {this.props.index} />
-				<CategorySections categories = {this.props.categories} />
+				<CategoriesContainer categories = {this.props.categories} index={this.props.index} />
 			</div>
 		);
 	}
@@ -492,40 +624,52 @@ LeftSideBar = React.createClass({
 		console.log("LeftSideBar is initialized");
 	},
 	render: function() {
-		var date = new Date();
-		var json;
-
-		switch(this.props.index) {
-			case TODAY_INDEX:
-				json = getDateJSON(date);
-				break;
-
-			case TOMORROW_INDEX:
-				var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-				json = getDateJSON(tmrDate);
-				break;
-
-			case FEW_DAYS_INDEX:
-				var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
-				json = getDateJSON(fewDaysDate);
-				break;
-
-			case MORE_INDEX:
-				json = getDateJSON(null);
-				break;
-		}
-
+		var json = getDate(this.props.index, true);
 		console.log(json);
 
 		return (
-			<div className="col s2">
+			<div className="col l2 hide-on-med-and-down">
 				<div className="date-content center">
 					<div className="cal">
-						<div className="cal-day">{json[WEEKDAY].toUpperCase()}</div>
+						<div className="cal-day">{json[WEEKDAY]}</div>
 						<div className="cal-date">{json[DAY]}</div>
 						<div className="cal-month">{json[MONTH]}</div>
 					</div>
 				</div>
+			</div>
+		);
+	}
+});
+
+var CategoriesContainer = React.createClass({
+	hasEvents: function(categories) {
+		for(i in categories) {
+			if(categories[i][EVENTS].length > 0)
+				return true;
+		}
+
+		return false;
+	},
+	render: function() {
+		return (
+			<div>
+				{ this.hasEvents(this.props.categories) ?
+				  <CategorySections categories = {this.props.categories} /> :
+				  <NoEvents index={this.props.index}/>
+				}
+			</div>
+		);
+	}
+});
+
+NoEvents = React.createClass({
+
+	render: function() {
+		var json = getDate(this.props.index, false);
+		var date = json[DAY] + " " + json[MONTH];
+		return (
+			<div className="col l10 m12 section-category cards no-events">
+				No Events on {date}
 			</div>
 		);
 	}
@@ -543,7 +687,7 @@ CategorySections = React.createClass({
 		    );
 		});
 		return (
-			<div className="col s10 section-category cards">
+			<div className="col l10 m12 section-category cards">
 				{CategorySectionNode}
 			</div>
 		);
@@ -604,7 +748,7 @@ EventHeader = React.createClass({
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title">{this.props.category}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);
@@ -734,10 +878,8 @@ EventReveal = React.createClass({
 		return (
 			<div className="card-reveal">
 				<Title title={this.props.data[TITLE]} />
-				<hr />
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
-				<hr />
 
 				<EventContact contact={this.props.data[CONTACT]} />
 			</div>
@@ -751,10 +893,14 @@ Title = React.createClass({
 	},
 	render: function() {
 		return (
-			<span className="card-title grey-text text-darken-4">
-				{this.props.title}
-				<i className="mdi-navigation-close right"></i>
-			</span>
+			<div className="card-title grey-text text-darken-4 row">
+				<div className="col s11">
+					{this.props.title}
+				</div>
+				<div className="col s1">
+					<i className="mdi-navigation-close right"></i>
+				</div>
+			</div>
 		);
 	}
 });
@@ -766,7 +912,9 @@ EventDescription = React.createClass({
 		console.log("EventDescription is initialized");
 	},
 	render: function() {
-		 var rawMarkup = converter.makeHtml(this.props.description.toString());
+		var linkified = isRealValue(this.props.description) ?
+			urlify(this.props.description.toString()) : "No information given";
+		var rawMarkup = converter.makeHtml(linkified);
 		return (
 			<div className="description">
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
@@ -781,7 +929,7 @@ EventContact = React.createClass({
 	},
 	render: function() {
 		var contact = isRealValue(this.props.contact) ?
-				this.props.contact : NON_IDENTIFIED;
+				urlify(this.props.contact) : NON_IDENTIFIED;
 		return (
 			<div className="contact">
 				<i className="fa fa-envelope"></i>

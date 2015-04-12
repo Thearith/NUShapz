@@ -5,7 +5,7 @@ body {
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	font-family: 'Roboto', "Raleway", "Arvo";
+	font-family: "Roboto";
   	background-color: #F5F5F5;
 }
 
@@ -72,6 +72,13 @@ nav .nav-wrapper i {
 	margin-top: 5px;
 }
 
+@media screen and (min-width: 601px) and (max-width: 992px) {
+	nav .brand-logo {
+		left: 0% !important;
+		transform: translateX(0%) !important;
+	}  
+}
+
 .new-event {
 	background-color: #ff9800;
 	height: 56px;
@@ -87,13 +94,19 @@ nav .nav-wrapper i {
 }
 .newevent-text {
 	color: #ffffff;
-	font-weight: 500;
+	font-weight: 700;
 	font-size: 12px !important;
+}
+.newevent-padding-mobile {
+	padding: 0 15px;
+	width: 54px;
 }
 
 .search-outer {
 	background-color: #ff9800;
-	width: 900px;
+	width: 50%;
+	left: 50%;
+	transform: translateX(-50%)
 }
 .search-icon {
 	color: #212121 !important;
@@ -101,16 +114,16 @@ nav .nav-wrapper i {
 	font-size: 22px !important;
 }
 
-#search {
+input[type="text"]#search {
 	padding: 1px;
 	padding-left: 40px !important;
 	color: #212121;
 	border: 3px solid #ffffff !important;
 	border-radius: 10px;
     background-color: #ffffff;
-	width: 58%;
 	font-weight: 400;
 	font-size: 16px !important;
+	width: calc(100% - 42px);
 }
 
 ::-webkit-input-placeholder { 
@@ -127,6 +140,23 @@ nav .nav-wrapper i {
 
 :-ms-input-placeholder { 
 	color: #212121; 
+}
+
+.searchbar-mobile {
+	background-color: #ff9800;
+	width: 100%;
+	height: 50px;
+}
+
+.searchbar-mobile-offset {
+	height: 50px;
+	width: 100%;
+	background-color: transparent;
+}
+
+.searchbar-mobile-size {
+	width: 90%;
+	margin: 0px auto;
 }
 
 /*styling container*/
@@ -172,6 +202,7 @@ nav .nav-wrapper i {
 	height: 300px;
 	width: 90%;
 }
+
 .cal {
 	color: #212121;
 	font-weight: 500;
@@ -179,11 +210,13 @@ nav .nav-wrapper i {
 	border-radius: 30px;
 	/*color: #ff9800;*/
 }
+
 .cal-day {
 	margin: auto;
 	padding-bottom: 10px;
 	font-size: 20px;
 }
+
 .cal-date {
 	background-image: url("../image/calendar.png");
 	background-position: center top;
@@ -194,9 +227,10 @@ nav .nav-wrapper i {
 	margin: auto;
 	color:#ff9800;
 }
+
 .cal-month {
 	margin: auto;
-	font-size: 17px;
+	font-size: 20px;
 }
 
 /*styling card*/
@@ -228,12 +262,19 @@ nav .nav-wrapper i {
 .category-title {
 	position: absolute;
 	right: 0;
-	padding-top: 54px;
+	padding-top: 54px; /*77*/
 	padding-right: 16px;
 	color: #ffffff;
 	z-index: 999;
-	font-size: 50px;
-	font-weight: 900;
+	font-size: 84px; /*64*/
+	font-weight: 700;
+}
+
+@media screen and (min-width: 0px) and (max-width: 750px) {
+  .resize-on-medium { font-size: 64px; padding-top: 77px; }  
+}
+@media screen and (min-width: 0px) and (max-width: 450px) {
+  .resize-on-xs { font-size: 42px; padding-top: 94px; }  
 }
 
 .organizer p, .datetime p, .venue p{
@@ -277,14 +318,38 @@ nav .nav-wrapper i {
 	padding-left: 0px;
 }
 
-.card .card-reveal {
-	padding-left: 30px;
-	padding-right: 30px;
+.card .card-reveal{
+	padding-left: 5%;
+	padding-right: 5%;
 }
 
 .card-reveal {
 	display: none; 
 	transform: translateY(0px);
+}
+
+.card-title {
+	margin-bottom: 10px;
+	line-height: 35px;
+}
+
+.card-title i {
+	margin-right: 3%;
+}
+
+.card-title .col {
+	padding: 0px;
+}
+
+.description {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border-top: 1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5;
+}
+
+.contact {
+	margin-top: 10px;
 }
 
 .information {
@@ -317,6 +382,13 @@ nav .nav-wrapper i {
 	display: inline;
 	margin-left: 5px;
 	margin-bottom: 2%;
+}
+
+.no-events {
+	text-align: center;
+	font-size: 45px;
+	margin-top: 40px;
+	color: #666;
 }
 
 .card-footer p a {
@@ -352,8 +424,6 @@ nav .nav-wrapper i {
 	margin-left: 25px;
 }
 
-
-
 /*styling sidebar*/
 
 .side-bar {
@@ -374,14 +444,13 @@ nav .nav-wrapper i {
 }
 
 .browse-events {
-    margin: 30px 0px;
-    padding: 18px;
+    margin: 20px 0px;
+    padding: 20px;
     color: #000000;
     background-color: #ffcc80;
     font-weight: 500;
     font-size: 16px;
-    padding-left: 60px;
-    margin-bottom: 30px;
+    padding-left: 26px;
 }
 
 .browse-date {

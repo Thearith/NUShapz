@@ -420,11 +420,6 @@ ModalForm = React.createClass({
 			color: 'red',
 			fontSize: '14px'
 		};
-		var modalMessage = {
-			font-size: 12px; 
-			font-weight: 500;
-		}
-
 		var marginRightStyle = {
 			marginRight: '10px'
 		};
@@ -432,7 +427,7 @@ ModalForm = React.createClass({
 			<div id="modal-newevent" className="modal modal-fixed-footer">
 	    		<div className="modal-content">
 	      			<h4>Create an Event</h4>
-	      			<p style={modalMessage}>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
+	      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
 	      			<i style={redStyle}>This feature is not implemented yet. Stay tuned</i>
 
 	  				<div className="row">

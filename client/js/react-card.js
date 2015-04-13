@@ -383,7 +383,7 @@ NewEvent = React.createClass({
 					<div className="new-event right">
 			        	<a className="modal-trigger" href={"#modal-newevent"}>
 			        		<i className="mdi-content-add left newevent-icon"></i>
-			        		<span className="newevent-text">NEW EVENT</span>
+			        		<span className="newevent-text">CREATE EVENT</span>
 			        	</a>
 					</div>
 				</li>
@@ -420,6 +420,10 @@ ModalForm = React.createClass({
 			color: 'red',
 			fontSize: '14px'
 		};
+		var modalMessage = {
+			font-size: 12px; 
+			font-weight: 500;
+		}
 
 		var marginRightStyle = {
 			marginRight: '10px'
@@ -427,7 +431,8 @@ ModalForm = React.createClass({
 		return (
 			<div id="modal-newevent" className="modal modal-fixed-footer">
 	    		<div className="modal-content">
-	      			<h4>Submit an Event</h4>
+	      			<h4>Create an Event</h4>
+	      			<p style={modalMessage}>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
 	      			<i style={redStyle}>This feature is not implemented yet. Stay tuned</i>
 
 	  				<div className="row">
@@ -488,7 +493,7 @@ ModalForm = React.createClass({
 	    				</form>
 	  				</div>  
 
-	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be verified.</p>  
+	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz administrators first.</p>  
 
 	    		</div>
 

@@ -52,7 +52,8 @@ var EventDescription;
 var EventContact;
 
 
-var SERVER = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
+var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=api";
 //var SERVER = "timeline.json";
 
 //Timeline
@@ -926,6 +927,6 @@ EventContact = React.createClass({
 });
 
 React.render(
-  <Body url={SERVER} />,
+  <Body url={SERVER_GET_EVENTS} />,
   document.body
 );

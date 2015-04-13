@@ -79,10 +79,11 @@ var DAY = "day";
 var WEEKDAY = "weekday";
 var MONTH = "month";
 
-var CATEGORY = [
+var CATEGORY_ARRAY = [
 	"Arts",
 	"Competitions",
 	"Conferences",
+	"Fairs",
 	"Recreation",
 	"Recruitment",
 	"Social",
@@ -404,25 +405,51 @@ ModalForm = React.createClass({
   		
   		var title = React.findDOMNode(this.refs.title).value.trim();
     	var organizer = React.findDOMNode(this.refs.organizer).value.trim();
-    	var category = React.findDOMNode(this.refs.category).value.trim();
-    	var startDateTime = React.findDOMNode(this.refs.start_date).value.trim() + "|"
+    	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
+    	var description = React.findDOMNode(this.refs.description).value.trim();
+    	var startDateTime = React.findDOMNode(this.refs.start_date).value.trim() + ", "
     						+ React.findDOMNode(this.refs.start_time).value.trim();
-    	var endDateTime = React.findDOMNode(this.refs.end_date).value.trim() + "|"
+    	var endDateTime = React.findDOMNode(this.refs.end_date).value.trim() + ", "
     						+ React.findDOMNode(this.refs.end_time).value.trim();
     	var contact =   React.findDOMNode(this.refs.contact).value.trim();
     	var price = React.findDOMNode(this.refs.price).value.trim();
 
-  		var post = {
-  			"Title": title,
-  			"Organizer": organizer,
-  			"Category": category,
-  			"Start_DateAndTime": startDateTime,
-  			"End_DateAndTime": endDateTime,
-  			"Contact": contact,
-  			"Price": price
-  		};
+    	var post = {
+  			Title: title,
+  			Organizer: organizer,
+  			Description: description,
+  			Category: category,
+  			Start_DateAndTime: startDateTime,
+  			End_DateAndTime: endDateTime,
+  			Contact: contact,
+  			Price: price
+		};
 
-  		console.log(post);
+		console.log(post);
+
+  		$.ajax({
+        	url: this.props.urlPost,
+        	dataType: 'json',
+        	type: 'POST',
+        	data: post,
+        	success: function(data) {
+        		console.log("success post" + post);
+        	}.bind(this),
+        	error: function(xhr, status, err) {
+          		console.error(this.props.url, status, err.toString());
+        	}.bind(this)
+      	});
+
+      	React.findDOMNode(this.refs.title).value = '';
+    	React.findDOMNode(this.refs.organizer).value = '';
+    	React.findDOMNode(this.refs.category).value = '';
+    	React.findDOMNode(this.refs.description).value = '';
+    	React.findDOMNode(this.refs.start_date).value = '';
+    	React.findDOMNode(this.refs.start_time).value = '';
+    	React.findDOMNode(this.refs.end_date).value = '';
+    	React.findDOMNode(this.refs.end_time).value = '';
+    	React.findDOMNode(this.refs.contact).value = '';
+    	React.findDOMNode(this.refs.price).value = '';
   
 	},
 	componentDidMount: function() {
@@ -467,13 +494,13 @@ ModalForm = React.createClass({
 	        					</div>
 	      					</div>
 
-						      <div className="row">
+						    <div className="row">
 						        <div className="input-field col s12">
-						          <i className="mdi-action-subject prefix"></i>
-						          <textarea id="description" className="materialize-textarea"></textarea>
-						          <label htmlFor="description">Description</label>
+									<i className="mdi-action-subject prefix"></i>
+									<textarea id="description" className="materialize-textarea" ref="description"></textarea>
+									<label htmlFor="description">Description</label>
 						        </div>
-						      </div>
+						    </div>
 
 	      					<div className="row">
 	        					<div className="input-field col s6">
@@ -482,32 +509,28 @@ ModalForm = React.createClass({
 	          						<label htmlFor="event_venue">Venue</label>
 	        					</div>
 
-	        					<div className="input-field col s6">
-								    <i className="mdi-action-view-carousel prefix"></i>
-								    <select className="browser-default" ref="category">
-								      <option value="" disabled selected></option>
-=======
 	        					<div className="input-field col s1">
         						    <i className="mdi-action-view-agenda prefix"></i>
         							<label htmlFor="category"> </label>
         						</div>
+
 	        					<div className="input-field col s5">
-								    <select className="browser-default">
-								      <option value="" disabled selected>Category</option>
->>>>>>> c4b377ac6648222ed1101de825e244b396d31bad
-								      <option value="1">Arts</option>
-								      <option value="2">Competitions</option>
-								      <option value="3">Conferences</option>
-								      <option value="4">Fairs</option>
-								      <option value="5">Recreation</option>
-								      <option value="6">Recruitment</option>
-								      <option value="7">Social</option>
-								      <option value="8">Volunteering</option>
-								      <option value="9">Wellness</option>
-								      <option value="10">Workshops</option>
-								  	  <option value="11">Others</option>
+								    <select className="browser-default" ref="category" value="0">
+										<option value="" disabled selected>Category</option>
+										<option value="0">Arts</option>
+										<option value="1">Competitions</option>
+										<option value="2">Conferences</option>
+										<option value="3">Fairs</option>
+										<option value="4">Recreation</option>
+										<option value="5">Recruitment</option>
+										<option value="6">Social</option>
+										<option value="7">Volunteering</option>
+										<option value="8">Wellness</option>
+										<option value="9">Workshops</option>
+										<option value="10">Others</option>
 								    </select>
 	        					</div>
+
 	      					</div>
 
 	      					<div className="row">
@@ -531,6 +554,7 @@ ModalForm = React.createClass({
 	          						<i className="mdi-notification-event-note prefix"></i>  						
 	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date"/>
 	          						<label className="active" htmlFor="event_enddate">End Date</label>
+	          					</div>
 
 	        					<div className="input-field col s3">
 	          						<i className="mdi-device-access-time prefix"></i>

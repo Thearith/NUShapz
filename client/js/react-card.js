@@ -437,7 +437,7 @@ ModalForm = React.createClass({
 	        					<div className="input-field col s6">
 	          						<i className="mdi-action-announcement prefix"></i>
 	          						<input id="event_title" type="text" className="validate" />
-	          						<label htmlFor="event_title">Event Title</label>
+	          						<label htmlFor="event_title">Title</label>
 	        					</div>
 	        					<div className="input-field col s6">
 							        <i className="mdi-action-account-balance prefix"></i>
@@ -447,40 +447,63 @@ ModalForm = React.createClass({
 	      					</div>
 
 	      					<div className="row">
-	        					<div className="input-field col s12">
-	          						<i className="mdi-action-subject prefix"></i>
-	          						<textarea id="event_desc" className="materialize-textarea validate"></textarea>
-	          						<label htmlFor="event_desc">Event Description</label>
+	        					<div className="input-field col s6">
+	          						<i className="mdi-maps-place prefix"></i>
+	          						<input id="event_venue" type="text" className="validate" />
+	          						<label htmlFor="event_venue">Venue</label>
+	        					</div>
+	        					<div className="input-field col s6">
+								    <i className="mdi-action-view-carousel prefix"></i>
+								    <select>
+								      <option value="" disabled selected>Choose your option</option>
+								      <option value="1">Arts</option>
+								      <option value="2">Competitions</option>
+								      <option value="3">Conferences</option>
+								      <option value="4">Recreation</option>
+								      <option value="5">Recruitment</option>
+								      <option value="6">Social</option>
+								      <option value="7">Volunteering</option>
+								      <option value="8">Wellness</option>
+								      <option value="9">Workshops</option>
+								  	  <option value="10">Others</option>
+								    </select>
+								    <label htmlFor="event_category">Category</label>
 	        					</div>
 	      					</div>
 
 	      					<div className="row">
-	        					<div className="input-field col s4">
+	      						<div className="input-field col s6">
 	          						<i className="mdi-notification-event-note prefix"></i>  						
 	          						<input id="event_date" type="date" className="datepicker" />
-	          						<label className="active" htmlFor="event_date">Event Date</label>
+	          						<label className="active" htmlFor="event_date">Start Date</label>
 	        					</div>
-
-	        					<div className="input-field col s4">
+	        					<div className="input-field col s6">
 	          						<i className="mdi-device-access-time prefix"></i>
 	          						<input id="event_time" type="text" className="validate" />
 	          						<label htmlFor="event_time">Start Time</label>
 	        					</div>
-	        
-	        					<div className="input-field col s4">
-	          						<i className="mdi-maps-place prefix"></i>
-	          						<input id="event_venue" type="text" className="validate" />
-	          						<label htmlFor="event_venue">Event Venue</label>
+	      					</div>
+
+	      					<div className="row">
+	      						<div className="input-field col s6">
+	          						<i className="mdi-notification-event-note prefix"></i>  						
+	          						<input id="event_date" type="date" className="datepicker" />
+	          						<label className="active" htmlFor="event_date">End Date</label>
+	        					</div>
+	        					<div className="input-field col s6">
+	          						<i className="mdi-device-access-time prefix"></i>
+	          						<input id="event_time" type="text" className="validate" />
+	          						<label htmlFor="event_time">End Time</label>
 	        					</div>
 	      					</div>
 
 	      					<div className="row">
-	        					<div className="input-field col s4">
+	        					<div className="input-field col s6">
 	          						<i className="mdi-maps-local-atm prefix"></i>
 							        <input id="event_price" type="text" className="validate" />
 							        <label htmlFor="event_price">Price</label>
 	        					</div>
-						        <div className="input-field col s8">
+						        <div className="input-field col s6">
 						          	<i className="mdi-content-mail prefix"></i>
 						          	<input id="email" type="email" className="validate" />
 						          	<label htmlFor="email">Email</label>

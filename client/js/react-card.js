@@ -828,11 +828,16 @@ EventDateTime = React.createClass({
 });
 
 EventVenue = React.createClass({
+		
 	render: function() {
+		var venue = isRealValue(this.props.venue) ?
+				this.props.venue : NON_IDENTIFIED;
+		var venue = venue.length <= TITLE_MAXIMUM_LENGTH ?
+					venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="venue">
 				<i className="fa fa-map-marker"></i>
-				<p>{this.props.venue}</p>
+				<p>{venue}</p>
 			</div>
 		);
 	}
@@ -865,7 +870,7 @@ EventReveal = React.createClass({
 	render: function() {
 		return (
 			<div className="card-reveal">
-				<Title title={this.props.data[TITLE]} />
+				<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} />
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 
@@ -888,6 +893,8 @@ Title = React.createClass({
 				<div className="col s1">
 					<i className="mdi-navigation-close right"></i>
 				</div>
+
+				<EventInformation date={this.props.date} venue={this.props.venue} />
 			</div>
 		);
 	}
@@ -900,9 +907,11 @@ EventDescription = React.createClass({
 		console.log("EventDescription is initialized");
 	},
 	render: function() {
+		
 		var linkified = isRealValue(this.props.description) ?
 			urlify(this.props.description.toString()) : "No information given";
 		var rawMarkup = converter.makeHtml(linkified);
+
 		return (
 			<div className="description">
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />

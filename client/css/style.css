@@ -182,16 +182,19 @@ input[type="text"]#search {
 	-webkit-box-shadow: 0 0px 0px 0;
 	-moz-box-shadow: 0 0px 0px 0;
 
-  	-webkit-transition: all 1s ease;
-  	-moz-transition: all 1s ease;
-  	-ms-transition: all 1s ease;
-  	-o-transition: all 1s ease;
-  	transition: all 1s ease;
+  	-webkit-transition: all 0.5s ease;
+  	-moz-transition: all 0.5s ease;
+  	-ms-transition: all 0.5s ease;
+  	-o-transition: all 0.5s ease;
+  	transition: all 0.5s ease;
 }
 
 .card:hover {
-	-webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-  	-moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+
+	-webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  	-moz-box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  	box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+
 
   	-webkit-transition: all 0.5s ease;
   	-moz-transition: all 0.5s ease;
@@ -263,7 +266,7 @@ input[type="text"]#search {
   	border: 2px;
   	background: #fff;
 
-  	margin-bottom: 30px;
+  	margin-bottom: 50px;
 }
 
 .card .card-title {
@@ -284,6 +287,14 @@ input[type="text"]#search {
 	z-index: 999;
 	font-size: 84px; /*64*/
 	font-weight: 700;
+}
+
+.text-overflow {
+	text-overflow: ellipsis;
+}
+
+.event-card-title {
+	max-height: 48px;
 }
 
 @media screen and (min-width: 0px) and (max-width: 750px) {

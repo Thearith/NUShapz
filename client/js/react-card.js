@@ -79,6 +79,19 @@ var DAY = "day";
 var WEEKDAY = "weekday";
 var MONTH = "month";
 
+var CATEGORY = [
+	"Arts",
+	"Competitions",
+	"Conferences",
+	"Recreation",
+	"Recruitment",
+	"Social",
+	"Volunteering",
+	"Wellness",
+	"Workshops",
+	"Others"
+];
+
 var MORE = "And more";
 var PLUS = "+"; 
 
@@ -173,16 +186,12 @@ Body = React.createClass({
 	getInitialState: function() {
 		return {data: []};
 	},
-	componentWillMount: function() {
-		console.log("Body is initialized");
-	},
 	componentDidMount: function() {
 	    $.ajax({
 			type: 'GET',
 	     	url: this.props.url,
 	      	dataType: 'json',
 	      	success: function(data) {
-	      		console.log(data);
 	      		this.setState({data: data});
 	      	}.bind(this),
 	      	error: function(xhr, status, err) {
@@ -191,7 +200,6 @@ Body = React.createClass({
 	    });
 	},
 	render: function() {
-		console.log(Object.keys(this.state.data).length != 0);
 		return (
 			<div>
 				{ Object.keys(this.state.data).length != 0 ?  
@@ -235,14 +243,10 @@ App = React.createClass({
             filteredData: this.props.data
         }
     },
-	componentWillMount: function() {
-		console.log("App is initialized");
-	},
 
 	doSearch:function(queryText){
         
 		var queryResult = [];
-		console.log("Searching in app");
 
         for(i=0; i<TIMELINE_ARRAY.length; i++) {
 	        
@@ -294,9 +298,6 @@ App = React.createClass({
 });
 
 Navbar = React.createClass({
-	componentWillMount: function() {
-		console.log("Navbar is initialized");
-	},
 	render: function() {
 		return (
 			<div className="navbar-fixed">
@@ -315,9 +316,6 @@ Navbar = React.createClass({
 });
 
 Logo = React.createClass({
-	componentWillMount: function() {
-		console.log("Navbar is initialized");
-	},
 	render: function() {
 		return (
 			<a href="#" className="brand-logo logo-align">
@@ -339,7 +337,7 @@ SearchMobile = React.createClass({
 					<form>
 						<div className="input-field">
 							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-							<label for="search">
+							<label htmlFor="search">
 								<i className="mdi-action-search search-icon"></i>
 							</label>
 						</div>
@@ -351,9 +349,6 @@ SearchMobile = React.createClass({
 });
 
 Search = React.createClass ({
-	componentWillMount: function() {
-		console.log("Search is initialized");
-	}, 
 	doSearch:function(){
         var query=this.refs.searchInput.getDOMNode().value; // this is the search text
         this.props.doSearch(query);
@@ -374,9 +369,6 @@ Search = React.createClass ({
 
 
 NewEvent = React.createClass({
-	componentWillMount: function() {
-		console.log("NewEvent is initialized");
-	},
 	render: function() {
 		return (
 			<ul id="nav-mobile" className="right hide-on-small-only">
@@ -406,39 +398,32 @@ MobileNav = React.createClass({
 });
 
 ModalForm = React.createClass({
-	componentWillMount: function() {
-		console.log("ModalForm is initialized");
-	},
+	
 	handleSubmit: function(e) {
 		e.preventDefault();
-    	
-  //   	var author = React.findDOMNode(this.refs.author).value.trim();
-  //   	var text = React.findDOMNode(this.refs.text).value.trim();
-	 //    if (!text || !author) {
-	 //      return;
-	 //    }
+  		
+  		var title = React.findDOMNode(this.refs.title).value.trim();
+    	var organizer = React.findDOMNode(this.refs.organizer).value.trim();
+    	var category = React.findDOMNode(this.refs.category).value.trim();
+    	var startDateTime = React.findDOMNode(this.refs.start_date).value.trim() + "|"
+    						+ React.findDOMNode(this.refs.start_time).value.trim();
+    	var endDateTime = React.findDOMNode(this.refs.end_date).value.trim() + "|"
+    						+ React.findDOMNode(this.refs.end_time).value.trim();
+    	var contact =   React.findDOMNode(this.refs.contact).value.trim();
+    	var price = React.findDOMNode(this.refs.price).value.trim();
 
+  		var post = {
+  			"Title": title,
+  			"Organizer": organizer,
+  			"Category": category,
+  			"Start_DateAndTime": startDateTime,
+  			"End_DateAndTime": endDateTime,
+  			"Contact": contact,
+  			"Price": price
+  		};
 
-		// var post = {
-		// 	"Title"
-
-		// };
-
-		// $.ajax({
-	 //        url: this.props.urlPost,
-	 //        dataType: 'json',
-	 //        type: 'POST',
-	 //        data: post,
-	 //        success: function(data) {
-	        	
-
-
-	 //        }.bind(this),
-	        
-	 //        error: function(xhr, status, err) {
-	 //          console.error(this.props.urlPost, status, err.toString());
-	 //        }.bind(this)
-  //     	});
+  		console.log(post);
+  
 	},
 	componentDidMount: function() {
 		$('.modal-trigger').leanModal();
@@ -448,14 +433,18 @@ ModalForm = React.createClass({
   		});
   		$('select').material_select();
 	},
+	
 	render: function() {
+		
 		var redStyle = {
 			color: 'red',
 			fontSize: '14px'
 		};
+		
 		var marginRightStyle = {
 			marginRight: '10px'
 		};
+		
 		return (
 			<div id="modal-newevent" className="modal modal-fixed-footer">
 	    		<div className="modal-content">
@@ -473,7 +462,7 @@ ModalForm = React.createClass({
 	        					</div>
 	        					<div className="input-field col s6">
 							        <i className="mdi-action-account-balance prefix"></i>
-							        <input id="organisation" type="text" className="validate" ref="organization" />
+							        <input id="organisation" type="text" className="validate" ref="organizer" />
 							        <label htmlFor="organisation">Organisation</label>
 	        					</div>
 	      					</div>
@@ -487,7 +476,7 @@ ModalForm = React.createClass({
 
 	        					<div className="input-field col s6">
 								    <i className="mdi-action-view-carousel prefix"></i>
-								    <select>
+								    <select className="browser-default" ref="category">
 								      <option value="" disabled selected></option>
 								      <option value="1">Arts</option>
 								      <option value="2">Competitions</option>
@@ -507,41 +496,51 @@ ModalForm = React.createClass({
 	      					<div className="row">
 	      						<div className="input-field col s6">
 	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_date" type="date" className="datepicker" />
-	          						<label className="active" htmlFor="event_date">Start Date</label>
+	          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" />
+	          						<label className="active" htmlFor="event_startdate">Start Date</label>
 	        					</div>
 	        					<div className="input-field col s6">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_time" type="time" className="validate" />
-	          						<label htmlFor="event_time">Start Time</label>
+	          						<input id="event_starttime" type="time" className="validate" ref="start_time" />
+	          						<label htmlFor="event_starttime">Start Time</label>
 	        					</div>
 	      					</div>
 
 	      					<div className="row">
 	      						<div className="input-field col s6">
 	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_date" type="date" className="datepicker" />
-	          						<label className="active" htmlFor="event_date">End Date</label>
+	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date"/>
+	          						<label className="active" htmlFor="event_enddate">End Date</label>
 	        					</div>
 	        					<div className="input-field col s6">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_time" type="text" className="validate" />
-	          						<label htmlFor="event_time">End Time</label>
+	          						<input id="event_endtime" type="time" className="validate" ref="end_time" />
+	          						<label htmlFor="event_endtime">End Time</label>
 	        					</div>
 	      					</div>
 
 	      					<div className="row">
 	        					<div className="input-field col s6">
 	          						<i className="mdi-maps-local-atm prefix"></i>
-							        <input id="event_price" type="text" className="validate" />
+							        <input id="event_price" type="number" className="validate" ref="price"/>
 							        <label htmlFor="event_price">Price</label>
 	        					</div>
 						        <div className="input-field col s6">
 						          	<i className="mdi-content-mail prefix"></i>
-						          	<input id="email" type="email" className="validate" />
+						          	<input id="email" type="email" className="validate" ref="contact" />
 						          	<label htmlFor="email">Email</label>
 						        </div>
 						    </div>
+
+						    <button className=" modal-action modal-close btn grey lighten-1 waves-effect waves-light">
+			      				Cancel
+			      				<i className="mdi-navigation-close right"></i>
+			      			</button>
+					      	<button className=" modal-action modal-close btn orange lighten-2 waves-effect waves-light" style={marginRightStyle} value="Post">
+					      		Submit
+					      		<i className="mdi-content-send right"></i>
+					      	</button>
+
 	    				</form>
 	  				</div>  
 
@@ -549,25 +548,13 @@ ModalForm = React.createClass({
 
 	    		</div>
 
-			    <div className="modal-footer">
-			      	<button className=" modal-action modal-close btn grey lighten-1 waves-effect waves-light">
-			      		Cancel
-			      		<i className="mdi-navigation-close right"></i>
-			      	</button>
-			      	<button className=" modal-action modal-close btn orange lighten-2 waves-effect waves-light" style={marginRightStyle}>
-			      		Submit
-			      		<i className="mdi-content-send right"></i>
-			      	</button>
-			    </div>
+			    
 			</div>
 		);
 	}
 });
 
 MainContainer = React.createClass({
-	componentWillMount: function() {
-		console.log("MainContainer is initialized");
-	},
 	render: function() {
 		return (
 			<div className="container-fluid" id="main-container">
@@ -581,9 +568,6 @@ MainContainer = React.createClass({
 });
 
 Sidebar = React.createClass ({
-	componentWillMount: function() {
-		console.log("MainContainer is initialized");
-	},
 	render: function() {
 		return (
 			<div className="col l2 m3 hide-on-small-only">
@@ -613,9 +597,6 @@ Sidebar = React.createClass ({
 
 
 Timeline = React.createClass({
-	componentWillMount: function() {
-		console.log("Timeline is initialized");
-	},
 	componentDidMount: function() {
 		$('.scrollspy').scrollSpy();
 	},
@@ -649,9 +630,6 @@ Timeline = React.createClass({
 
 // contains a timeline with leftsidebar and a lot of categorysections
 TimelineSection = React.createClass({
-	componentWillMount: function() {
-		console.log("TimelineSection is initialized");
-	},
 	render: function() {
 		return (
 			<div className="row">
@@ -664,12 +642,9 @@ TimelineSection = React.createClass({
 
 
 LeftSideBar = React.createClass({
-	componentWillMount: function() {
-		console.log("LeftSideBar is initialized");
-	},
+
 	render: function() {
 		var json = getDate(this.props.index, true);
-		console.log(json);
 
 		return (
 			<div className="col l2 hide-on-med-and-down">
@@ -721,9 +696,6 @@ NoEvents = React.createClass({
 
 //contains a lot of categories
 CategorySections = React.createClass({
-	componentWillMount: function() {
-		console.log("CategorySections is initialized");
-	},
 	render: function() {
 		var CategorySectionNode = this.props.categories.map(function(category, index) {
       		return ( 
@@ -740,9 +712,6 @@ CategorySections = React.createClass({
 
 // contains a lot of events
 CategorySection = React.createClass({
-	componentWillMount: function() {
-		console.log("CategorySection is initialized");
-	},
 	render: function(){
 		return (
 			<EventSection events={this.props.category[EVENTS]} />
@@ -751,9 +720,6 @@ CategorySection = React.createClass({
 });
 
 EventSection = React.createClass({
-	componentWillMount: function() {
-		console.log("EventSection is initialized");
-	},
 	render: function() {
 		var EventNode = this.props.events.map(function(data, index) {
 			return (
@@ -770,9 +736,6 @@ EventSection = React.createClass({
 });
 
 Event = React.createClass({
-	componentWillMount: function() {
-		console.log("Event is initialized");
-	},
 	render: function() {
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
@@ -785,9 +748,6 @@ Event = React.createClass({
 });
 
 EventHeader = React.createClass({
-	componentWillMount: function() {
-		console.log("EventHeader is initialized");
-	},
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
@@ -800,9 +760,6 @@ EventHeader = React.createClass({
 });
 
 EventContent = React.createClass({
-	componentWillMount: function() {
-		console.log("EventContent is initialized");
-	},
 	render: function() {
 		return (
 			<div className="card-content">
@@ -815,9 +772,6 @@ EventContent = React.createClass({
 });
 
 EventTitle = React.createClass({
-	componentWillMount: function() {
-		console.log("EventTitle is initialized");
-	},
 	render: function() {
 		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
 					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
@@ -832,9 +786,6 @@ EventTitle = React.createClass({
 });
 
 EventOrganizer = React.createClass({
-	componentWillMount: function() {
-		console.log("EventOrganizer is initialized");
-	},
 	render: function() {
 		var organizer = isRealValue(this.props.organizer) ?
 			this.props.organizer : NON_IDENTIFIED;
@@ -848,9 +799,6 @@ EventOrganizer = React.createClass({
 });
 
 EventBottom = React.createClass({
-	componentWillMount: function() {
-		console.log("EventBottom is initialized");
-	},
 	render: function() {
 		return (
 			<div className="row">
@@ -920,9 +868,6 @@ EventStar = React.createClass({
 });
 
 EventReveal = React.createClass({
-	componentWillMount: function() {
-		console.log("EventReveal is initialized");
-	},
 	render: function() {
 		return (
 			<div className="card-reveal">
@@ -937,9 +882,6 @@ EventReveal = React.createClass({
 });
 
 Title = React.createClass({
-	componentWillMount: function() {
-		console.log("Title is initialized");
-	},
 	render: function() {
 		return (
 			<div className="card-title grey-text text-darken-4 row">
@@ -959,9 +901,6 @@ Title = React.createClass({
 var converter = new Showdown.converter();
 
 EventDescription = React.createClass({
-	componentWillMount: function() {
-		console.log("EventDescription is initialized");
-	},
 	render: function() {
 		
 		var linkified = isRealValue(this.props.description) ?
@@ -977,9 +916,6 @@ EventDescription = React.createClass({
 });
 
 EventContact = React.createClass({
-	componentWillMount: function() {
-		console.log("EventContact is initialized");
-	},
 	render: function() {
 		var contact = isRealValue(this.props.contact) ?
 				urlify(this.props.contact) : NON_IDENTIFIED;

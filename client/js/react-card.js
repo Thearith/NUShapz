@@ -467,6 +467,14 @@ ModalForm = React.createClass({
 	        					</div>
 	      					</div>
 
+						      <div className="row">
+						        <div className="input-field col s12">
+						          <i className="mdi-action-subject prefix"></i>
+						          <textarea id="description" className="materialize-textarea"></textarea>
+						          <label htmlFor="description">Description</label>
+						        </div>
+						      </div>
+
 	      					<div className="row">
 	        					<div className="input-field col s6">
 	          						<i className="mdi-maps-place prefix"></i>
@@ -478,18 +486,27 @@ ModalForm = React.createClass({
 								    <i className="mdi-action-view-carousel prefix"></i>
 								    <select className="browser-default" ref="category">
 								      <option value="" disabled selected></option>
+=======
+	        					<div className="input-field col s1">
+        						    <i className="mdi-action-view-agenda prefix"></i>
+        							<label htmlFor="category"> </label>
+        						</div>
+	        					<div className="input-field col s5">
+								    <select className="browser-default">
+								      <option value="" disabled selected>Category</option>
+>>>>>>> c4b377ac6648222ed1101de825e244b396d31bad
 								      <option value="1">Arts</option>
 								      <option value="2">Competitions</option>
 								      <option value="3">Conferences</option>
-								      <option value="4">Recreation</option>
-								      <option value="5">Recruitment</option>
-								      <option value="6">Social</option>
-								      <option value="7">Volunteering</option>
-								      <option value="8">Wellness</option>
-								      <option value="9">Workshops</option>
-								  	  <option value="10">Others</option>
+								      <option value="4">Fairs</option>
+								      <option value="5">Recreation</option>
+								      <option value="6">Recruitment</option>
+								      <option value="7">Social</option>
+								      <option value="8">Volunteering</option>
+								      <option value="9">Wellness</option>
+								      <option value="10">Workshops</option>
+								  	  <option value="11">Others</option>
 								    </select>
-								    <label htmlFor="event_category">Category</label>
 	        					</div>
 	      					</div>
 
@@ -498,12 +515,15 @@ ModalForm = React.createClass({
 	          						<i className="mdi-notification-event-note prefix"></i>  						
 	          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" />
 	          						<label className="active" htmlFor="event_startdate">Start Date</label>
-	        					</div>
-	        					<div className="input-field col s6">
+	          					</div>
+
+	          					<div className="input-field col s3">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_starttime" type="time" className="validate" ref="start_time" />
 	          						<label htmlFor="event_starttime">Start Time</label>
 	        					</div>
+	        					<div className="input-field col s3">
+	        						<input id="event_starttime" type="time" className="validate" ref="start_time" />
+	          					</div>	
 	      					</div>
 
 	      					<div className="row">
@@ -511,11 +531,13 @@ ModalForm = React.createClass({
 	          						<i className="mdi-notification-event-note prefix"></i>  						
 	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date"/>
 	          						<label className="active" htmlFor="event_enddate">End Date</label>
-	        					</div>
-	        					<div className="input-field col s6">
+
+	        					<div className="input-field col s3">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_endtime" type="time" className="validate" ref="end_time" />
 	          						<label htmlFor="event_endtime">End Time</label>
+	        					</div>
+	        					<div className="input-field col s3">
+	        						<input id="event_endtime" type="time" className="validate" ref="end_time" />
 	        					</div>
 	      					</div>
 
@@ -544,7 +566,7 @@ ModalForm = React.createClass({
 	    				</form>
 	  				</div>  
 
-	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz administrators first.</p>  
+	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>  
 
 	    		</div>
 

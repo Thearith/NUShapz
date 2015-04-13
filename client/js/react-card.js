@@ -239,10 +239,6 @@ App = React.createClass({
 		console.log("App is initialized");
 	},
 
-	onSwitch: function(switchVal) {
-		
-	}
-
 	doSearch:function(queryText){
         
 		var queryResult = [];
@@ -309,7 +305,6 @@ Navbar = React.createClass({
 						<Logo />
 						<NewEvent data={this.props.data} />
 						<Search query={this.props.query} doSearch={this.props.doSearch} />
-						<Switch switchVal={this.props.switchVal} onSwitch={this.props.doSwitch}/>
 						<MobileNav data={this.props.data} />
 					</div>
 					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
@@ -374,25 +369,6 @@ Search = React.createClass ({
 	        	</div>
 			</form>
 		);
-	}
-});
-
-Switch = React.createClass( {
-	onSwitch: function() {
-		var switchVal = this.refs.switchInput.getDOMNode().value;
-		this.props.doSwitch(query);
-	},
-	render: function() {
-		return (
-			<div className="switch">
-	    		<label>
-	      			Off
-	      			<input type="checkbox" ref="switchInput" onChange={this.onSwitch} value={this.props.switchVal}>
-	      			<span className="lever"></span>
-	      			On
-	    		</label>
-	  		</div>
-  		);
 	}
 });
 
@@ -518,11 +494,11 @@ ModalForm = React.createClass({
 	    		</div>
 
 			    <div className="modal-footer">
-			      	<button className=" modal-action modal-close btn red waves-effect waves-red">
+			      	<button className=" modal-action modal-close btn grey lighten-1 waves-effect waves-light">
 			      		Cancel
 			      		<i className="mdi-navigation-close right"></i>
 			      	</button>
-			      	<button className=" modal-action modal-close btn waves-effect waves-light" style={marginRightStyle}>
+			      	<button className=" modal-action modal-close btn orange lighten-2 waves-effect waves-light" style={marginRightStyle}>
 			      		Submit
 			      		<i className="mdi-content-send right"></i>
 			      	</button>

@@ -157,12 +157,11 @@ function getDate(index, isLeftSidebar) {
 }
 
 function urlify(text) {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
-    })
-    // or alternatively
-    // return text.replace(urlRegex, '<a href="$1">$1</a>')
+    // var urlRegex = /(https?:\/\/[^\s]+)/g;
+    // return text.replace(urlRegex, function(url) {
+    //     return '<a href="' + url + '">' + url + '</a>';
+    // })
+	return text;
 }
 
 
@@ -240,6 +239,10 @@ App = React.createClass({
 		console.log("App is initialized");
 	},
 
+	onSwitch: function(switchVal) {
+		
+	}
+
 	doSearch:function(queryText){
         
 		var queryResult = [];
@@ -254,7 +257,9 @@ App = React.createClass({
 	        	category[EVENTS].forEach(function(event) {
 	        		if(event[TITLE].toLowerCase().indexOf(queryText.toLowerCase())!=-1 ||
 	        		   event[ORGANIZER].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[CATEGORY].toLowerCase().indexOf(queryText.toLowerCase()) != -1) // filtering title and organizer
+	        		   event[CATEGORY].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
+	        		   event[DESCRIPTION].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
+	        		   event[DATETIME].toLowerCase().indexOf(queryText.toLowerCase()) != -1) 
 	        			categoryQueryResult.push(event);
 	        	});
 
@@ -283,7 +288,7 @@ App = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<Navbar query={this.state.query} doSearch={this.doSearch} />
+				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm />
 				<MainContainer data={this.state.filteredData} />
@@ -304,6 +309,7 @@ Navbar = React.createClass({
 						<Logo />
 						<NewEvent data={this.props.data} />
 						<Search query={this.props.query} doSearch={this.props.doSearch} />
+						<Switch switchVal={this.props.switchVal} onSwitch={this.props.doSwitch}/>
 						<MobileNav data={this.props.data} />
 					</div>
 					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
@@ -368,6 +374,25 @@ Search = React.createClass ({
 	        	</div>
 			</form>
 		);
+	}
+});
+
+Switch = React.createClass( {
+	onSwitch: function() {
+		var switchVal = this.refs.switchInput.getDOMNode().value;
+		this.props.doSwitch(query);
+	},
+	render: function() {
+		return (
+			<div className="switch">
+	    		<label>
+	      			Off
+	      			<input type="checkbox" ref="switchInput" onChange={this.onSwitch} value={this.props.switchVal}>
+	      			<span className="lever"></span>
+	      			On
+	    		</label>
+	  		</div>
+  		);
 	}
 });
 

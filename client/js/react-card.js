@@ -484,11 +484,13 @@ ModalForm = React.createClass({
 	          						<input id="event_venue" type="text" className="validate" ref="venue" />
 	          						<label htmlFor="event_venue">Venue</label>
 	        					</div>
-
-	        					<div className="input-field col s6">
-								    <i className="mdi-action-view-carousel prefix"></i>
-								    <select>
-								      <option value="" disabled selected></option>
+	        					<div className="input-field col s1">
+        						    <i className="mdi-action-view-agenda prefix"></i>
+        							<label htmlFor="category"> </label>
+        						</div>
+	        					<div className="input-field col s5">
+								    <select className="browser-default">
+								      <option value="" disabled selected>Category</option>
 								      <option value="1">Arts</option>
 								      <option value="2">Competitions</option>
 								      <option value="3">Conferences</option>
@@ -500,7 +502,6 @@ ModalForm = React.createClass({
 								      <option value="9">Workshops</option>
 								  	  <option value="10">Others</option>
 								    </select>
-								    <label htmlFor="event_category">Category</label>
 	        					</div>
 	      					</div>
 

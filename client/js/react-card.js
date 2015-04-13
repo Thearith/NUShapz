@@ -195,7 +195,7 @@ Body = React.createClass({
 		return (
 			<div>
 				{ Object.keys(this.state.data).length != 0 ?  
-					<App data={this.state.data[TIMELINE]} /> : 
+					<App data={this.state.data[TIMELINE]} urlPost={this.props.urlPost}/> : 
 					<Loading /> 
 				}
 			</div>
@@ -286,7 +286,7 @@ App = React.createClass({
 			<div>
 				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
-				<ModalForm />
+				<ModalForm urlPost={this.props.urlPost}/>
 				<MainContainer data={this.state.filteredData} />
 			</div>
 		);
@@ -409,12 +409,44 @@ ModalForm = React.createClass({
 	componentWillMount: function() {
 		console.log("ModalForm is initialized");
 	},
+	handleSubmit: function(e) {
+		e.preventDefault();
+    	
+  //   	var author = React.findDOMNode(this.refs.author).value.trim();
+  //   	var text = React.findDOMNode(this.refs.text).value.trim();
+	 //    if (!text || !author) {
+	 //      return;
+	 //    }
+
+
+		// var post = {
+		// 	"Title"
+
+		// };
+
+		// $.ajax({
+	 //        url: this.props.urlPost,
+	 //        dataType: 'json',
+	 //        type: 'POST',
+	 //        data: post,
+	 //        success: function(data) {
+	        	
+
+
+	 //        }.bind(this),
+	        
+	 //        error: function(xhr, status, err) {
+	 //          console.error(this.props.urlPost, status, err.toString());
+	 //        }.bind(this)
+  //     	});
+	},
 	componentDidMount: function() {
 		$('.modal-trigger').leanModal();
 		$('.datepicker').pickadate({
    			selectMonths: true, // Creates a dropdown to control month
     		selectYears: 3 // Creates a dropdown of 15 years to control year
   		});
+  		$('select').material_select();
 	},
 	render: function() {
 		var redStyle = {
@@ -432,16 +464,16 @@ ModalForm = React.createClass({
 	      			<i style={redStyle}>This feature is not implemented yet. Stay tuned</i>
 
 	  				<div className="row">
-	    				<form className="col s12">
+	    				<form className="col s12" onSubmit={this.handleSubmit}>
 	      					<div className="row">
 	        					<div className="input-field col s6">
 	          						<i className="mdi-action-announcement prefix"></i>
-	          						<input id="event_title" type="text" className="validate" />
+	          						<input id="event_title" type="text" className="validate" ref="title"/>
 	          						<label htmlFor="event_title">Title</label>
 	        					</div>
 	        					<div className="input-field col s6">
 							        <i className="mdi-action-account-balance prefix"></i>
-							        <input id="organisation" type="text" className="validate" />
+							        <input id="organisation" type="text" className="validate" ref="organization" />
 							        <label htmlFor="organisation">Organisation</label>
 	        					</div>
 	      					</div>
@@ -449,13 +481,14 @@ ModalForm = React.createClass({
 	      					<div className="row">
 	        					<div className="input-field col s6">
 	          						<i className="mdi-maps-place prefix"></i>
-	          						<input id="event_venue" type="text" className="validate" />
+	          						<input id="event_venue" type="text" className="validate" ref="venue" />
 	          						<label htmlFor="event_venue">Venue</label>
 	        					</div>
+
 	        					<div className="input-field col s6">
 								    <i className="mdi-action-view-carousel prefix"></i>
 								    <select>
-								      <option value="" disabled selected>Choose your option</option>
+								      <option value="" disabled selected></option>
 								      <option value="1">Arts</option>
 								      <option value="2">Competitions</option>
 								      <option value="3">Conferences</option>
@@ -479,7 +512,7 @@ ModalForm = React.createClass({
 	        					</div>
 	        					<div className="input-field col s6">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_time" type="text" className="validate" />
+	          						<input id="event_time" type="time" className="validate" />
 	          						<label htmlFor="event_time">Start Time</label>
 	        					</div>
 	      					</div>
@@ -960,6 +993,6 @@ EventContact = React.createClass({
 });
 
 React.render(
-  <Body url={SERVER_GET_EVENTS} />,
+  <Body url={SERVER_GET_EVENTS} urlPost={SERVER_POST_EVENT}/>,
   document.body
 );

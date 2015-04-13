@@ -284,6 +284,7 @@ App = React.createClass({
 		return (
 			<div>
 				<Navbar query={this.state.query} doSearch={this.doSearch} />
+				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm />
 				<MainContainer data={this.state.filteredData} />
 			</div>
@@ -301,11 +302,11 @@ Navbar = React.createClass({
 				<nav>
     				<div className="nav-wrapper orange">
 						<Logo />
+						<NewEvent data={this.props.data} />
 						<Search query={this.props.query} doSearch={this.props.doSearch} />
-						<SearchMobile query={this.props.query} doSearch={this.props.doSearch}/>
-						<NavbarForm data={this.props.data} />
-						<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
+						<MobileNav data={this.props.data} />
 					</div>
+					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
 				</nav>
 			</div>
 		);
@@ -321,30 +322,6 @@ Logo = React.createClass({
 			<a href="#" className="brand-logo logo-align">
 				<img src={"image/logo.png"} id="logo" />
 			</a>
-		);
-	}
-});
-
-Search = React.createClass ({
-	componentWillMount: function() {
-		console.log("Search is initialized");
-	}, 
-	doSearch:function(){
-        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
-        this.props.doSearch(query);
-    },
-	render: function() {
-		return (
-			<form>
-	        	<div className="input-field search-outer left hide-on-small-only">
-	          		
-	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-
-	          		<label htmlFor="search">
-	          			<i className="mdi-action-search search-icon"></i>
-	          		</label>
-	        	</div>
-			</form>
 		);
 	}
 });
@@ -372,19 +349,28 @@ SearchMobile = React.createClass({
 	}
 });
 
-NavbarForm = React.createClass({
+Search = React.createClass ({
 	componentWillMount: function() {
-		console.log("NavbarForm is initialized");
-	},
+		console.log("Search is initialized");
+	}, 
+	doSearch:function(){
+        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
+        this.props.doSearch(query);
+    },
 	render: function() {
 		return (
-				<div>
-        			<NewEvent />
-        			<MobileNav />
- 				</div>
-        );
+			<form>
+	        	<div className="input-field search-outer hide-on-small-only">    		
+	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+	          		<label htmlFor="search">
+	          			<i className="mdi-action-search search-icon"></i>
+	          		</label>
+	        	</div>
+			</form>
+		);
 	}
 });
+
 
 NewEvent = React.createClass({
 	componentWillMount: function() {
@@ -392,9 +378,9 @@ NewEvent = React.createClass({
 	},
 	render: function() {
 		return (
-			<ul id="nav-mobile" className="right hide-on-med-and-down">
+			<ul id="nav-mobile" className="right hide-on-small-only">
         		<li>
-					<div className="new-event">
+					<div className="new-event right">
 			        	<a className="modal-trigger" href={"#modal-newevent"}>
 			        		<i className="mdi-content-add left newevent-icon"></i>
 			        		<span className="newevent-text">NEW EVENT</span>

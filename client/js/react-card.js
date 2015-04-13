@@ -436,7 +436,7 @@ ModalForm = React.createClass({
         		console.log("success post" + post);
         	}.bind(this),
         	error: function(xhr, status, err) {
-          		console.error(this.props.url, status, err.toString());
+          		console.error(this.props.urlPost, status, err.toString());
         	}.bind(this)
       	});
 

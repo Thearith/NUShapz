@@ -238,6 +238,16 @@ function getAllEvents() {
 	while($row = $result->fetch_assoc()) {
 		array_push($returnThis, $row);
 	}
+	foreach ($returnThis as $key => $value) {
+		$dateJSON = json_decode($returnThis[$key]['DateAndTime']);
+		if($dateJSON != null) {
+			$convertStartDate = date(DATEFORMAT, $dateJSON->Start);
+			$convertEndDate = date(DATEFORMAT, $dateJSON->End);
+			if ($convertStartDate !== false) {
+				$returnThis[$key]['DateAndTime'] = $convertStartDate." - ".$convertEndDate;
+			}
+		}
+	}
 	return convertToOutputData($returnThis);
 }
 

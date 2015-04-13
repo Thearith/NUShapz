@@ -103,7 +103,6 @@ nav .nav-wrapper i {
 }
 
 .search-outer {
-	background-color: #ff9800;
 	width: 50%;
 	left: 50%;
 	transform: translateX(-50%)
@@ -115,11 +114,12 @@ nav .nav-wrapper i {
 }
 
 input[type="text"]#search {
-	padding: 1px;
+	padding-top: 6px;
+	padding-bottom: 7px;
 	padding-left: 40px !important;
 	color: #212121;
-	border: 3px solid #ffffff !important;
-	border-radius: 10px;
+	border: 1px solid #ffffff !important;
+	border-radius: 2px;
     background-color: #ffffff;
 	font-weight: 400;
 	font-size: 16px !important;

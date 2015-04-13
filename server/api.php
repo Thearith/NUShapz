@@ -331,21 +331,34 @@ function getEventsByTimeline() {
 	$listOfEventsTomorrow = array();
 	$listOfEventsInAFewDays = array();
 	$listOfEventsAfterAFewDays = array();
+	$listOfEventsOngoing = array();
 
 	// Sort by date categories
 	while($row = $result->fetch_assoc()) {
 		// Sort by date categories
 		$eventdatajson = json_decode($row['DateAndTime']);
 		$eventstartdate = $eventdatajson->Start;
+		$eventenddate = $eventdatajson->End;
+		// startdate today
 		if ($eventstartdate >= $beginOfDay && $eventstartdate <= $endOfDay) {
 			array_push($listOfEventsToday, $row);
-		} else if ($eventstartdate >= $beginOfTomorrow && $eventstartdate <= $endOfTomorrow) {
+		} 
+		// startdate tomorrow
+		else if ($eventstartdate >= $beginOfTomorrow && $eventstartdate <= $endOfTomorrow) {
 			array_push($listOfEventsTomorrow, $row);
-		} else if ($eventstartdate >= $beginOfDayAfterTomorrow && $eventstartdate <= $endOfThisWeek) {
+		}
+		// startdate from day after tomorrow to end of the week
+		else if ($eventstartdate >= $beginOfDayAfterTomorrow && $eventstartdate <= $endOfThisWeek) {
 			array_push($listOfEventsInAFewDays, $row);
-		} else if ($eventstartdate >= $afterThisWeek){
+		}
+		// startdate after end of the week
+		else if ($eventstartdate >= $afterThisWeek){
 			array_push($listOfEventsAfterAFewDays, $row);
 		} 
+		// ongoing
+		else if ($eventstartdate < $beginOfDay && $eventenddate > $currentTime) {
+			array_push($listOfEventsOngoing, $row);
+		}
 	}
 
 	// More sorting by date and time
@@ -353,6 +366,8 @@ function getEventsByTimeline() {
 	usort($listOfEventsTomorrow, "dateCompare");
 	usort($listOfEventsInAFewDays, "dateCompare");
 	usort($listOfEventsAfterAFewDays, "dateCompare");
+
+	usort($listOfEventsOngoing, "titleCompare");
 
 	// Convert to normal time format
 	foreach($listOfEventsToday as $key => $event) {
@@ -371,12 +386,17 @@ function getEventsByTimeline() {
 		$datejson = json_decode($event['DateAndTime']);
 		$listOfEventsAfterAFewDays[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
 	}
+	foreach($listOfEventsOngoing as $key => $event) {
+		$datejson = json_decode($event['DateAndTime']);
+		$listOfEventsOngoing[$key]['DateAndTime'] = date(DATEFORMAT, $datejson->Start)." - ".date(DATEFORMAT, $datejson->End);
+	}
 
 	$timeline = array(
 			"Today" => array(),
 			"Tomorrow" => array(),
 			"InAFewDays" => array(),
-			"AndMore" => array()
+			"AndMore" => array(),
+			"Ongoing" => array()
 		);
 
 	// Sort by Category
@@ -384,9 +404,10 @@ function getEventsByTimeline() {
 		"Arts", "Workshops", "Conferences",
 		"Competitions", "Fairs", "Recreation",
 		"Wellness", "Social", "Volunteering",
-		"Recruitments", "Others");
+		// "Recruitments", 
+		"Others");
 
-
+	// Sort Today by cat
 	foreach($categoryList as $cat) {
 		$catarray = array(
 			'Category' => $cat,
@@ -399,7 +420,7 @@ function getEventsByTimeline() {
 		}
 		array_push($timeline["Today"],$catarray);
 	}
-
+	// Sort Tomorrow by cat
 	foreach($categoryList as $cat) {
 		$catarray = array(
 			'Category' => $cat,
@@ -412,7 +433,7 @@ function getEventsByTimeline() {
 		}
 		array_push($timeline["Tomorrow"],$catarray);
 	}
-
+	// Sort In a few days by cat
 	foreach($categoryList as $cat) {
 		$catarray = array(
 			'Category' => $cat,
@@ -425,7 +446,7 @@ function getEventsByTimeline() {
 		}
 		array_push($timeline["InAFewDays"],$catarray);
 	}
-
+	// Sort And More by cat
 	foreach($categoryList as $cat) {
 		$catarray = array(
 			'Category' => $cat,
@@ -438,6 +459,19 @@ function getEventsByTimeline() {
 		}
 		array_push($timeline["AndMore"],$catarray);
 	}
+	// Sort Ongoing by cat
+	foreach($categoryList as $cat) {
+		$catarray = array(
+			'Category' => $cat,
+			'Events' => array());
+
+		foreach($listOfEventsOngoing as $event) {
+			if($event['Category'] == $cat) {
+				array_push($catarray[Events], $event);
+			}
+		}
+		array_push($timeline["Ongoing"],$catarray);
+	}
 
 	$data = array(
 		"Response" => "Valid",
@@ -448,6 +482,9 @@ function getEventsByTimeline() {
 
 	function dateCompare($a, $b) {
 		return ($a['DateAndTime'] < $b['DateAndTime']) ? -1 : 1;
+	}
+	function titleCompare($a, $b) {
+		return substr($a['Title'],0,1) < substr($b['Title'],0,1) ? -1 : 1;
 	}
 }
 

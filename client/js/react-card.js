@@ -502,13 +502,14 @@ ModalForm = React.createClass({
 								      <option value="1">Arts</option>
 								      <option value="2">Competitions</option>
 								      <option value="3">Conferences</option>
-								      <option value="4">Recreation</option>
-								      <option value="5">Recruitment</option>
-								      <option value="6">Social</option>
-								      <option value="7">Volunteering</option>
-								      <option value="8">Wellness</option>
-								      <option value="9">Workshops</option>
-								  	  <option value="10">Others</option>
+								      <option value="4">Fairs</option>
+								      <option value="5">Recreation</option>
+								      <option value="6">Recruitment</option>
+								      <option value="7">Social</option>
+								      <option value="8">Volunteering</option>
+								      <option value="9">Wellness</option>
+								      <option value="10">Workshops</option>
+								  	  <option value="11">Others</option>
 								    </select>
 	        					</div>
 	      					</div>
@@ -519,10 +520,12 @@ ModalForm = React.createClass({
 	          						<input id="event_date_start" type="date" className="datepicker" />
 	          						<label className="active" htmlFor="event_date_start">Start Date</label>
 	        					</div>
-	        					<div className="input-field col s6">
+	        					<div className="input-field col s3">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_time_start" type="time" className="validate" />
 	          						<label htmlFor="event_time_start">Start Time</label>
+	        					</div>
+	        					<div className="input-field col s3">
+	        						<input id="event_time_start" type="time" className="validate" />
 	        					</div>
 	      					</div>
 
@@ -532,10 +535,12 @@ ModalForm = React.createClass({
 	          						<input id="event_date" type="date" className="datepicker" />
 	          						<label className="active" htmlFor="event_date_end">End Date</label>
 	        					</div>
-	        					<div className="input-field col s6">
+	        					<div className="input-field col s3">
 	          						<i className="mdi-device-access-time prefix"></i>
-	          						<input id="event_time" type="text" className="validate" />
 	          						<label htmlFor="event_time_end">End Time</label>
+	        					</div>
+	        					<div className="input-field col s3">
+	        						<input id="event_time" type="time" className="validate" />
 	        					</div>
 	      					</div>
 

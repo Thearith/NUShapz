@@ -554,7 +554,7 @@ ModalForm = React.createClass({
 	    				</form>
 	  				</div>  
 
-	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz administrators first.</p>  
+	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>  
 
 	    		</div>
 

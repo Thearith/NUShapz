@@ -53,7 +53,7 @@ var EventContact;
 
 
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
-var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=api";
+var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 //var SERVER = "timeline.json";
 
 //Timeline
@@ -415,14 +415,14 @@ ModalForm = React.createClass({
     	var price = React.findDOMNode(this.refs.price).value.trim();
 
     	var post = {
-  			Title: title,
-  			Organizer: organizer,
-  			Description: description,
-  			Category: category,
-  			Start_DateAndTime: startDateTime,
-  			End_DateAndTime: endDateTime,
-  			Contact: contact,
-  			Price: price
+  			"Title": title,
+  			"Organizer": organizer,
+  			"Description": description,
+  			"Category": category,
+  			"Start_DateAndTime": startDateTime,
+  			"End_DateAndTime": endDateTime,
+  			"Contact": contact,
+  			"Price": price
 		};
 
 		console.log(post);
@@ -431,7 +431,10 @@ ModalForm = React.createClass({
         	url: this.props.urlPost,
         	dataType: 'json',
         	type: 'POST',
-        	data: post,
+        	data: {
+        		"cmd": "createnewevent",
+        		"event": JSON.stringify(post)
+        	},
         	success: function(data) {
         		console.log("success post" + post);
         	}.bind(this),

@@ -69,7 +69,7 @@ var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","R
 var IMAGE_PATH = "../image/category/";
 
 // constants
-var TITLE_MAXIMUM_LENGTH = 40;
+var TITLE_MAXIMUM_LENGTH = 30;
 var NON_IDENTIFIED = "N/A";
 
 // date
@@ -985,7 +985,7 @@ Event = React.createClass({
 	render: function() {
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventHeader category={this.props.data[CATEGORY]} />
+				<EventHeader category={this.props.data[CATEGORY]} title={this.props.data[TITLE]} />
 				<EventContent data={this.props.data} />
 				<EventReveal data={this.props.data} />
 			</div>
@@ -996,9 +996,11 @@ Event = React.createClass({
 EventHeader = React.createClass({
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
+		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
+					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs">{title}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);
@@ -1009,7 +1011,7 @@ EventContent = React.createClass({
 	render: function() {
 		return (
 			<div className="card-content">
-				<EventTitle title={this.props.data[TITLE]} />
+				<EventTitle organizer={this.props.data[CATEGORY]} />
 				<EventOrganizer organizer={this.props.data[ORGANIZER]} />
 				<EventBottom data={this.props.data} />
 			</div>
@@ -1019,11 +1021,9 @@ EventContent = React.createClass({
 
 EventTitle = React.createClass({
 	render: function() {
-		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
-					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<span className="card-title activator grey-text text-darken-4">
-				{title} 
+				{this.props.organizer} 
 				<i className="mdi-navigation-more-vert right"></i>
 			</span>
 		);
@@ -1082,8 +1082,8 @@ EventVenue = React.createClass({
 	render: function() {
 		var venue = isRealValue(this.props.venue) ?
 				this.props.venue : NON_IDENTIFIED;
-		var venue = venue.length <= TITLE_MAXIMUM_LENGTH ?
-					venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
+		// var venue = venue.length <= 100 ?
+		// 			venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="venue">
 				<i className="fa fa-map-marker"></i>

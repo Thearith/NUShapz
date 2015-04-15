@@ -510,6 +510,28 @@ a.active .browse-date {
 	margin-top: -35px !important;
 }
 
+.modal-content {
+	padding-bottom: 15px !important;
+}
+
+.closeSign {
+	font-size: 30px;
+}
+
+.button-container {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+select.browser-default {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.errorText {
+	margin-left: 42px;
+}
+
 .picker__frame {
 	position: absolute !important;
 	top: 5px !important;

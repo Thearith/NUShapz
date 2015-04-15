@@ -399,55 +399,149 @@ MobileNav = React.createClass({
 });
 
 ModalForm = React.createClass({
+
+	getInitialState: function() {
+		return {
+			errorTitle : '',
+			errorOrganizer: '',
+			errorCategory: '',
+			errorDescription: '',
+			errorContact: '',
+			errorPrice: '',
+			errorVenue: ''
+		};
+	},
+
+	handleClick: function(e) {
+		React.findDOMNode(this.refs.title).value = '';
+    	React.findDOMNode(this.refs.organizer).value = '';
+    	React.findDOMNode(this.refs.category).value = '';
+    	React.findDOMNode(this.refs.description).value = '';
+    	React.findDOMNode(this.refs.start_date).value = '';
+    	React.findDOMNode(this.refs.start_time).value = '';
+    	React.findDOMNode(this.refs.end_date).value = '';
+    	React.findDOMNode(this.refs.end_time).value = '';
+    	React.findDOMNode(this.refs.contact).value = '';
+    	React.findDOMNode(this.refs.price).value = '';
+
+    	this.setState({
+    		errorTitle : '',
+			errorOrganizer: '',
+			errorCategory: '',
+			errorVenue: '',
+			errorDescription: '',
+			errorContact: '',
+			errorPrice: '',
+    	});
+
+    	$('#modal-newevent').closeModal();
+	},
 	
 	handleSubmit: function(e) {
 		e.preventDefault();
   		
-  		var title = React.findDOMNode(this.refs.title).value.trim();
-    	var organizer = React.findDOMNode(this.refs.organizer).value.trim();
+  		var title 			= React.findDOMNode(this.refs.title).value.trim();
+    	var organizer 		= React.findDOMNode(this.refs.organizer).value.trim();
+    	var description 	= React.findDOMNode(this.refs.description).value.trim();
+    	var startDateTime 	= React.findDOMNode(this.refs.start_date).value.trim() + ", "
+    							+ React.findDOMNode(this.refs.start_time).value.trim();
+    	var venue  			= React.findDOMNode(this.refs.venue).value.trim();
+    	var endDateTime 	= React.findDOMNode(this.refs.end_date).value.trim() + ", "
+    							+ React.findDOMNode(this.refs.end_time).value.trim();
+    	var contact 		=   React.findDOMNode(this.refs.contact).value.trim();
+    	var price 			= React.findDOMNode(this.refs.price).value.trim();
+
+    	var isError = false;
+
+    	if(!title) {
+    		this.setState({errorTitle: "Title field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorTitle: ""});
+    	}
+
+    	if(!organizer) {
+    		this.setState({errorOrganizer: "Title field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorOrganizer: ""});
+    	}
+
+    	if(!React.findDOMNode(this.refs.category).value) {
+    		this.setState({errorCategory: "Category field is not picked"});
+    		isError = true;
+    	} else {
+    		this.setState({errorCategory: ""});
+    	}
+
+    	if(!description) {
+    		this.setState({errorDescription: "Description field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorDescription: ""});
+    	}
+
+    	if(!venue) {
+    		this.setState({errorVenue: "Venue field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorVenue: ""});
+    	}
+
+    	if(!contact) {
+    		this.setState({errorContact: "Contact field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorContact: ""});
+    	}
+
+    	if(!price) {
+    		this.setState({errorPrice: "Price field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorPrice: ""});
+    	}
+
+    	if(isError)
+    		return;
+
     	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
-    	var description = React.findDOMNode(this.refs.description).value.trim();
-    	var startDateTime = React.findDOMNode(this.refs.start_date).value.trim() + ", "
-    						+ React.findDOMNode(this.refs.start_time).value.trim();
-    	var endDateTime = React.findDOMNode(this.refs.end_date).value.trim() + ", "
-    						+ React.findDOMNode(this.refs.end_time).value.trim();
-    	var contact =   React.findDOMNode(this.refs.contact).value.trim();
-    	var price = React.findDOMNode(this.refs.price).value.trim();
 
     	var post = {
   			"Title": title,
   			"Organizer": organizer,
   			"Description": description,
   			"Category": category,
+  			"Venue": venue,
   			"Start_DateAndTime": startDateTime,
   			"End_DateAndTime": endDateTime,
   			"Contact": contact,
   			"Price": price
 		};
 
-		console.log(post);
-
-  		$.ajax({
-        	url: this.props.urlPost,
-        	dataType: 'json',
-        	type: 'POST',
-        	data: {
-        		"cmd": "createnewevent",
-        		"event": JSON.stringify(post)
-        	},
-        	success: function(data) {
-        		console.log("success post" + post);
-        	}.bind(this),
-        	error: function(xhr, status, err) {
-          		console.error(this.props.urlPost, status, err.toString());
-        	}.bind(this)
-      	});
+  		// $.ajax({
+    //     	url: this.props.urlPost,
+    //     	dataType: 'json',
+    //     	type: 'POST',
+    //     	data: {
+    //     		"cmd": "createnewevent",
+    //     		"event": JSON.stringify(post)
+    //     	},
+    //     	success: function(data) {
+    //     		console.log("success post" + post);
+   	//          alert("Your event has been submitted for approval. Thank you");
+    //     	}.bind(this),
+    //     	error: function(xhr, status, err) {
+    //       		console.error(this.props.urlPost, status, err.toString());
+    //     	}.bind(this)
+    //   	});
 
       	React.findDOMNode(this.refs.title).value = '';
     	React.findDOMNode(this.refs.organizer).value = '';
     	React.findDOMNode(this.refs.category).value = '';
     	React.findDOMNode(this.refs.description).value = '';
     	React.findDOMNode(this.refs.start_date).value = '';
+    	React.findDOMNode(this.refs.venue).value = '';
     	React.findDOMNode(this.refs.start_time).value = '';
     	React.findDOMNode(this.refs.end_date).value = '';
     	React.findDOMNode(this.refs.end_time).value = '';
@@ -478,9 +572,16 @@ ModalForm = React.createClass({
 		return (
 			<div id="modal-newevent" className="modal modal-fixed-footer">
 	    		<div className="modal-content">
-	      			<h4>Create an Event</h4>
+	      			<div className="row">
+	      				<div className="col s10">
+	      					<h4>Create an Event</h4>
+	      				</div>
+	      				<div className="col s2">
+	      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
+	      				</div>
+	      			</div>
 	      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
-	      			<i style={redStyle}>This feature is not implemented yet. Stay tuned</i>
+
 
 	  				<div className="row">
 	    				<form className="col s12" onSubmit={this.handleSubmit}>
@@ -489,11 +590,13 @@ ModalForm = React.createClass({
 	          						<i className="mdi-action-announcement prefix"></i>
 	          						<input id="event_title" type="text" className="validate" ref="title"/>
 	          						<label htmlFor="event_title">Title</label>
+	          						<i style={redStyle} className="errorText">{this.state.errorTitle}</i>
 	        					</div>
 	        					<div className="input-field col s6">
 							        <i className="mdi-action-account-balance prefix"></i>
 							        <input id="organisation" type="text" className="validate" ref="organizer" />
 							        <label htmlFor="organisation">Organisation</label>
+							        <i style={redStyle} className="errorText">{this.state.errorOrganizer}</i>
 	        					</div>
 	      					</div>
 
@@ -502,6 +605,7 @@ ModalForm = React.createClass({
 									<i className="mdi-action-subject prefix"></i>
 									<textarea id="description" className="materialize-textarea" ref="description"></textarea>
 									<label htmlFor="description">Description</label>
+									<i style={redStyle} className="errorText">{this.state.errorDescription}</i>
 						        </div>
 						    </div>
 
@@ -510,6 +614,7 @@ ModalForm = React.createClass({
 	          						<i className="mdi-maps-place prefix"></i>
 	          						<input id="event_venue" type="text" className="validate" ref="venue" />
 	          						<label htmlFor="event_venue">Venue</label>
+	          						<i style={redStyle} className="errorText">{this.state.errorVenue}</i>
 	        					</div>
 
 	        					<div className="input-field col s1">
@@ -518,7 +623,7 @@ ModalForm = React.createClass({
         						</div>
 
 	        					<div className="input-field col s5">
-								    <select className="browser-default" ref="category" value="0">
+								    <select className="browser-default" ref="category" value="">
 										<option value="" disabled selected>Category</option>
 										<option value="0">Arts</option>
 										<option value="1">Competitions</option>
@@ -532,6 +637,7 @@ ModalForm = React.createClass({
 										<option value="9">Workshops</option>
 										<option value="10">Others</option>
 								    </select>
+								    <i style={redStyle}>{this.state.errorCategory}</i>
 	        					</div>
 
 	      					</div>
@@ -573,27 +679,29 @@ ModalForm = React.createClass({
 	          						<i className="mdi-maps-local-atm prefix"></i>
 							        <input id="event_price" type="number" className="validate" ref="price"/>
 							        <label htmlFor="event_price">Price</label>
+							        <i style={redStyle} className="errorText">{this.state.errorPrice}</i>
 	        					</div>
+
 						        <div className="input-field col s6">
 						          	<i className="mdi-content-mail prefix"></i>
 						          	<input id="email" type="email" className="validate" ref="contact" />
 						          	<label htmlFor="email">Email</label>
+						          	<i style={redStyle} className="errorText">{this.state.errorContact}</i>
 						        </div>
 						    </div>
 
-						    <button className=" modal-action modal-close btn grey lighten-1 waves-effect waves-light">
-			      				Cancel
-			      				<i className="mdi-navigation-close right"></i>
-			      			</button>
-					      	<button className=" modal-action modal-close btn orange lighten-2 waves-effect waves-light" style={marginRightStyle} value="Post">
-					      		Submit
-					      		<i className="mdi-content-send right"></i>
-					      	</button>
+						    <p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>
+
+						    <div className="button-container">
+
+						      	<button className="modal-action btn orange lighten-2 waves-effect waves-light right" style={marginRightStyle} value="Post">
+						      		Submit
+						      		<i className="mdi-content-send right"></i>
+						      	</button>
+						    </div>
 
 	    				</form>
-	  				</div>  
-
-	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>  
+	  				</div>    
 
 	    		</div>
 

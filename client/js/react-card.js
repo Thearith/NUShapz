@@ -706,7 +706,7 @@ ModalForm = React.createClass({
         						</div>
 
 	        					<div className="input-field col s5">
-								    <select className="browser-default" ref="category" value="">
+								    <select className="browser-default" ref="category">
 										<option value="" disabled selected>Category</option>
 										<option value="0">Arts</option>
 										<option value="1">Competitions</option>

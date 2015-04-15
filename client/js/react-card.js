@@ -406,6 +406,10 @@ ModalForm = React.createClass({
 			errorOrganizer: '',
 			errorCategory: '',
 			errorDescription: '',
+			errorStartDate: '',
+			errorStartTime: '',
+			errorEndDate: '',
+			errorEndTime: '',
 			errorContact: '',
 			errorPrice: '',
 			errorVenue: ''
@@ -432,9 +436,53 @@ ModalForm = React.createClass({
 			errorDescription: '',
 			errorContact: '',
 			errorPrice: '',
+			errorStartDate: '',
+			errorStartTime: '',
+			errorEndDate: '',
+			errorEndTime: ''
     	});
 
     	$('#modal-newevent').closeModal();
+	},
+
+	verifyDate: function() {
+
+		var startDate  		= React.findDOMNode(this.refs.start_date).value.trim();
+    	var startTime 		= React.findDOMNode(this.refs.start_time).value.trim();
+    	var endDate 		= React.findDOMNode(this.refs.end_date).value.trim();
+    	var endTime         = React.findDOMNode(this.refs.end_time).value.trim();
+
+		if(!startDate || !endDate || !startTime || !endTime)
+			return;
+
+		// compare date
+    	var startDateTime = startDate.trim() + " " + "12:00:00";
+    	var endDateTime   = endDate.trim() + " " + "12:00:00";
+
+    	var startD = new Date(startDateTime).getTime();
+    	var endD = new Date(endDateTime).getTime();
+
+    	if(startD > endD) {
+    		this.setState({errorEndDate: "End Date < Start Date"});
+	    } else {
+	    	this.setState({errorEndDate: ""});
+	    	
+	    	if(startD == endD) {
+	    		if(!startTime || !endTime)
+	    			return;
+
+	    		var startDateTime = startDate.trim() + " " + startTime.trim();
+    			var endDateTime   = endDate.trim() + " " + endTime.trim();
+
+    			var startD = new Date(startDateTime).getTime();
+    			var endD = new Date(endDateTime).getTime();
+
+    			if(startD > endD) 
+    				this.setState({errorEndTime: "End Time < Start Time"});
+    			else 
+    				this.setState({errorEndTime: ""});
+	    	}
+	    }
 	},
 	
 	handleSubmit: function(e) {
@@ -442,12 +490,12 @@ ModalForm = React.createClass({
   		
   		var title 			= React.findDOMNode(this.refs.title).value.trim();
     	var organizer 		= React.findDOMNode(this.refs.organizer).value.trim();
+    	var startDate  		= React.findDOMNode(this.refs.start_date).value.trim();
+    	var startTime 		= React.findDOMNode(this.refs.start_time).value.trim();
+    	var endDate 		= React.findDOMNode(this.refs.end_date).value.trim();
+    	var endTime         = React.findDOMNode(this.refs.end_time).value.trim();
     	var description 	= React.findDOMNode(this.refs.description).value.trim();
-    	var startDateTime 	= React.findDOMNode(this.refs.start_date).value.trim() + ", "
-    							+ React.findDOMNode(this.refs.start_time).value.trim();
     	var venue  			= React.findDOMNode(this.refs.venue).value.trim();
-    	var endDateTime 	= React.findDOMNode(this.refs.end_date).value.trim() + ", "
-    							+ React.findDOMNode(this.refs.end_time).value.trim();
     	var contact 		=   React.findDOMNode(this.refs.contact).value.trim();
     	var price 			= React.findDOMNode(this.refs.price).value.trim();
 
@@ -502,10 +550,45 @@ ModalForm = React.createClass({
     		this.setState({errorPrice: ""});
     	}
 
+
+    	if(!startDate) {
+    		this.setState({errorStartDate: "Start Date field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorStartDate: ""});
+    	}
+
+    	if(!startTime) {
+    		this.setState({errorStartTime: "Start Time field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorStartTime: ""});
+    	}
+
+    	if(!endDate) {
+    		this.setState({errorEndDate: "End Date field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorEndDate: ""});
+    	}
+
+    	if(!endTime) {
+    		this.setState({errorEndTime: "End Time field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorEndTime: ""});
+    	}
+
+    	this.verifyDate();
+
     	if(isError)
     		return;
 
     	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
+    	var startDateTime 	= React.findDOMNode(this.refs.start_date).value.trim() + ", "
+    							+ React.findDOMNode(this.refs.start_time).value.trim();
+    	var endDateTime 	= React.findDOMNode(this.refs.end_date).value.trim() + ", "
+    							+ React.findDOMNode(this.refs.end_time).value.trim();
 
     	var post = {
   			"Title": title,
@@ -645,8 +728,9 @@ ModalForm = React.createClass({
 	      					<div className="row">
 	      						<div className="input-field col s6">
 	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" />
+	          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate}/>
 	          						<label className="active" htmlFor="event_startdate">Start Date</label>
+	          						<i style={redStyle} className="errorText">{this.state.errorStartDate}</i>
 	          					</div>
 
 	          					<div className="input-field col s3">
@@ -654,15 +738,18 @@ ModalForm = React.createClass({
 	          						<label htmlFor="event_starttime">Start Time</label>
 	        					</div>
 	        					<div className="input-field col s3">
-	        						<input id="event_starttime" type="time" className="validate" ref="start_time" />
+	        						<input id="event_starttime" type="time" className="validate" ref="start_time" onChange={this.verifyDate} />
 	          					</div>	
+
+	          					<i style={redStyle} className="errorTime">{this.state.errorStartTime}</i>
 	      					</div>
 
 	      					<div className="row">
 	      						<div className="input-field col s6">
 	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date"/>
+	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate}/>
 	          						<label className="active" htmlFor="event_enddate">End Date</label>
+	          						<i style={redStyle} className="errorText">{this.state.errorEndDate}</i>
 	          					</div>
 
 	        					<div className="input-field col s3">
@@ -670,8 +757,10 @@ ModalForm = React.createClass({
 	          						<label htmlFor="event_endtime">End Time</label>
 	        					</div>
 	        					<div className="input-field col s3">
-	        						<input id="event_endtime" type="time" className="validate" ref="end_time" />
+	        						<input id="event_endtime" type="time" className="validate" ref="end_time" onChange={this.verifyDate} />
 	        					</div>
+
+	          					<i style={redStyle} className="errorTime">{this.state.errorEndTime}</i>
 	      					</div>
 
 	      					<div className="row">

@@ -266,7 +266,7 @@ input[type="text"]#search {
   	border: 2px;
   	background: #fff;
 
-  	margin-bottom: 50px;
+  	margin-bottom: 60px;
 }
 
 .card .card-title {
@@ -516,6 +516,10 @@ a.active .browse-date {
 
 .closeSign {
 	font-size: 30px;
+}
+
+.errorTime {
+	margin-left: 55px;
 }
 
 .button-container {

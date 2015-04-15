@@ -509,7 +509,7 @@ ModalForm = React.createClass({
     	}
 
     	if(!organizer) {
-    		this.setState({errorOrganizer: "Title field is empty"});
+    		this.setState({errorOrganizer: "Organizer field is empty"});
     		isError = true;
     	} else {
     		this.setState({errorOrganizer: ""});

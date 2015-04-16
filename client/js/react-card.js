@@ -61,8 +61,9 @@ var TIMELINE = "Timeline";
 var TODAY_INDEX = 0;
 var TOMORROW_INDEX = 1;
 var FEW_DAYS_INDEX = 2;
-var MORE_INDEX = 3;
-var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "AndMore"];
+var ONGOING_INDEX = 3;
+var MORE_INDEX = 4;
+var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "Ongoing", "AndMore"];
 
 //Category
 var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
@@ -116,7 +117,7 @@ function isRealValue(obj){
 	return obj && obj !== "null" && obj!== "undefined" && obj !== "-";
 }
 
-function getDateJSON(date, isLeftSidebar) {
+function getDateJSON(date, isLeftSidebar, index) {
 	if(date != null) {
 		day = date.getDate();
 		weekDay = WEEKDAYS[date.getDay()];
@@ -128,16 +129,32 @@ function getDateJSON(date, isLeftSidebar) {
 		};
 	} else {
 		if(isLeftSidebar) {
-			return {
-				"day" : PLUS,
-				"weekday": MORE,
-				"month" : ""
-			};
+			if(index == MORE_INDEX) {
+				return {
+					"day" : PLUS,
+					"weekday": MORE,
+					"month" : ""
+				};
+			} else if(index == ONGOING_INDEX) {
+				return {
+					"day" : "~",
+					"weekday" : "Ongoing" ,
+					"month" : ""
+				};
+			}
 		} else {
-			return {
-				"day": "\"More",
-				"weekday": '',
-				"month": "Events\""
+			if(index == MORE_INDEX) {
+				return {
+					"day": "\"More",
+					"weekday": '',
+					"month": "Events\""
+				};
+			} else if(index == ONGOING_INDEX) {
+				return {
+					"day" : "\"Ongoing",
+					"weekday" : "" ,
+					"month" : "Events\""
+				};
 			}
 		}
 	}
@@ -149,21 +166,25 @@ function getDate(index, isLeftSidebar) {
 
 	switch(index) {
 		case TODAY_INDEX:
-			json = getDateJSON(date, isLeftSidebar);
+			json = getDateJSON(date, isLeftSidebar, TODAY_INDEX);
 			break;
 
 		case TOMORROW_INDEX:
 			var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-			json = getDateJSON(tmrDate, isLeftSidebar);
+			json = getDateJSON(tmrDate, isLeftSidebar, TOMORROW_INDEX);
 			break;
 
 		case FEW_DAYS_INDEX:
 			var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
-			json = getDateJSON(fewDaysDate, isLeftSidebar);
+			json = getDateJSON(fewDaysDate, isLeftSidebar, FEW_DAYS_INDEX);
+			break;
+
+		case ONGOING_INDEX:
+			json = getDateJSON(null, isLeftSidebar, ONGOING_INDEX);
 			break;
 
 		case MORE_INDEX:
-			json = getDateJSON(null, isLeftSidebar);
+			json = getDateJSON(null, isLeftSidebar, MORE_INDEX);
 			break;
 	}
 
@@ -277,6 +298,7 @@ App = React.createClass({
 	    	"Today" : queryResult[TODAY_INDEX],
 	    	"Tomorrow": queryResult[TOMORROW_INDEX],
 	    	"InAFewDays": queryResult[FEW_DAYS_INDEX],
+	    	"Ongoing": queryResult[ONGOING_INDEX],
 	    	"AndMore": queryResult[MORE_INDEX]
 	    };
  
@@ -836,7 +858,12 @@ Sidebar = React.createClass ({
 			    		<a className="date" href={"#section-3"}>
 			    			<div className="browse-date"><ul>In a few days</ul></div>
 			    		</a>
+
 			    		<a className="date" href={"#section-4"}>
+			    			<div className="browse-date"><ul>Ongoing</ul></div>
+			    		</a>
+
+			    		<a className="date" href={"#section-5"}>
 			    			<div className="browse-date"><ul>And more</ul></div>
 			    		</a>
 
@@ -871,8 +898,13 @@ Timeline = React.createClass({
 				</div>
 
 				<div className="section scrollspy" id="section-4">
-					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[MORE_INDEX]]} 
+					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[ONGOING_INDEX]]}
 						index={3} />
+				</div>
+
+				<div className="section scrollspy" id="section-5">
+					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[MORE_INDEX]]} 
+						index={4} />
 				</div>
 			</div>
 		);

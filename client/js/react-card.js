@@ -1060,9 +1060,9 @@ EventContent = React.createClass({
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<span className="card-title activator grey-text text-darken-4">
+			<span className="card-title grey-text text-darken-4">
 				{this.props.organizer} 
-				<i className="mdi-navigation-more-vert right"></i>
+				<i className="mdi-navigation-more-vert right activator"></i>
 			</span>
 		);
 	}

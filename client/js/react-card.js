@@ -585,10 +585,8 @@ ModalForm = React.createClass({
     		return;
 
     	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
-    	var startDateTime 	= React.findDOMNode(this.refs.start_date).value.trim() + ", "
-    							+ React.findDOMNode(this.refs.start_time).value.trim();
-    	var endDateTime 	= React.findDOMNode(this.refs.end_date).value.trim() + ", "
-    							+ React.findDOMNode(this.refs.end_time).value.trim();
+    	var startDateTime 	= startDate.replace(",", "") + ", " + startTime;
+    	var endDateTime 	= endDate.replace(",", "") + ", " + endTime;
 
     	var post = {
   			"Title": title,
@@ -602,22 +600,24 @@ ModalForm = React.createClass({
   			"Price": price
 		};
 
-  		$.ajax({
-        	url: this.props.urlPost,
-        	dataType: 'json',
-        	type: 'POST',
-        	data: {
-        		"cmd": "createnewevent",
-        		"event": JSON.stringify(post)
-        	},
-        	success: function(data) {
-        		console.log("success post" + post);
-   	         alert("Your event has been submitted for approval. Thank you");
-        	}.bind(this),
-        	error: function(xhr, status, err) {
-          		console.error(this.props.urlPost, status, err.toString());
-        	}.bind(this)
-      	});
+		console.log(post);
+
+  		// $.ajax({
+    //     	url: this.props.urlPost,
+    //     	dataType: 'json',
+    //     	type: 'POST',
+    //     	data: {
+    //     		"cmd": "createnewevent",
+    //     		"event": JSON.stringify(post)
+    //     	},
+    //     	success: function(data) {
+    //     		console.log("success post" + post);
+   	//          $('#toast').fadeIn(400).delay(3000).fadeOut(400); 
+    //     	}.bind(this),
+    //     	error: function(xhr, status, err) {
+    //       		console.error(this.props.urlPost, status, err.toString());
+    //     	}.bind(this)
+    //   	});
 
       	React.findDOMNode(this.refs.title).value = '';
     	React.findDOMNode(this.refs.organizer).value = '';
@@ -630,6 +630,8 @@ ModalForm = React.createClass({
     	React.findDOMNode(this.refs.end_time).value = '';
     	React.findDOMNode(this.refs.contact).value = '';
     	React.findDOMNode(this.refs.price).value = '';
+
+    	$('#modal-newevent').closeModal();
   
 	},
 	componentDidMount: function() {
@@ -651,150 +653,154 @@ ModalForm = React.createClass({
 		var marginRightStyle = {
 			marginRight: '10px'
 		};
+
+		var none = {
+			display: 'none'
+		};
 		
 		return (
-			<div id="modal-newevent" className="modal modal-fixed-footer">
-	    		<div className="modal-content">
-	      			<div className="row">
-	      				<div className="col s10">
-	      					<h4>Create an Event</h4>
-	      				</div>
-	      				<div className="col s2">
-	      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
-	      				</div>
-	      			</div>
-	      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
+			<div>
+				<div id="modal-newevent" className="modal modal-fixed-footer">
+		    		<div className="modal-content">
+		      			<div className="row">
+		      				<div className="col s10">
+		      					<h4>Create an Event</h4>
+		      				</div>
+		      				<div className="col s2">
+		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
+		      				</div>
+		      			</div>
+		      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
 
 
-	  				<div className="row">
-	    				<form className="col s12" onSubmit={this.handleSubmit}>
-	      					<div className="row">
-	        					<div className="input-field col s6">
-	          						<i className="mdi-action-announcement prefix"></i>
-	          						<input id="event_title" type="text" className="validate" ref="title"/>
-	          						<label htmlFor="event_title">Title</label>
-	          						<i style={redStyle} className="errorText">{this.state.errorTitle}</i>
-	        					</div>
-	        					<div className="input-field col s6">
-							        <i className="mdi-action-account-balance prefix"></i>
-							        <input id="organisation" type="text" className="validate" ref="organizer" />
-							        <label htmlFor="organisation">Organisation</label>
-							        <i style={redStyle} className="errorText">{this.state.errorOrganizer}</i>
-	        					</div>
-	      					</div>
+		  				<div className="row">
+		    				<form className="col s12" onSubmit={this.handleSubmit}>
+		      					<div className="row">
+		        					<div className="input-field col s6">
+		          						<i className="mdi-action-announcement prefix"></i>
+		          						<input id="event_title" type="text" className="validate" ref="title"/>
+		          						<label htmlFor="event_title">Title</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorTitle}</i>
+		        					</div>
+		        					<div className="input-field col s6">
+								        <i className="mdi-action-account-balance prefix"></i>
+								        <input id="organisation" type="text" className="validate" ref="organizer" />
+								        <label htmlFor="organisation">Organisation</label>
+								        <i style={redStyle} className="errorText">{this.state.errorOrganizer}</i>
+		        					</div>
+		      					</div>
 
-						    <div className="row">
-						        <div className="input-field col s12">
-									<i className="mdi-action-subject prefix"></i>
-									<textarea id="description" className="materialize-textarea" ref="description"></textarea>
-									<label htmlFor="description">Description</label>
-									<i style={redStyle} className="errorText">{this.state.errorDescription}</i>
-						        </div>
-						    </div>
+							    <div className="row">
+							        <div className="input-field col s12">
+										<i className="mdi-action-subject prefix"></i>
+										<textarea id="description" className="materialize-textarea" ref="description"></textarea>
+										<label htmlFor="description">Description</label>
+										<i style={redStyle} className="errorText">{this.state.errorDescription}</i>
+							        </div>
+							    </div>
 
-	      					<div className="row">
-	        					<div className="input-field col s6">
-	          						<i className="mdi-maps-place prefix"></i>
-	          						<input id="event_venue" type="text" className="validate" ref="venue" />
-	          						<label htmlFor="event_venue">Venue</label>
-	          						<i style={redStyle} className="errorText">{this.state.errorVenue}</i>
-	        					</div>
+		      					<div className="row">
+		        					<div className="input-field col s6">
+		          						<i className="mdi-maps-place prefix"></i>
+		          						<input id="event_venue" type="text" className="validate" ref="venue" />
+		          						<label htmlFor="event_venue">Venue</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorVenue}</i>
+		        					</div>
 
-	        					<div className="input-field col s1">
-        						    <i className="mdi-action-view-agenda prefix"></i>
-        							<label htmlFor="category"> </label>
-        						</div>
+		        					<div className="input-field col s1">
+	        						    <i className="mdi-action-view-agenda prefix"></i>
+	        							<label htmlFor="category"> </label>
+	        						</div>
 
-	        					<div className="input-field col s5">
-								    <select className="browser-default" ref="category">
-										<option value="" disabled selected>Category</option>
-										<option value="0">Arts</option>
-										<option value="1">Competitions</option>
-										<option value="2">Conferences</option>
-										<option value="3">Fairs</option>
-										<option value="4">Recreation</option>
-										<option value="5">Recruitment</option>
-										<option value="6">Social</option>
-										<option value="7">Volunteering</option>
-										<option value="8">Wellness</option>
-										<option value="9">Workshops</option>
-										<option value="10">Others</option>
-								    </select>
-								    <i style={redStyle}>{this.state.errorCategory}</i>
-	        					</div>
+		        					<div className="input-field col s5">
+									    <select className="browser-default" ref="category">
+											<option value="" disabled selected>Category</option>
+											<option value="0">Arts</option>
+											<option value="1">Competitions</option>
+											<option value="2">Conferences</option>
+											<option value="3">Fairs</option>
+											<option value="4">Recreation</option>
+											<option value="5">Recruitment</option>
+											<option value="6">Social</option>
+											<option value="7">Volunteering</option>
+											<option value="8">Wellness</option>
+											<option value="9">Workshops</option>
+											<option value="10">Others</option>
+									    </select>
+									    <i style={redStyle}>{this.state.errorCategory}</i>
+		        					</div>
 
-	      					</div>
+		      					</div>
 
-	      					<div className="row">
-	      						<div className="input-field col s6">
-	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate}/>
-	          						<label className="active" htmlFor="event_startdate">Start Date</label>
-	          						<i style={redStyle} className="errorText">{this.state.errorStartDate}</i>
-	          					</div>
+		      					<div className="row">
+		      						<div className="input-field col s6">
+		          						<i className="mdi-notification-event-note prefix"></i>  						
+		          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate}/>
+		          						<label className="active" htmlFor="event_startdate">Start Date</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorStartDate}</i>
+		          					</div>
 
-	          					<div className="input-field col s3">
-	          						<i className="mdi-device-access-time prefix"></i>
-	          						<label htmlFor="event_starttime">Start Time</label>
-	        					</div>
-	        					<div className="input-field col s3">
-	        						<input id="event_starttime" type="time" className="validate" ref="start_time" onChange={this.verifyDate} />
-	          					</div>	
+		          					<div className="input-field col s3">
+		          						<i className="mdi-device-access-time prefix"></i>
+		          						<label htmlFor="event_starttime">Start Time</label>
+		        					</div>
+		        					<div className="input-field col s3">
+		        						<input id="event_starttime" type="time" className="validate" ref="start_time" onChange={this.verifyDate} />
+		          					</div>	
 
-	          					<i style={redStyle} className="errorTime">{this.state.errorStartTime}</i>
-	      					</div>
+		          					<i style={redStyle} className="errorTime">{this.state.errorStartTime}</i>
+		      					</div>
 
-	      					<div className="row">
-	      						<div className="input-field col s6">
-	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate}/>
-	          						<label className="active" htmlFor="event_enddate">End Date</label>
-	          						<i style={redStyle} className="errorText">{this.state.errorEndDate}</i>
-	          					</div>
+		      					<div className="row">
+		      						<div className="input-field col s6">
+		          						<i className="mdi-notification-event-note prefix"></i>  						
+		          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate}/>
+		          						<label className="active" htmlFor="event_enddate">End Date</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorEndDate}</i>
+		          					</div>
 
-	        					<div className="input-field col s3">
-	          						<i className="mdi-device-access-time prefix"></i>
-	          						<label htmlFor="event_endtime">End Time</label>
-	        					</div>
-	        					<div className="input-field col s3">
-	        						<input id="event_endtime" type="time" className="validate" ref="end_time" onChange={this.verifyDate} />
-	        					</div>
+		        					<div className="input-field col s3">
+		          						<i className="mdi-device-access-time prefix"></i>
+		          						<label htmlFor="event_endtime">End Time</label>
+		        					</div>
+		        					<div className="input-field col s3">
+		        						<input id="event_endtime" type="time" className="validate" ref="end_time" onChange={this.verifyDate} />
+		        					</div>
 
-	          					<i style={redStyle} className="errorTime">{this.state.errorEndTime}</i>
-	      					</div>
+		          					<i style={redStyle} className="errorTime">{this.state.errorEndTime}</i>
+		      					</div>
 
-	      					<div className="row">
-	        					<div className="input-field col s6">
-	          						<i className="mdi-maps-local-atm prefix"></i>
-							        <input id="event_price" type="number" className="validate" ref="price"/>
-							        <label htmlFor="event_price">Price</label>
-							        <i style={redStyle} className="errorText">{this.state.errorPrice}</i>
-	        					</div>
+		      					<div className="row">
+		        					<div className="input-field col s6">
+		          						<i className="mdi-maps-local-atm prefix"></i>
+								        <input id="event_price" type="number" className="validate" ref="price"/>
+								        <label htmlFor="event_price">Price</label>
+								        <i style={redStyle} className="errorText">{this.state.errorPrice}</i>
+		        					</div>
 
-						        <div className="input-field col s6">
-						          	<i className="mdi-content-mail prefix"></i>
-						          	<input id="email" type="email" className="validate" ref="contact" />
-						          	<label htmlFor="email">Email</label>
-						          	<i style={redStyle} className="errorText">{this.state.errorContact}</i>
-						        </div>
-						    </div>
+							        <div className="input-field col s6">
+							          	<i className="mdi-content-mail prefix"></i>
+							          	<input id="email" type="email" className="validate" ref="contact" />
+							          	<label htmlFor="email">Email</label>
+							          	<i style={redStyle} className="errorText">{this.state.errorContact}</i>
+							        </div>
+							    </div>
 
-						    <p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>
+							    <p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>
 
-						    <div className="button-container">
+							    <div className="button-container">
 
-						      	<button className="modal-action btn orange lighten-2 waves-effect waves-light right" style={marginRightStyle} value="Post">
-						      		Submit
-						      		<i className="mdi-content-send right"></i>
-						      	</button>
-						    </div>
+							      	<button className="modal-action btn orange lighten-2 waves-effect waves-light right" style={marginRightStyle} value="Post">
+							      		Submit
+							      		<i className="mdi-content-send right"></i>
+							      	</button>
+							    </div>
 
-	    				</form>
-	  				</div>    
-
-	    		</div>
-
-			    
+		    				</form>
+		  				</div>    
+		    		</div>  
+				</div>
+				<div className='toast' style={none} id="toast">Your event has been submitted for approval. Thank you</div>
 			</div>
 		);
 	}

@@ -69,7 +69,7 @@ var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","R
 var IMAGE_PATH = "../image/category/";
 
 // constants
-var TITLE_MAXIMUM_LENGTH = 40;
+var TITLE_MAXIMUM_LENGTH = 30;
 var NON_IDENTIFIED = "N/A";
 
 // date
@@ -399,51 +399,25 @@ MobileNav = React.createClass({
 });
 
 ModalForm = React.createClass({
-	
-	handleSubmit: function(e) {
-		e.preventDefault();
-  		
-  		var title = React.findDOMNode(this.refs.title).value.trim();
-    	var organizer = React.findDOMNode(this.refs.organizer).value.trim();
-    	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
-    	var description = React.findDOMNode(this.refs.description).value.trim();
-    	var startDateTime = React.findDOMNode(this.refs.start_date).value.trim() + ", "
-    						+ React.findDOMNode(this.refs.start_time).value.trim();
-    	var endDateTime = React.findDOMNode(this.refs.end_date).value.trim() + ", "
-    						+ React.findDOMNode(this.refs.end_time).value.trim();
-    	var contact =   React.findDOMNode(this.refs.contact).value.trim();
-    	var price = React.findDOMNode(this.refs.price).value.trim();
 
-    	var post = {
-  			"Title": title,
-  			"Organizer": organizer,
-  			"Description": description,
-  			"Category": category,
-  			"Start_DateAndTime": startDateTime,
-  			"End_DateAndTime": endDateTime,
-  			"Contact": contact,
-  			"Price": price
+	getInitialState: function() {
+		return {
+			errorTitle : '',
+			errorOrganizer: '',
+			errorCategory: '',
+			errorDescription: '',
+			errorStartDate: '',
+			errorStartTime: '',
+			errorEndDate: '',
+			errorEndTime: '',
+			errorContact: '',
+			errorPrice: '',
+			errorVenue: ''
 		};
+	},
 
-		console.log(post);
-
-  		$.ajax({
-        	url: this.props.urlPost,
-        	dataType: 'json',
-        	type: 'POST',
-        	data: {
-        		"cmd": "createnewevent",
-        		"event": JSON.stringify(post)
-        	},
-        	success: function(data) {
-        		console.log("success post" + post);
-        	}.bind(this),
-        	error: function(xhr, status, err) {
-          		console.error(this.props.urlPost, status, err.toString());
-        	}.bind(this)
-      	});
-
-      	React.findDOMNode(this.refs.title).value = '';
+	handleClick: function(e) {
+		React.findDOMNode(this.refs.title).value = '';
     	React.findDOMNode(this.refs.organizer).value = '';
     	React.findDOMNode(this.refs.category).value = '';
     	React.findDOMNode(this.refs.description).value = '';
@@ -453,6 +427,211 @@ ModalForm = React.createClass({
     	React.findDOMNode(this.refs.end_time).value = '';
     	React.findDOMNode(this.refs.contact).value = '';
     	React.findDOMNode(this.refs.price).value = '';
+
+    	this.setState({
+    		errorTitle : '',
+			errorOrganizer: '',
+			errorCategory: '',
+			errorVenue: '',
+			errorDescription: '',
+			errorContact: '',
+			errorPrice: '',
+			errorStartDate: '',
+			errorStartTime: '',
+			errorEndDate: '',
+			errorEndTime: ''
+    	});
+
+    	$('#modal-newevent').closeModal();
+	},
+
+	verifyDate: function() {
+
+		var startDate  		= React.findDOMNode(this.refs.start_date).value.trim();
+    	var startTime 		= React.findDOMNode(this.refs.start_time).value.trim();
+    	var endDate 		= React.findDOMNode(this.refs.end_date).value.trim();
+    	var endTime         = React.findDOMNode(this.refs.end_time).value.trim();
+
+		if(!startDate || !endDate || !startTime || !endTime)
+			return;
+
+		// compare date
+    	var startDateTime = startDate.trim() + " " + "12:00:00";
+    	var endDateTime   = endDate.trim() + " " + "12:00:00";
+
+    	var startD = new Date(startDateTime).getTime();
+    	var endD = new Date(endDateTime).getTime();
+
+    	if(startD > endD) {
+    		this.setState({errorEndDate: "End Date < Start Date"});
+	    } else {
+	    	this.setState({errorEndDate: ""});
+	    	
+	    	if(startD == endD) {
+	    		if(!startTime || !endTime)
+	    			return;
+
+	    		var startDateTime = startDate.trim() + " " + startTime.trim();
+    			var endDateTime   = endDate.trim() + " " + endTime.trim();
+
+    			var startD = new Date(startDateTime).getTime();
+    			var endD = new Date(endDateTime).getTime();
+
+    			if(startD > endD) 
+    				this.setState({errorEndTime: "End Time < Start Time"});
+    			else 
+    				this.setState({errorEndTime: ""});
+	    	}
+	    }
+	},
+	
+	handleSubmit: function(e) {
+		e.preventDefault();
+  		
+  		var title 			= React.findDOMNode(this.refs.title).value.trim();
+    	var organizer 		= React.findDOMNode(this.refs.organizer).value.trim();
+    	var startDate  		= React.findDOMNode(this.refs.start_date).value.trim();
+    	var startTime 		= React.findDOMNode(this.refs.start_time).value.trim();
+    	var endDate 		= React.findDOMNode(this.refs.end_date).value.trim();
+    	var endTime         = React.findDOMNode(this.refs.end_time).value.trim();
+    	var description 	= React.findDOMNode(this.refs.description).value.trim();
+    	var venue  			= React.findDOMNode(this.refs.venue).value.trim();
+    	var contact 		=   React.findDOMNode(this.refs.contact).value.trim();
+    	var price 			= React.findDOMNode(this.refs.price).value.trim();
+
+    	var isError = false;
+
+    	if(!title) {
+    		this.setState({errorTitle: "Title field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorTitle: ""});
+    	}
+
+    	if(!organizer) {
+    		this.setState({errorOrganizer: "Organizer field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorOrganizer: ""});
+    	}
+
+    	if(!React.findDOMNode(this.refs.category).value) {
+    		this.setState({errorCategory: "Category field is not picked"});
+    		isError = true;
+    	} else {
+    		this.setState({errorCategory: ""});
+    	}
+
+    	if(!description) {
+    		this.setState({errorDescription: "Description field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorDescription: ""});
+    	}
+
+    	if(!venue) {
+    		this.setState({errorVenue: "Venue field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorVenue: ""});
+    	}
+
+    	if(!contact) {
+    		this.setState({errorContact: "Contact field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorContact: ""});
+    	}
+
+    	if(!price) {
+    		this.setState({errorPrice: "Price field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorPrice: ""});
+    	}
+
+
+    	if(!startDate) {
+    		this.setState({errorStartDate: "Start Date field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorStartDate: ""});
+    	}
+
+    	if(!startTime) {
+    		this.setState({errorStartTime: "Start Time field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorStartTime: ""});
+    	}
+
+    	if(!endDate) {
+    		this.setState({errorEndDate: "End Date field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorEndDate: ""});
+    	}
+
+    	if(!endTime) {
+    		this.setState({errorEndTime: "End Time field is empty"});
+    		isError = true;
+    	} else {
+    		this.setState({errorEndTime: ""});
+    	}
+
+    	this.verifyDate();
+
+    	if(isError)
+    		return;
+
+    	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
+    	var startDateTime 	= startDate.replace(",", "") + ", " + startTime;
+    	var endDateTime 	= endDate.replace(",", "") + ", " + endTime;
+
+    	var post = {
+  			"Title": title,
+  			"Organizer": organizer,
+  			"Description": description,
+  			"Category": category,
+  			"Venue": venue,
+  			"Start_DateAndTime": startDateTime,
+  			"End_DateAndTime": endDateTime,
+  			"Contact": contact,
+  			"Price": price
+		};
+
+		console.log(post);
+
+  		// $.ajax({
+    //     	url: this.props.urlPost,
+    //     	dataType: 'json',
+    //     	type: 'POST',
+    //     	data: {
+    //     		"cmd": "createnewevent",
+    //     		"event": JSON.stringify(post)
+    //     	},
+    //     	success: function(data) {
+    //     		console.log("success post" + post);
+   	//          $('#toast').fadeIn(400).delay(3000).fadeOut(400); 
+    //     	}.bind(this),
+    //     	error: function(xhr, status, err) {
+    //       		console.error(this.props.urlPost, status, err.toString());
+    //     	}.bind(this)
+    //   	});
+
+      	React.findDOMNode(this.refs.title).value = '';
+    	React.findDOMNode(this.refs.organizer).value = '';
+    	React.findDOMNode(this.refs.category).value = '';
+    	React.findDOMNode(this.refs.description).value = '';
+    	React.findDOMNode(this.refs.start_date).value = '';
+    	React.findDOMNode(this.refs.venue).value = '';
+    	React.findDOMNode(this.refs.start_time).value = '';
+    	React.findDOMNode(this.refs.end_date).value = '';
+    	React.findDOMNode(this.refs.end_time).value = '';
+    	React.findDOMNode(this.refs.contact).value = '';
+    	React.findDOMNode(this.refs.price).value = '';
+
+    	$('#modal-newevent').closeModal();
   
 	},
 	componentDidMount: function() {
@@ -474,130 +653,154 @@ ModalForm = React.createClass({
 		var marginRightStyle = {
 			marginRight: '10px'
 		};
+
+		var none = {
+			display: 'none'
+		};
 		
 		return (
-			<div id="modal-newevent" className="modal modal-fixed-footer">
-	    		<div className="modal-content">
-	      			<h4>Create an Event</h4>
-	      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
-	      			<i style={redStyle}>This feature is not implemented yet. Stay tuned</i>
+			<div>
+				<div id="modal-newevent" className="modal modal-fixed-footer">
+		    		<div className="modal-content">
+		      			<div className="row">
+		      				<div className="col s10">
+		      					<h4>Create an Event</h4>
+		      				</div>
+		      				<div className="col s2">
+		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
+		      				</div>
+		      			</div>
+		      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
 
-	  				<div className="row">
-	    				<form className="col s12" onSubmit={this.handleSubmit}>
-	      					<div className="row">
-	        					<div className="input-field col s6">
-	          						<i className="mdi-action-announcement prefix"></i>
-	          						<input id="event_title" type="text" className="validate" ref="title"/>
-	          						<label htmlFor="event_title">Title</label>
-	        					</div>
-	        					<div className="input-field col s6">
-							        <i className="mdi-action-account-balance prefix"></i>
-							        <input id="organisation" type="text" className="validate" ref="organizer" />
-							        <label htmlFor="organisation">Organisation</label>
-	        					</div>
-	      					</div>
 
-						    <div className="row">
-						        <div className="input-field col s12">
-									<i className="mdi-action-subject prefix"></i>
-									<textarea id="description" className="materialize-textarea" ref="description"></textarea>
-									<label htmlFor="description">Description</label>
-						        </div>
-						    </div>
+		  				<div className="row">
+		    				<form className="col s12" onSubmit={this.handleSubmit}>
+		      					<div className="row">
+		        					<div className="input-field col s6">
+		          						<i className="mdi-action-announcement prefix"></i>
+		          						<input id="event_title" type="text" className="validate" ref="title"/>
+		          						<label htmlFor="event_title">Title</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorTitle}</i>
+		        					</div>
+		        					<div className="input-field col s6">
+								        <i className="mdi-action-account-balance prefix"></i>
+								        <input id="organisation" type="text" className="validate" ref="organizer" />
+								        <label htmlFor="organisation">Organisation</label>
+								        <i style={redStyle} className="errorText">{this.state.errorOrganizer}</i>
+		        					</div>
+		      					</div>
 
-	      					<div className="row">
-	        					<div className="input-field col s6">
-	          						<i className="mdi-maps-place prefix"></i>
-	          						<input id="event_venue" type="text" className="validate" ref="venue" />
-	          						<label htmlFor="event_venue">Venue</label>
-	        					</div>
+							    <div className="row">
+							        <div className="input-field col s12">
+										<i className="mdi-action-subject prefix"></i>
+										<textarea id="description" className="materialize-textarea" ref="description"></textarea>
+										<label htmlFor="description">Description</label>
+										<i style={redStyle} className="errorText">{this.state.errorDescription}</i>
+							        </div>
+							    </div>
 
-	        					<div className="input-field col s1">
-        						    <i className="mdi-action-view-agenda prefix"></i>
-        							<label htmlFor="category"> </label>
-        						</div>
+		      					<div className="row">
+		        					<div className="input-field col s6">
+		          						<i className="mdi-maps-place prefix"></i>
+		          						<input id="event_venue" type="text" className="validate" ref="venue" />
+		          						<label htmlFor="event_venue">Venue</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorVenue}</i>
+		        					</div>
 
-	        					<div className="input-field col s5">
-								    <select className="browser-default" ref="category" value="0">
-										<option value="" disabled selected>Category</option>
-										<option value="0">Arts</option>
-										<option value="1">Competitions</option>
-										<option value="2">Conferences</option>
-										<option value="3">Fairs</option>
-										<option value="4">Recreation</option>
-										<option value="5">Recruitment</option>
-										<option value="6">Social</option>
-										<option value="7">Volunteering</option>
-										<option value="8">Wellness</option>
-										<option value="9">Workshops</option>
-										<option value="10">Others</option>
-								    </select>
-	        					</div>
+		        					<div className="input-field col s1">
+	        						    <i className="mdi-action-view-agenda prefix"></i>
+	        							<label htmlFor="category"> </label>
+	        						</div>
 
-	      					</div>
+		        					<div className="input-field col s5">
+									    <select className="browser-default" ref="category">
+											<option value="" disabled selected>Category</option>
+											<option value="0">Arts</option>
+											<option value="1">Competitions</option>
+											<option value="2">Conferences</option>
+											<option value="3">Fairs</option>
+											<option value="4">Recreation</option>
+											<option value="5">Recruitment</option>
+											<option value="6">Social</option>
+											<option value="7">Volunteering</option>
+											<option value="8">Wellness</option>
+											<option value="9">Workshops</option>
+											<option value="10">Others</option>
+									    </select>
+									    <i style={redStyle}>{this.state.errorCategory}</i>
+		        					</div>
 
-	      					<div className="row">
-	      						<div className="input-field col s6">
-	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" />
-	          						<label className="active" htmlFor="event_startdate">Start Date</label>
-	          					</div>
+		      					</div>
 
-	          					<div className="input-field col s3">
-	          						<i className="mdi-device-access-time prefix"></i>
-	          						<label htmlFor="event_starttime">Start Time</label>
-	        					</div>
-	        					<div className="input-field col s3">
-	        						<input id="event_starttime" type="time" className="validate" ref="start_time" />
-	          					</div>	
-	      					</div>
+		      					<div className="row">
+		      						<div className="input-field col s6">
+		          						<i className="mdi-notification-event-note prefix"></i>  						
+		          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate}/>
+		          						<label className="active" htmlFor="event_startdate">Start Date</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorStartDate}</i>
+		          					</div>
 
-	      					<div className="row">
-	      						<div className="input-field col s6">
-	          						<i className="mdi-notification-event-note prefix"></i>  						
-	          						<input id="event_enddate" type="date" className="datepicker" ref="end_date"/>
-	          						<label className="active" htmlFor="event_enddate">End Date</label>
-	          					</div>
+		          					<div className="input-field col s3">
+		          						<i className="mdi-device-access-time prefix"></i>
+		          						<label htmlFor="event_starttime">Start Time</label>
+		        					</div>
+		        					<div className="input-field col s3">
+		        						<input id="event_starttime" type="time" className="validate" ref="start_time" onChange={this.verifyDate} />
+		          					</div>	
 
-	        					<div className="input-field col s3">
-	          						<i className="mdi-device-access-time prefix"></i>
-	          						<label htmlFor="event_endtime">End Time</label>
-	        					</div>
-	        					<div className="input-field col s3">
-	        						<input id="event_endtime" type="time" className="validate" ref="end_time" />
-	        					</div>
-	      					</div>
+		          					<i style={redStyle} className="errorTime">{this.state.errorStartTime}</i>
+		      					</div>
 
-	      					<div className="row">
-	        					<div className="input-field col s6">
-	          						<i className="mdi-maps-local-atm prefix"></i>
-							        <input id="event_price" type="number" className="validate" ref="price"/>
-							        <label htmlFor="event_price">Price</label>
-	        					</div>
-						        <div className="input-field col s6">
-						          	<i className="mdi-content-mail prefix"></i>
-						          	<input id="email" type="email" className="validate" ref="contact" />
-						          	<label htmlFor="email">Email</label>
-						        </div>
-						    </div>
+		      					<div className="row">
+		      						<div className="input-field col s6">
+		          						<i className="mdi-notification-event-note prefix"></i>  						
+		          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate}/>
+		          						<label className="active" htmlFor="event_enddate">End Date</label>
+		          						<i style={redStyle} className="errorText">{this.state.errorEndDate}</i>
+		          					</div>
 
-						    <button className=" modal-action modal-close btn grey lighten-1 waves-effect waves-light">
-			      				Cancel
-			      				<i className="mdi-navigation-close right"></i>
-			      			</button>
-					      	<button className=" modal-action modal-close btn orange lighten-2 waves-effect waves-light" style={marginRightStyle} value="Post">
-					      		Submit
-					      		<i className="mdi-content-send right"></i>
-					      	</button>
+		        					<div className="input-field col s3">
+		          						<i className="mdi-device-access-time prefix"></i>
+		          						<label htmlFor="event_endtime">End Time</label>
+		        					</div>
+		        					<div className="input-field col s3">
+		        						<input id="event_endtime" type="time" className="validate" ref="end_time" onChange={this.verifyDate} />
+		        					</div>
 
-	    				</form>
-	  				</div>  
+		          					<i style={redStyle} className="errorTime">{this.state.errorEndTime}</i>
+		      					</div>
 
-	  				<p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>  
+		      					<div className="row">
+		        					<div className="input-field col s6">
+		          						<i className="mdi-maps-local-atm prefix"></i>
+								        <input id="event_price" type="number" className="validate" ref="price"/>
+								        <label htmlFor="event_price">Price</label>
+								        <i style={redStyle} className="errorText">{this.state.errorPrice}</i>
+		        					</div>
 
-	    		</div>
+							        <div className="input-field col s6">
+							          	<i className="mdi-content-mail prefix"></i>
+							          	<input id="email" type="email" className="validate" ref="contact" />
+							          	<label htmlFor="email">Email</label>
+							          	<i style={redStyle} className="errorText">{this.state.errorContact}</i>
+							        </div>
+							    </div>
 
-			    
+							    <p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>
+
+							    <div className="button-container">
+
+							      	<button className="modal-action btn orange lighten-2 waves-effect waves-light right" style={marginRightStyle} value="Post">
+							      		Submit
+							      		<i className="mdi-content-send right"></i>
+							      	</button>
+							    </div>
+
+		    				</form>
+		  				</div>    
+		    		</div>  
+				</div>
+				<div className='toast' style={none} id="toast">Your event has been submitted for approval. Thank you</div>
 			</div>
 		);
 	}
@@ -788,7 +991,7 @@ Event = React.createClass({
 	render: function() {
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventHeader category={this.props.data[CATEGORY]} />
+				<EventHeader category={this.props.data[CATEGORY]} title={this.props.data[TITLE]} />
 				<EventContent data={this.props.data} />
 				<EventReveal data={this.props.data} />
 			</div>
@@ -799,9 +1002,11 @@ Event = React.createClass({
 EventHeader = React.createClass({
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
+		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
+					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs">{title}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);
@@ -812,7 +1017,7 @@ EventContent = React.createClass({
 	render: function() {
 		return (
 			<div className="card-content">
-				<EventTitle title={this.props.data[TITLE]} />
+				<EventTitle organizer={this.props.data[CATEGORY]} />
 				<EventOrganizer organizer={this.props.data[ORGANIZER]} />
 				<EventBottom data={this.props.data} />
 			</div>
@@ -822,11 +1027,9 @@ EventContent = React.createClass({
 
 EventTitle = React.createClass({
 	render: function() {
-		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
-					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<span className="card-title activator grey-text text-darken-4">
-				{title} 
+				{this.props.organizer} 
 				<i className="mdi-navigation-more-vert right"></i>
 			</span>
 		);
@@ -885,8 +1088,8 @@ EventVenue = React.createClass({
 	render: function() {
 		var venue = isRealValue(this.props.venue) ?
 				this.props.venue : NON_IDENTIFIED;
-		var venue = venue.length <= TITLE_MAXIMUM_LENGTH ?
-					venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
+		// var venue = venue.length <= 100 ?
+		// 			venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="venue">
 				<i className="fa fa-map-marker"></i>

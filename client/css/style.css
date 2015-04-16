@@ -372,6 +372,7 @@ input[type="text"]#search {
 	margin-bottom: 5px;
 	font-size: 14px !important;
 	text-transform: uppercase;
+	font-weight: 400 !important;
 }
 
 .card-title i {
@@ -394,13 +395,15 @@ input[type="text"]#search {
 }
 
 .information {
-	margin-top: 5px;
-	font-size: 15px;
+	margin-top: 2px;
+	font-size: 14px;
 	font-weight: 400;
 }
 
 .organizer {
+	color: #212121 !important;
 	font-size: 14px;
+	font-weight: 400;
 }
 
 .card-body {

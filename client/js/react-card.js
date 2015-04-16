@@ -71,7 +71,7 @@ var IMAGE_PATH = "../image/category/";
 
 // constants
 var TITLE_MAXIMUM_LENGTH = 30;
-var NON_IDENTIFIED = "N/A";
+var NON_IDENTIFIED = "-";
 
 // date
 var MONTHS = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];

@@ -288,6 +288,10 @@ input[type="text"]#search {
 	font-weight: 700;
 	text-overflow: ellipsis;
 	height: 100%;
+	white-space: nowrap;
+	width: calc(100% - 20px);
+	overflow-x: hidden;
+	overflow-y: hidden;
 }
 
 .text-overflow {
@@ -298,13 +302,15 @@ input[type="text"]#search {
 	max-height: 48px;
 }
 
+
+
 @media screen and (min-width: 0px) and (max-width: 850px) {
   .organizer-title { font-size: 13px !important; }
   .datetime { font-size: 13px !important; }
   .venue { font-size: 13px !important; }  
 }
 
-@media screen and (min-width: 0px) and (max-width: 530px) {
+@media screen and (min-width: 0px) and (max-width: 650px) {
   .organizer-title { font-size: 11px !important; }
   .datetime { font-size: 11px !important; }
   .venue { font-size: 11px !important; }  
@@ -312,6 +318,10 @@ input[type="text"]#search {
 
 .mdi-navigation-close {
 	font-size: 28px !important;
+}
+
+.mdi-navigation-more-vert {
+	font-size: 20px !important;
 }
 
 ::-webkit-scrollbar
@@ -336,6 +346,15 @@ input[type="text"]#search {
 	cursor: pointer; cursor: hand;
 }
 
+.organizer {
+margin: 0 !important;
+}
+.datetime {
+margin: 0 !important;
+}
+.venue {
+margin: 0 !important;
+}
 @media screen and (min-width: 0px) and (max-width: 750px) {
   .resize-on-medium { font-size: 44px; padding-top: 90px; }  
 }
@@ -348,11 +367,21 @@ input[type="text"]#search {
 }
 
 .organizer{
-	color: #616161 !important;
+	color: #212121 !important;
 }
 
 .organizer i, .venue i, .datetime i, .contact i {
+	width: 20px !important;
+	/*font-size: 16px !important;*/
+	text-align: center;
+}
+.showicon {
 	width: 20px;
+	float:left;
+}
+
+.inline {
+	display: inline;
 }
 
 .favorite-container {
@@ -360,7 +389,7 @@ input[type="text"]#search {
 }
 
 .favorite {
-	margin-top: 5px;
+	margin-top: 15px !important;
 }
 
 .calendar {

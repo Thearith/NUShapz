@@ -1050,7 +1050,6 @@ EventContent = React.createClass({
 		return (
 			<div className="card-content">
 				<EventTitle organizer={this.props.data[CATEGORY]} />
-				<EventOrganizer organizer={this.props.data[ORGANIZER]} />
 				<EventBottom data={this.props.data} />
 			</div>
 		);
@@ -1069,24 +1068,11 @@ EventTitle = React.createClass({
 
 });
 
-EventOrganizer = React.createClass({
-	render: function() {
-		var organizer = isRealValue(this.props.organizer) ?
-			this.props.organizer : NON_IDENTIFIED;
-		return (
-			<div className="organizer">
-				<i className="fa fa-university"></i>
-				<p className="organizer-title">{organizer}</p>
-			</div>
-		);
-	}
-});
-
 EventBottom = React.createClass({
 	render: function() {
 		return (
 			<div className="row">
-				<EventInformation date={this.props.data[DATETIME]} venue={this.props.data[VENUE]}/>
+				<EventInformation date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]}/>
 				<EventStar />
 			</div>
 		);
@@ -1097,8 +1083,22 @@ EventInformation = React.createClass({
 	render: function() {
 		return (
 			<div className="col s10 information">
+				<EventOrganizer organizer={this.props.data} />
 				<EventDateTime date={this.props.date} />
 				<EventVenue venue = {this.props.venue} />
+			</div>
+		);
+	}
+});
+
+EventOrganizer = React.createClass({
+	render: function() {
+		var organizer = isRealValue(this.props.organizer) ?
+			this.props.organizer : NON_IDENTIFIED;
+		return (
+			<div className="organizer row">
+				<div className="col s11"><div className="showicon"><i className="fa fa-user"></i></div>
+				<div className="inline"><p className="organizer-title">{organizer}</p></div></div>
 			</div>
 		);
 	}
@@ -1107,9 +1107,9 @@ EventInformation = React.createClass({
 EventDateTime = React.createClass({
 	render: function() {
 		return (
-			<div className="datetime">
-				<i className="fa fa-clock-o"></i>
-				{this.props.date}			
+			<div className="datetime row">
+				<div className="col s11"><div className="showicon"><i className="fa fa-clock-o"></i></div>
+				<div className="inline">{this.props.date}</div></div>	
 			</div>
 		);
 	}
@@ -1123,9 +1123,9 @@ EventVenue = React.createClass({
 		// var venue = venue.length <= 100 ?
 		// 			venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
-			<div className="venue">
-				<i className="fa fa-map-marker"></i>
-				<p>{venue}</p>
+			<div className="venue row">
+				<div className="col s11"><div className="showicon"><i className="fa fa-map-marker"></i></div>
+				<div className="inline"><p>{venue}</p></div></div>
 			</div>
 		);
 	}

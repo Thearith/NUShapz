@@ -698,13 +698,13 @@ ModalForm = React.createClass({
 		  				<div className="row">
 		    				<form className="col s12" onSubmit={this.handleSubmit}>
 		      					<div className="row">
-		        					<div className="input-field col s6">
+		        					<div className="input-field col m6 s12">
 		          						<i className="mdi-action-announcement prefix"></i>
 		          						<input id="event_title" type="text" className="validate" ref="title"/>
 		          						<label htmlFor="event_title">Title</label>
 		          						<i style={redStyle} className="errorText">{this.state.errorTitle}</i>
 		        					</div>
-		        					<div className="input-field col s6">
+		        					<div className="input-field col m6 s12">
 								        <i className="mdi-action-account-balance prefix"></i>
 								        <input id="organisation" type="text" className="validate" ref="organizer" />
 								        <label htmlFor="organisation">Organisation</label>
@@ -722,19 +722,19 @@ ModalForm = React.createClass({
 							    </div>
 
 		      					<div className="row">
-		        					<div className="input-field col s6">
+		        					<div className="input-field col m6 s12">
 		          						<i className="mdi-maps-place prefix"></i>
 		          						<input id="event_venue" type="text" className="validate" ref="venue" />
 		          						<label htmlFor="event_venue">Venue</label>
 		          						<i style={redStyle} className="errorText">{this.state.errorVenue}</i>
 		        					</div>
 
-		        					<div className="input-field col s1">
+		        					<div className="input-field col m1 s2">
 	        						    <i className="mdi-action-view-agenda prefix"></i>
 	        							<label htmlFor="category"> </label>
 	        						</div>
 
-		        					<div className="input-field col s5">
+		        					<div className="input-field col m5 s10">
 									    <select className="browser-default" ref="category">
 											<option value="" disabled selected>Category</option>
 											<option value="0">Arts</option>
@@ -755,18 +755,18 @@ ModalForm = React.createClass({
 		      					</div>
 
 		      					<div className="row">
-		      						<div className="input-field col s6">
+		      						<div className="input-field col m6 s12">
 		          						<i className="mdi-notification-event-note prefix"></i>  						
 		          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate}/>
 		          						<label className="active" htmlFor="event_startdate">Start Date</label>
 		          						<i style={redStyle} className="errorText">{this.state.errorStartDate}</i>
 		          					</div>
 
-		          					<div className="input-field col s3">
+		          					<div className="input-field col m3 s6">
 		          						<i className="mdi-device-access-time prefix"></i>
 		          						<label htmlFor="event_starttime">Start Time</label>
 		        					</div>
-		        					<div className="input-field col s3">
+		        					<div className="input-field col m3 s6">
 		        						<input id="event_starttime" type="time" className="validate" ref="start_time" onChange={this.verifyDate} />
 		          					</div>	
 
@@ -774,18 +774,18 @@ ModalForm = React.createClass({
 		      					</div>
 
 		      					<div className="row">
-		      						<div className="input-field col s6">
+		      						<div className="input-field col m6 s12">
 		          						<i className="mdi-notification-event-note prefix"></i>  						
 		          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate}/>
 		          						<label className="active" htmlFor="event_enddate">End Date</label>
 		          						<i style={redStyle} className="errorText">{this.state.errorEndDate}</i>
 		          					</div>
 
-		        					<div className="input-field col s3">
+		        					<div className="input-field col m3 s6">
 		          						<i className="mdi-device-access-time prefix"></i>
 		          						<label htmlFor="event_endtime">End Time</label>
 		        					</div>
-		        					<div className="input-field col s3">
+		        					<div className="input-field col m3 s6">
 		        						<input id="event_endtime" type="time" className="validate" ref="end_time" onChange={this.verifyDate} />
 		        					</div>
 
@@ -793,14 +793,14 @@ ModalForm = React.createClass({
 		      					</div>
 
 		      					<div className="row">
-		        					<div className="input-field col s6">
+		        					<div className="input-field col m6 s12">
 		          						<i className="mdi-maps-local-atm prefix"></i>
 								        <input id="event_price" type="number" className="validate" ref="price"/>
 								        <label htmlFor="event_price">Price</label>
 								        <i style={redStyle} className="errorText">{this.state.errorPrice}</i>
 		        					</div>
 
-							        <div className="input-field col s6">
+							        <div className="input-field col m6 s12">
 							          	<i className="mdi-content-mail prefix"></i>
 							          	<input id="email" type="email" className="validate" ref="contact" />
 							          	<label htmlFor="email">Email</label>
@@ -1140,7 +1140,7 @@ EventStar = React.createClass({
 	},
 	render: function() {
 		var c = this.state.liked ?
-			" amber lighten-1" : " grey lighten-1";
+			" amber lighten-1" : " amber lighten-3";
 		return (
 			<div className="col s2 favorite-container" onClick={this.handleClick}>
 				<a className={"btn-floating btn-large waves-effect waves-light right favorite" + c}>

@@ -268,24 +268,23 @@ input[type="text"]#search {
 
   	margin-bottom: 60px;
 }
-
+/*
 .card .card-title {
 	color: black;
-	font-size: 2.5vw;
 }
-
+*/
 .card .card-content {
 	padding: 10px;
 }
 
 .category-title {
 	position: absolute;
-	margin-left:20px;
+	margin-left: 20px;
 	padding-top: 75px;
 	padding-right: 16px;
 	color: #ffffff;
 	z-index: 999;
-	font-size: 50px;
+	font-size: 54px;
 	font-weight: 700;
 	text-overflow: ellipsis;
 	height: 100%;
@@ -299,11 +298,23 @@ input[type="text"]#search {
 	max-height: 48px;
 }
 
+@media screen and (min-width: 0px) and (max-width: 850px) {
+  .organizer-title { font-size: 13px !important; }
+  .datetime { font-size: 13px !important; }
+  .venue { font-size: 13px !important; }  
+}
+
+@media screen and (min-width: 0px) and (max-width: 530px) {
+  .organizer-title { font-size: 11px !important; }
+  .datetime { font-size: 11px !important; }
+  .venue { font-size: 11px !important; }  
+}
+
 @media screen and (min-width: 0px) and (max-width: 750px) {
-  .resize-on-medium { font-size: 64px; padding-top: 77px; }  
+  .resize-on-medium { font-size: 44px; padding-top: 90px; }  
 }
 @media screen and (min-width: 0px) and (max-width: 450px) {
-  .resize-on-xs { font-size: 42px; padding-top: 94px; }  
+  .resize-on-xs { font-size: 36px; padding-top: 94px; }  
 }
 
 .organizer p, .datetime p, .venue p{
@@ -358,7 +369,9 @@ input[type="text"]#search {
 }
 
 .card-title {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
+	font-size: 14px !important;
+	text-transform: uppercase;
 }
 
 .card-title i {
@@ -381,13 +394,13 @@ input[type="text"]#search {
 }
 
 .information {
-	margin-top: 15px;
+	margin-top: 5px;
 	font-size: 15px;
 	font-weight: 400;
 }
 
 .organizer {
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .card-body {

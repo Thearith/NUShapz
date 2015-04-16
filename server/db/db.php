@@ -32,6 +32,41 @@ function databaseQuery($query) {
 	return $result;
 }
 
+function insertToHapzTableWithSanitize($event) {
+	$db = connectToDB();
+
+	$event = json_decode($event);
+	
+	$table = "HAPZEVENTS";
+
+	$id_query = "SELECT * FROM HAPZEVENTS ORDER BY ID DESC";
+	$id_result = databaseQuery($id_query);
+	$row = $id_result->fetch_assoc();
+	$eventID;
+	if($row) $eventID = $row['ID'] + 1;
+	else $eventID = 100;
+
+	// Convert time to unix timestamp
+	$startDate = $event->Start_DateAndTime;
+	$endDate = $event->End_DateAndTime;
+	$date = array();
+	$date['Start'] = strtotime(str_replace(',', '', $startDate));
+	$date['End'] = strtotime(str_replace(',', '', $endDate));
+	$dateAndTime = json_encode($date);
+
+	//echo "$event";
+	// ID - Title - Category - Description - DateAndTime - StartDate - StartTime - EndDate - EndTime - Price - Organizer - Venue - Contact - Flag(0)
+	// ID - Title - Description - Category - Venue - DateAndTime - Price - Organizer - Contact - Agenda - Flag(0)
+	$new_query = "INSERT INTO HAPZEVENTS (ID, Title, Description, Category, Venue, DateAndTime, Price, Organizer, Contact, Agenda, Flag) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+	$final_query = sprintf($new_query, $eventID, $db->real_escape_string($event->Title), $db->real_escape_string($event->Description), 
+		$db->real_escape_string($event->Category), $db->real_escape_string($event->Venue), $dateAndTime, 
+		$db->real_escape_string($event->Price), $db->real_escape_string($event->Organizer), $db->real_escape_string($event->Contact),
+		"-", "1");
+	$result = databaseQuery($final_query);
+
+	return $result;
+}
+
 /**
   * Creates IVLEEvents table
   */

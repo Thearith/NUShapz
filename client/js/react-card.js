@@ -386,12 +386,23 @@ SearchMobile = React.createClass({
 		return (
 			<div className="searchbar-mobile input-field hide-on-med-and-up">
 				<div className="searchbar-mobile-size"> 
+<<<<<<< HEAD
 					<div className="input-field">
 						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
 						<label htmlFor="search">
 							<i className="mdi-action-search search-icon"></i>
 						</label>
 					</div>
+=======
+					 <form>
+						<div className="input-field">
+							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+							<label htmlFor="search">
+								<i className="mdi-action-search search-icon"></i>
+							</label>
+						</div>
+					</form>
+>>>>>>> 3b57b96e05f2612fe6685411796880a3ce1f747d
 				</div>
 			</div>
 		);
@@ -1093,13 +1104,12 @@ Event = React.createClass({
 });
 
 EventHeader = React.createClass({
+
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
-		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
-					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{title}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.title}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);

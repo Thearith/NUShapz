@@ -624,22 +624,22 @@ ModalForm = React.createClass({
 
 		console.log(post);
 
-  		// $.ajax({
-    //     	url: this.props.urlPost,
-    //     	dataType: 'json',
-    //     	type: 'POST',
-    //     	data: {
-    //     		"cmd": "createnewevent",
-    //     		"event": JSON.stringify(post)
-    //     	},
-    //     	success: function(data) {
-    //     		console.log("success post" + post);
-   	//          $('#toast').fadeIn(400).delay(3000).fadeOut(400); 
-    //     	}.bind(this),
-    //     	error: function(xhr, status, err) {
-    //       		console.error(this.props.urlPost, status, err.toString());
-    //     	}.bind(this)
-    //   	});
+  		$.ajax({
+        	url: this.props.urlPost,
+        	dataType: 'json',
+        	type: 'POST',
+        	data: {
+        		"cmd": "createnewevent",
+        		"event": JSON.stringify(post)
+        	},
+        	success: function(data) {
+        		console.log("success post" + post);
+        		alert("Your event has been submitted to NUSHapz for approval. Thank you!");
+        	}.bind(this),
+        	error: function(xhr, status, err) {
+          		console.error(this.props.urlPost, status, err.toString());
+        	}.bind(this)
+      	});
 
       	React.findDOMNode(this.refs.title).value = '';
     	React.findDOMNode(this.refs.organizer).value = '';

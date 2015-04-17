@@ -353,18 +353,26 @@ SearchMobile = React.createClass({
         var query=this.refs.searchInput.getDOMNode().value; // this is the search text
         this.props.doSearch(query);
     },
+    componentDidMount: function() {
+    	$('#search').on('keydown', this.handleKeyDown);
+    },
+    handleKeyDown: function(e) {
+    	var ENTER = 13;
+        if( e.keyCode == ENTER ) {
+            e.preventDefault();
+            return false;
+        }
+    },
 	render:function() {
 		return (
 			<div className="searchbar-mobile input-field hide-on-med-and-up">
 				<div className="searchbar-mobile-size"> 
-					<form>
-						<div className="input-field">
-							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-							<label htmlFor="search">
-								<i className="mdi-action-search search-icon"></i>
-							</label>
-						</div>
-					</form>
+					<div className="input-field">
+						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+						<label htmlFor="search">
+							<i className="mdi-action-search search-icon"></i>
+						</label>
+					</div>
 				</div>
 			</div>
 		);
@@ -375,6 +383,16 @@ Search = React.createClass ({
 	doSearch:function(){
         var query=this.refs.searchInput.getDOMNode().value; // this is the search text
         this.props.doSearch(query);
+    },
+    componentDidMount: function() {
+    	$('#search').on('keydown', this.handleKeyDown);
+    },
+    handleKeyDown: function(e) {
+    	var ENTER = 13;
+        if( e.keyCode == ENTER ) {
+            e.preventDefault();
+            return false;
+        }
     },
 	render: function() {
 		return (

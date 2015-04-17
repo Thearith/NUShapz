@@ -191,12 +191,31 @@ function getDate(index, isLeftSidebar) {
 	return json;
 }
 
-function urlify(text) {
-    // var urlRegex = /(https?:\/\/[^\s]+)/g;
-    // return text.replace(urlRegex, function(url) {
-    //     return '<a href="' + url + '">' + url + '</a>';
-    // })
-	return text;
+function replaceTxtNotInA(html, regex, replace) {
+
+	html = '>' + html + '<';
+
+	//parse txt between > and < but not follow with</a
+	html = html.replace(/>([^<>]+)(?!<\/a)</g, function(match, txt) {
+
+		//now replace the txt
+		return '>' + txt.replace(regex, replace) + '<';
+	});
+
+	//remove the head > and tail <
+	return html.substring(1, html.length - 1);
+}
+
+function urlify(html) {
+
+	var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&amp;&@#\/%?=~_|!:,.;]*[-A-Z0-9+&amp;&@#\/%=~_|])/ig;
+	html = replaceTxtNotInA(html, exp, "<a href='$1' target='_blank'>$1</a>");
+
+	//URLs starting with "www."
+	var exp2 = /\b(www\.[\S]+)\b/gi;
+	html = replaceTxtNotInA(html, exp2, '<a href="http://$1" target="_blank">$1</a>');
+
+	return html;
 }
 
 
@@ -1197,7 +1216,7 @@ EventReveal = React.createClass({
 	render: function() {
 		return (
 			<div className="card-reveal">
-				<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} />
+				<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 
@@ -1218,7 +1237,7 @@ Title = React.createClass({
 					<i className="mdi-navigation-close right"></i>
 				</div>
 
-				<EventInformation date={this.props.date} venue={this.props.venue} />
+				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />
 			</div>
 		);
 	}
@@ -1245,10 +1264,11 @@ EventContact = React.createClass({
 	render: function() {
 		var contact = isRealValue(this.props.contact) ?
 				urlify(this.props.contact) : NON_IDENTIFIED;
+		var rawMarkup = converter.makeHtml(contact);
 		return (
 			<div className="contact">
 				<i className="fa fa-envelope"></i>
-				{contact}
+				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		);
 	}

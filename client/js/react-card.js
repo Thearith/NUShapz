@@ -474,12 +474,35 @@ ModalForm = React.createClass({
     	var endDate 		= React.findDOMNode(this.refs.end_date).value.trim();
     	var endTime         = React.findDOMNode(this.refs.end_time).value.trim();
 
-		if(!startDate || !endDate || !startTime || !endTime)
-			return;
+    	if(startDate && startTime) {
+    		var startDateTime = startDate.trim() + " " + startTime.trim();
+			var startD = new Date(startDateTime).getTime();
+			var today = new Date().getTime();
+
+			console.log(startD + " " + today);
+
+			if(startD < today) {
+				this.setState({errorStartDate: "Start Date < Today"});
+			} else {
+				this.setState({errorStartDate: ""});
+			}
+    	}
+
+    	if(endDate && endTime) {
+    		var endDateTime   = endDate.trim() + " " + endTime.trim();
+    		var endD = new Date(endDateTime).getTime();
+    		var today = new Date().getTime();
+
+			if(endD < today) {
+				this.setState({errorEndDate: "End Date < Today"});
+			} else {
+				this.setState({errorEndDate: ""});
+			}
+    	}
 
 		// compare date
-    	var startDateTime = startDate.trim() + " " + "12:00:00";
-    	var endDateTime   = endDate.trim() + " " + "12:00:00";
+    	var startDateTime = startDate.trim() + " " + "00:00:00";
+    	var endDateTime   = endDate.trim() + " " + "00:00:00";
 
     	var startD = new Date(startDateTime).getTime();
     	var endD = new Date(endDateTime).getTime();
@@ -662,6 +685,7 @@ ModalForm = React.createClass({
    			selectMonths: true, // Creates a dropdown to control month
     		selectYears: 3 // Creates a dropdown of 15 years to control year
   		});
+
   		$('select').material_select();
 	},
 	
@@ -757,7 +781,7 @@ ModalForm = React.createClass({
 		      					<div className="row">
 		      						<div className="input-field col m6 s12">
 		          						<i className="mdi-notification-event-note prefix"></i>  						
-		          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate}/>
+		          						<input id="event_startdate" type="date" className="datepicker" ref="start_date" onChange={this.verifyDate} />
 		          						<label className="active" htmlFor="event_startdate">Start Date</label>
 		          						<i style={redStyle} className="errorText">{this.state.errorStartDate}</i>
 		          					</div>
@@ -776,7 +800,7 @@ ModalForm = React.createClass({
 		      					<div className="row">
 		      						<div className="input-field col m6 s12">
 		          						<i className="mdi-notification-event-note prefix"></i>  						
-		          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate}/>
+		          						<input id="event_enddate" type="date" className="datepicker" ref="end_date" onChange={this.verifyDate} />
 		          						<label className="active" htmlFor="event_enddate">End Date</label>
 		          						<i style={redStyle} className="errorText">{this.state.errorEndDate}</i>
 		          					</div>

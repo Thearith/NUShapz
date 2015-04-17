@@ -308,7 +308,7 @@ input[type="text"]#search {
 }
 
 .category-title:hover {
-	padding-top: 10px;
+	padding-top: 5px;
 	white-space: normal;
 }
 

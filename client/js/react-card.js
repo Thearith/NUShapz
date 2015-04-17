@@ -386,14 +386,6 @@ SearchMobile = React.createClass({
 		return (
 			<div className="searchbar-mobile input-field hide-on-med-and-up">
 				<div className="searchbar-mobile-size"> 
-<<<<<<< HEAD
-					<div className="input-field">
-						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-						<label htmlFor="search">
-							<i className="mdi-action-search search-icon"></i>
-						</label>
-					</div>
-=======
 					 <form>
 						<div className="input-field">
 							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
@@ -402,7 +394,6 @@ SearchMobile = React.createClass({
 							</label>
 						</div>
 					</form>
->>>>>>> 3b57b96e05f2612fe6685411796880a3ce1f747d
 				</div>
 			</div>
 		);

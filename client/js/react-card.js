@@ -1140,10 +1140,10 @@ EventStar = React.createClass({
 	},
 	render: function() {
 		var c = this.state.liked ?
-			" amber lighten-1" : " amber lighten-3";
+			" amber lighten-1" : " amber lighten-3" ;
 		return (
 			<div className="col s2 favorite-container" onClick={this.handleClick}>
-				<a className={"btn-floating btn-large waves-effect waves-light right favorite" + c}>
+				<a className={"btn-floating btn-large waves-effect waves-light right" + c + " favorite"}>
 				 	<i className="mdi-action-grade"></i>
 				</a>
 			</div>

@@ -302,7 +302,22 @@ input[type="text"]#search {
 	max-height: 48px;
 }
 
+.favorite:hover {
+	color: #ffc107 !important;
+}
 
+.mdi-action-grade:hover {
+	-webkit-transition: 1s ease-in-out;
+    -moz-transition: 1s ease-in-out;
+    -o-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
+
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
 
 @media screen and (min-width: 0px) and (max-width: 850px) {
   .organizer-title { font-size: 13px !important; }

@@ -300,6 +300,16 @@ input[type="text"]#search {
 	width: calc(100% - 20px);
 	overflow-x: hidden;
 	overflow-y: hidden;
+
+	left: 0%;
+    -webkit-transition: 1s ease-in-out;
+    -moz-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
+}
+
+.category-title:hover {
+	padding-top: 0;
+	white-space: normal;
 }
 
 .text-overflow {

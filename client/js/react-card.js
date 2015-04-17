@@ -191,12 +191,31 @@ function getDate(index, isLeftSidebar) {
 	return json;
 }
 
-function urlify(text) {
-    // var urlRegex = /(https?:\/\/[^\s]+)/g;
-    // return text.replace(urlRegex, function(url) {
-    //     return '<a href="' + url + '">' + url + '</a>';
-    // })
-	return text;
+function replaceTxtNotInA(html, regex, replace) {
+
+	html = '>' + html + '<';
+
+	//parse txt between > and < but not follow with</a
+	html = html.replace(/>([^<>]+)(?!<\/a)</g, function(match, txt) {
+
+		//now replace the txt
+		return '>' + txt.replace(regex, replace) + '<';
+	});
+
+	//remove the head > and tail <
+	return html.substring(1, html.length - 1);
+}
+
+function urlify(html) {
+
+	var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&amp;&@#\/%?=~_|!:,.;]*[-A-Z0-9+&amp;&@#\/%=~_|])/ig;
+	html = replaceTxtNotInA(html, exp, "<a href='$1' target='_blank'>$1</a>");
+
+	//URLs starting with "www."
+	var exp2 = /\b(www\.[\S]+)\b/gi;
+	html = replaceTxtNotInA(html, exp2, '<a href="http://$1" target="_blank">$1</a>');
+
+	return html;
 }
 
 
@@ -353,10 +372,28 @@ SearchMobile = React.createClass({
         var query=this.refs.searchInput.getDOMNode().value; // this is the search text
         this.props.doSearch(query);
     },
+    componentDidMount: function() {
+    	$('#search').on('keydown', this.handleKeyDown);
+    },
+    handleKeyDown: function(e) {
+    	var ENTER = 13;
+        if( e.keyCode == ENTER ) {
+            e.preventDefault();
+            return false;
+        }
+    },
 	render:function() {
 		return (
 			<div className="searchbar-mobile input-field hide-on-med-and-up">
 				<div className="searchbar-mobile-size"> 
+<<<<<<< HEAD
+					<div className="input-field">
+						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+						<label htmlFor="search">
+							<i className="mdi-action-search search-icon"></i>
+						</label>
+					</div>
+=======
 					 <form>
 						<div className="input-field">
 							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
@@ -365,6 +402,7 @@ SearchMobile = React.createClass({
 							</label>
 						</div>
 					</form>
+>>>>>>> 3b57b96e05f2612fe6685411796880a3ce1f747d
 				</div>
 			</div>
 		);
@@ -375,6 +413,16 @@ Search = React.createClass ({
 	doSearch:function(){
         var query=this.refs.searchInput.getDOMNode().value; // this is the search text
         this.props.doSearch(query);
+    },
+    componentDidMount: function() {
+    	$('#search').on('keydown', this.handleKeyDown);
+    },
+    handleKeyDown: function(e) {
+    	var ENTER = 13;
+        if( e.keyCode == ENTER ) {
+            e.preventDefault();
+            return false;
+        }
     },
 	render: function() {
 		return (
@@ -1106,7 +1154,7 @@ EventInformation = React.createClass({
 	render: function() {
 		return (
 			<div className="col s10 information">
-				<EventOrganizer organizer={this.props.data} />
+				<EventOrganizer organizer={this.props.organizer} />
 				<EventDateTime date={this.props.date} />
 				<EventVenue venue = {this.props.venue} />
 			</div>
@@ -1178,7 +1226,7 @@ EventReveal = React.createClass({
 	render: function() {
 		return (
 			<div className="card-reveal">
-				<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} />
+				<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 
@@ -1199,7 +1247,7 @@ Title = React.createClass({
 					<i className="mdi-navigation-close right"></i>
 				</div>
 
-				<EventInformation date={this.props.date} venue={this.props.venue} />
+				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />
 			</div>
 		);
 	}
@@ -1226,10 +1274,11 @@ EventContact = React.createClass({
 	render: function() {
 		var contact = isRealValue(this.props.contact) ?
 				urlify(this.props.contact) : NON_IDENTIFIED;
+		var rawMarkup = converter.makeHtml(contact);
 		return (
 			<div className="contact">
 				<i className="fa fa-envelope"></i>
-				{contact}
+				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
 		);
 	}

@@ -497,6 +497,10 @@ margin: 0 !important;
 	border-bottom:1px solid #e5e5e5;
 }
 
+.description p {
+	margin: 0 auto;
+}
+
 .contact {
 	margin-top: 10px;
 }

@@ -1125,7 +1125,7 @@ EventInformation = React.createClass({
 	render: function() {
 		return (
 			<div className="col s10 information">
-				<EventOrganizer organizer={this.props.data} />
+				<EventOrganizer organizer={this.props.organizer} />
 				<EventDateTime date={this.props.date} />
 				<EventVenue venue = {this.props.venue} />
 			</div>

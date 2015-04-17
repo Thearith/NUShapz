@@ -357,7 +357,7 @@ SearchMobile = React.createClass({
 		return (
 			<div className="searchbar-mobile input-field hide-on-med-and-up">
 				<div className="searchbar-mobile-size"> 
-					<form>
+					<form method="post" action="#search">
 						<div className="input-field">
 							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
 							<label htmlFor="search">
@@ -378,7 +378,7 @@ Search = React.createClass ({
     },
 	render: function() {
 		return (
-			<form>
+			<form method="post" action="#search">
 	        	<div className="input-field search-outer hide-on-small-only">    		
 	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
 	          		<label htmlFor="search">
@@ -1032,13 +1032,34 @@ Event = React.createClass({
 });
 
 EventHeader = React.createClass({
+
+	flowText: function() {
+
+		var true_width = ( function(){
+		  var $tempobj = $('.category-title') // starting with truncated text div container
+		      .clone().contents() // duplicate the text
+		      .wrap('<div id="contain"/>') // wrap it in a container
+		      .parent().appendTo('body') // add this to the dom
+		      .css('left','-1000px'); // but put it far off-screen
+		  var result = $tempobj.width(); // measure it
+		  $tempobj.remove(); // clean up
+		  return result;
+		})();
+console.log(true_width);
+		var shift_distance = true_width - $(this).width(); // how far to move
+		var time_normalized = parseInt(shift_distance / 100, 10) * 1000; // speed
+		$(this).contents().wrap('<div id="contain">').parent() // wrap in div
+		.animate({
+		    left: -shift_distance,
+		    right: 0
+		}, time_normalized, 'linear'); // and move the div within its "viewport"
+	},
+
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
-		var title = this.props.title.length <= TITLE_MAXIMUM_LENGTH ?
-					this.props.title : this.props.title.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{title}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs" onMouseOver={this.flowText} >{this.props.title}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);

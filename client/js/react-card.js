@@ -1261,7 +1261,7 @@ Title = React.createClass({
 	render: function() {
 		return (
 			<div className="card-title grey-text text-darken-4 row">
-				<div className="col s11">
+				<div className="col s11 card-title-inner">
 					{this.props.title}
 				</div>
 				<div className="col s1">

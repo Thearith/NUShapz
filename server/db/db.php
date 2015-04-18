@@ -194,7 +194,7 @@ function clearDatabase() {
   * Helper function to escape special characters and deny invalid string entries
   */
 function escapeChar($string) {
-	if (strlen($string) > 2000 || strlen($string) == 0) {
+	if (strlen($string) > 5000 || strlen($string) == 0) {
 		return "-";
 	}
 	$string = str_replace('\\', '\\\\', $string);

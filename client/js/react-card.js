@@ -912,7 +912,7 @@ SearchTimeline = React.createClass({
 	render: function() {
 		return (
 			<div className="row">
-				<div className="col l10 m9 s12 section section-category cards search-timeline">
+				<div className="col l10 m9 s12 section cards search-timeline">
 					<div className="col l10 m9 s12 offset-l2">
 						{	this.props.data.length != 0 ?
 							<EventSection events={this.props.data} /> :
@@ -1077,7 +1077,7 @@ NoEvents = React.createClass({
 		var json = getDate(this.props.index, false);
 		var date = json[DAY] + " " + json[MONTH];
 		return (
-			<div className="col l10 m12 section-category cards no-events">
+			<div className="col l10 m12 cards no-events">
 				No Events on {date}
 			</div>
 		);
@@ -1093,7 +1093,7 @@ CategorySections = React.createClass({
 		    );
 		});
 		return (
-			<div className="col l10 m12 section-category cards">
+			<div className="col l10 m12 cards">
 				{CategorySectionNode}
 			</div>
 		);

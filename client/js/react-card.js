@@ -24,6 +24,10 @@ var Sidebar;
 var Timeline;  //contains timeline sections
 
 var TimelineSection; //contains categories within the same timeline section
+
+var SearchTimeline;
+var NoSearchTimeline;
+
 var LeftSideBar;
 var CategoriesContainer
 
@@ -281,7 +285,8 @@ App = React.createClass({
 	 getInitialState:function(){
         return{
             query:'',
-            filteredData: this.props.data
+            filteredData: this.props.data,
+            isSearch: false
         }
     },
 
@@ -289,42 +294,43 @@ App = React.createClass({
         
 		var queryResult = [];
 
+		if(queryText === '') {
+			this.setState({
+	            query:'',
+	            filteredData: this.props.data,
+	            isSearch: false
+	        });
+			return;
+		}
+			
+
         for(i=0; i<TIMELINE_ARRAY.length; i++) {
 	        
-	        var timelineQueryResult=[];
-	        
 	        this.props.data[TIMELINE_ARRAY[i]].forEach(function(category){
-	        	var categoryQueryResult = [];
 	        	category[EVENTS].forEach(function(event) {
 	        		if(event[TITLE].toLowerCase().indexOf(queryText.toLowerCase())!=-1 ||
 	        		   event[ORGANIZER].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
 	        		   event[CATEGORY].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
 	        		   event[DESCRIPTION].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
 	        		   event[DATETIME].toLowerCase().indexOf(queryText.toLowerCase()) != -1) 
-	        			categoryQueryResult.push(event);
-	        	});
-
-	        	timelineQueryResult.push({
-	        		"Category": category[CATEGORY],
-	        		"Events": categoryQueryResult
+	        			queryResult.push(event);
 	        	});
 	        });
-
-	        queryResult.push(timelineQueryResult);
 	    }
 
-	    timelines = {
-	    	"Today" : queryResult[TODAY_INDEX],
-	    	"Tomorrow": queryResult[TOMORROW_INDEX],
-	    	"InAFewDays": queryResult[FEW_DAYS_INDEX],
-	    	"Ongoing": queryResult[ONGOING_INDEX],
-	    	"AndMore": queryResult[MORE_INDEX]
-	    };
+	    // timelines = {
+	    // 	"Today" : queryResult[TODAY_INDEX],
+	    // 	"Tomorrow": queryResult[TOMORROW_INDEX],
+	    // 	"InAFewDays": queryResult[FEW_DAYS_INDEX],
+	    // 	"Ongoing": queryResult[ONGOING_INDEX],
+	    // 	"AndMore": queryResult[MORE_INDEX]
+	    // };
  
         this.setState({
             query:queryText,
-            filteredData: timelines
-        })
+            filteredData: queryResult,
+            isSearch: true
+        });
     },
 
 	render: function() {
@@ -333,7 +339,7 @@ App = React.createClass({
 				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
-				<MainContainer data={this.state.filteredData} />
+				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} />
 			</div>
 		);
 	}
@@ -386,14 +392,12 @@ SearchMobile = React.createClass({
 		return (
 			<div className="searchbar-mobile input-field hide-on-med-and-up">
 				<div className="searchbar-mobile-size"> 
-					 <form>
-						<div className="input-field">
-							<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-							<label htmlFor="search">
-								<i className="mdi-action-search search-icon"></i>
-							</label>
-						</div>
-					</form>
+					<div className="input-field">
+						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+						<label htmlFor="search">
+							<i className="mdi-action-search search-icon"></i>
+						</label>
+					</div>
 				</div>
 			</div>
 		);
@@ -895,10 +899,36 @@ MainContainer = React.createClass({
 	render: function() {
 		return (
 			<div className="container-fluid" id="main-container">
-				<div className="row">
-					<Timeline data={this.props.data} />
-					<Sidebar />
+				{this.props.isSearch ?
+					<SearchTimeline data={this.props.data} /> :
+					<NoSearchTimeline data={this.props.data} />
+				}
+			</div>
+		);
+	}
+});
+
+SearchTimeline = React.createClass({
+	render: function() {
+		return (
+			<div className="row">
+				<div className="col l10 m9 s12 section section-category cards search-timeline">
+					<div className="col l10 m9 s12 offset-l2">
+						<EventSection events={this.props.data} />
+					</div>
 				</div>
+				<div className="col l2 m3 hide-on-small-only"></div>
+			</div>
+		);
+	}
+});
+
+NoSearchTimeline = React.createClass({
+	render: function() {
+		return (
+			<div className="row">
+				<Timeline data={this.props.data} />
+				<Sidebar />
 			</div>
 		);
 	}

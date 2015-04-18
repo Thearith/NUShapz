@@ -277,6 +277,15 @@ input[type="text"]#search {
 	padding: 10px;
 }
 
+/* REDUCE CARD SIZE */
+.card.small {
+	height: 240px !important;
+}
+
+.card.small .card-image {
+	height: 90px !important;
+}
+
 .card-image img{
 	/*
 	-webkit-filter: blur(1px);
@@ -285,18 +294,17 @@ input[type="text"]#search {
 	-ms-filter: blur(1px);
 	filter: blur(1px);
 	*/
-	opacity: 0.85;
+	opacity: 1;
 }
 
-
 .card-image {
-	background-color: #212121 !important;
+	background-color: #ffffff !important;
 }
 
 .category-title {
 	position: absolute;
 	padding-left: 20px;
-	padding-top: 75px;
+	padding-top: 10px;/*75*/
 	padding-right: 16px;
 	color: #ffffff;
 	z-index: 999;
@@ -313,16 +321,23 @@ input[type="text"]#search {
     -webkit-transition: 1s ease-in-out;
     -moz-transition: 1s ease-in-out;
     transition: 1s ease-in-out;
-/*
-    background-color: #000000;
-    opacity: 0.5;*/
+    
+    text-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
+@media screen and (min-width: 0px) and (max-width: 750px) {
+  .resize-on-medium { font-size: 44px; padding-top: 10px; /*90*/ }  
+}
+@media screen and (min-width: 0px) and (max-width: 450px) {
+  .resize-on-xs { font-size: 36px; padding-top: 10px; /*94*/}  
+}
+
+/*
 .category-title:hover {
 	padding-top: 5px;
 	white-space: normal;
 }
-
+*/
 .text-overflow {
 	text-overflow: ellipsis;
 }
@@ -417,12 +432,6 @@ margin: 0 !important;
 }
 .venue {
 margin: 0 !important;
-}
-@media screen and (min-width: 0px) and (max-width: 750px) {
-  .resize-on-medium { font-size: 44px; padding-top: 90px; }  
-}
-@media screen and (min-width: 0px) and (max-width: 450px) {
-  .resize-on-xs { font-size: 36px; padding-top: 94px; }  
 }
 
 .organizer p, .datetime p, .venue p{

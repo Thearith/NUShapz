@@ -339,7 +339,7 @@ App = React.createClass({
 				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
-				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} />
+				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} query={this.state.query} />
 			</div>
 		);
 	}
@@ -900,7 +900,7 @@ MainContainer = React.createClass({
 		return (
 			<div className="container-fluid" id="main-container">
 				{this.props.isSearch ?
-					<SearchTimeline data={this.props.data} /> :
+					<SearchTimeline data={this.props.data} query={this.props.query} /> :
 					<NoSearchTimeline data={this.props.data} />
 				}
 			</div>
@@ -914,10 +914,23 @@ SearchTimeline = React.createClass({
 			<div className="row">
 				<div className="col l10 m9 s12 section section-category cards search-timeline">
 					<div className="col l10 m9 s12 offset-l2">
-						<EventSection events={this.props.data} />
+						{	this.props.data.length != 0 ?
+							<EventSection events={this.props.data} /> :
+							<EmptySearch query={this.props.query} />
+						}
 					</div>
 				</div>
 				<div className="col l2 m3 hide-on-small-only"></div>
+			</div>
+		);
+	}
+});
+
+EmptySearch = React.createClass({
+	render: function() {
+		return (
+			<div className="no-events">
+				No Search Result for {this.props.query}
 			</div>
 		);
 	}

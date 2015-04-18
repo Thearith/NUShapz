@@ -370,10 +370,10 @@ input[type="text"]#search {
 }
 
 .mdi-action-grade:hover {
-	-webkit-transition: 1s ease-in-out;
-    -moz-transition: 1s ease-in-out;
-    -o-transition: 1s ease-in-out;
-    transition: 1s ease-in-out;
+	-webkit-transition: 0.8s ease-in-out;
+    -moz-transition: 0.8s ease-in-out;
+    -o-transition: 0.8s ease-in-out;
+    transition: 0.8s ease-in-out;
 
     -webkit-transform: rotate(360deg);
     -moz-transform: rotate(360deg);

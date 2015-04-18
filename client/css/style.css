@@ -215,6 +215,11 @@ input[type="text"]#search {
 	margin-bottom: 20px;
 }
 
+.search-timeline {
+	padding-top: 1rem !important;
+	padding-bottom: 1rem !important;
+}
+
 /*styling date*/
 
 .date-content {

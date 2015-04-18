@@ -55,7 +55,7 @@ var Title;
 var EventDescription;
 var EventContact;
 
-
+var HOMEPAGE = "http://hapz.nusmods.com";
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 //var SERVER = "timeline.json";
@@ -1265,6 +1265,8 @@ EventReveal = React.createClass({
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 
 				<EventContact contact={this.props.data[CONTACT]} />
+
+				<EventSocialMedia cardID={this.props.data[EVENT_ID]} />
 			</div>
 		);
 	}
@@ -1314,6 +1316,30 @@ EventContact = React.createClass({
 				<i className="fa fa-envelope"></i>
 				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
 			</div>
+		);
+	}
+});
+
+EventSocialMedia = React.createClass({
+	render: function() {
+		var url = HOMEPAGE + "/#" + this.props.cardID;
+		var twitterURL = "https://twitter.com/home?status=" + url;
+		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+		var googleURL = "https://plus.google.com/share?url=" + url;
+		return (
+			<p className="social-media right">
+				<span>
+					<a href={twitterURL} title="Share on Twitter" target="_blank" className="btn btn-social btn-twitter text-center">
+						<i className="fa fa-twitter"></i>
+					</a>
+					<a href={facebookURL} target="_blank" className="btn btn-social btn-facebook">
+						<i className="fa fa-facebook"></i>
+					</a>
+					<a href={googleURL} target="_blank" className="btn btn-social btn-googleplus">
+						<i className="fa fa-google-plus"></i>
+					</a>
+				</span>
+			</p>
 		);
 	}
 });

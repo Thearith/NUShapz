@@ -2,8 +2,8 @@
 
 require_once	'../db/db.php';
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+// header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 header('Content-Type: application/json');
 
@@ -429,6 +429,26 @@ function getEventsByTimeline() {
 				array_push($catarray[Events], $event);
 			}
 		}
+		// merge
+		for($i=0; $i<count($catarray['Events']);++$i) {
+			$added = false;
+			for($j=$i+1; $j<count($catarray['Events']); ++$j) {
+				if ($i != $j) {
+					if ($catarray['Events'][$i]['Title'] == $catarray['Events'][$j]['Title']) {
+						if(!$added) {
+							$catarray['Events'][$i]['DateAndTime'] .= " (Recurring)";
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+							$added = true;
+						} else {
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+						}
+						array_splice($catarray['Events'], $j, 1);
+						--$j;
+					}
+				}
+			}
+			$added = false;
+		}
 		array_push($timeline["Today"],$catarray);
 	}
 	// Sort Tomorrow by cat
@@ -441,6 +461,26 @@ function getEventsByTimeline() {
 			if($event['Category'] == $cat) {
 				array_push($catarray[Events], $event);
 			}
+		}
+		// merge
+		for($i=0; $i<count($catarray['Events']);++$i) {
+			$added = false;
+			for($j=$i+1; $j<count($catarray['Events']); ++$j) {
+				if ($i != $j) {
+					if ($catarray['Events'][$i]['Title'] == $catarray['Events'][$j]['Title']) {
+						if(!$added) {
+							$catarray['Events'][$i]['DateAndTime'] .= " (Recurring)";
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+							$added = true;
+						} else {
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+						}
+						array_splice($catarray['Events'], $j, 1);
+						--$j;
+					}
+				}
+			}
+			$added = false;
 		}
 		array_push($timeline["Tomorrow"],$catarray);
 	}
@@ -455,6 +495,26 @@ function getEventsByTimeline() {
 				array_push($catarray[Events], $event);
 			}
 		}
+		// merge
+		for($i=0; $i<count($catarray['Events']);++$i) {
+			$added = false;
+			for($j=$i+1; $j<count($catarray['Events']); ++$j) {
+				if ($i != $j) {
+					if ($catarray['Events'][$i]['Title'] == $catarray['Events'][$j]['Title']) {
+						if(!$added) {
+							$catarray['Events'][$i]['DateAndTime'] .= " (Recurring)";
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+							$added = true;
+						} else {
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+						}
+						array_splice($catarray['Events'], $j, 1);
+						--$j;
+					}
+				}
+			}
+			$added = false;
+		}
 		array_push($timeline["InAFewDays"],$catarray);
 	}
 	// Sort And More by cat
@@ -467,6 +527,26 @@ function getEventsByTimeline() {
 			if($event['Category'] == $cat) {
 				array_push($catarray[Events], $event);
 			}
+		}
+		// merge
+		for($i=0; $i<count($catarray['Events']);++$i) {
+			$added = false;
+			for($j=$i+1; $j<count($catarray['Events']); ++$j) {
+				if ($i != $j) {
+					if ($catarray['Events'][$i]['Title'] == $catarray['Events'][$j]['Title']) {
+						if(!$added) {
+							$catarray['Events'][$i]['DateAndTime'] .= " (Recurring)";
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+							$added = true;
+						} else {
+							$catarray['Events'][$i]['Description'] .= "<br>[".$catarray['Events'][$j]['DateAndTime']."]";
+						}
+						array_splice($catarray['Events'], $j, 1);
+						--$j;
+					}
+				}
+			}
+			$added = false;
 		}
 		array_push($timeline["AndMore"],$catarray);
 	}
@@ -481,6 +561,7 @@ function getEventsByTimeline() {
 				array_push($catarray[Events], $event);
 			}
 		}
+
 		array_push($timeline["Ongoing"],$catarray);
 	}
 

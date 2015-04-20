@@ -759,7 +759,7 @@ ModalForm = React.createClass({
 		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
 		      				</div>
 		      			</div>
-		      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
+		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on IVLE and NUS Calendar of Events, and will appear only on NUSHapz. The process of creating an event on NUSHapz will be faster as the approval time is shorter than that of IVLE and NUS Calendar of Events. We hope you enjoy this free service.</p>
 
 
 		  				<div className="row">
@@ -875,7 +875,7 @@ ModalForm = React.createClass({
 							        </div>
 							    </div>
 
-							    <p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>
+							    <p className="disclaimer">* Events submitted thru NUSHapz will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
 
 							    <div className="button-container">
 
@@ -930,7 +930,7 @@ EmptySearch = React.createClass({
 	render: function() {
 		return (
 			<div className="no-events">
-				No Search Result for {this.props.query}
+				No Search Result for "{this.props.query}"
 			</div>
 		);
 	}

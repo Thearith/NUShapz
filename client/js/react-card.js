@@ -759,7 +759,7 @@ ModalForm = React.createClass({
 		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
 		      				</div>
 		      			</div>
-		      			<p>NUSHapz syncs events live from IVLE. However, your events will not be created on IVLE but on the NUSHapz platform itself. Creating an event on NUSHapz will take a shorter time to get approved instead of IVLE which would take an average of a week.</p>
+		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on IVLE and NUS Calendar of Events, and will appear only on NUSHapz. The process of creating an event on NUSHapz will be faster as the approval time is shorter than that of IVLE and NUS Calendar of Events. We hope you enjoy this free service.</p>
 
 
 		  				<div className="row">
@@ -875,7 +875,7 @@ ModalForm = React.createClass({
 							        </div>
 							    </div>
 
-							    <p className="disclaimer">* Events that are submitted are not displayed immediately as events have to be approved by our NUSHapz admins first.</p>
+							    <p className="disclaimer">* Events submitted thru NUSHapz will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
 
 							    <div className="button-container">
 
@@ -930,7 +930,7 @@ EmptySearch = React.createClass({
 	render: function() {
 		return (
 			<div className="no-events">
-				No Search Result for {this.props.query}
+				No Search Result for "{this.props.query}"
 			</div>
 		);
 	}
@@ -1077,7 +1077,7 @@ NoEvents = React.createClass({
 		var json = getDate(this.props.index, false);
 		var date = json[DAY] + " " + json[MONTH];
 		return (
-			<div className="col l10 m12 cards no-events">
+			<div className="col l10 m12 s12 cards no-events">
 				No Events on {date}
 			</div>
 		);
@@ -1093,7 +1093,7 @@ CategorySections = React.createClass({
 		    );
 		});
 		return (
-			<div className="col l10 m12 cards">
+			<div className="col l10 m12 s12 cards">
 				{CategorySectionNode}
 			</div>
 		);
@@ -1129,7 +1129,7 @@ Event = React.createClass({
 	render: function() {
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventHeader category={this.props.data[CATEGORY]} title={this.props.data[TITLE]} />
+				<EventFavourite data={this.props.data} />
 				<EventContent data={this.props.data} />
 				<EventReveal data={this.props.data} />
 			</div>
@@ -1137,14 +1137,26 @@ Event = React.createClass({
 	}
 });
 
-EventHeader = React.createClass({
+/*				<EventHeader category={this.props.data[CATEGORY]} title={this.props.data[TITLE]} />*/
 
+EventHeader = React.createClass({
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.title}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
 				<img className="activator" src={src}/>
+			</div>
+		);
+	}
+});
+
+EventFavourite = React.createClass({
+	render: function() {
+		var src = IMAGE_PATH + this.props.category + ".jpg";
+		return (
+			<div className="card-right-column">
+				<a className="waves-effect waves-light position-star"><i className="small mdi-action-grade"></i></a>
 			</div>
 		);
 	}
@@ -1154,23 +1166,67 @@ EventContent = React.createClass({
 	render: function() {
 		return (
 			<div className="card-content">
-				<EventTitle organizer={this.props.data[CATEGORY]} />
-				<EventBottom data={this.props.data} />
+				<EventDate datetime={this.props.data[DATETIME]}/>
+				<EventCategory category={this.props.data[CATEGORY]} />
+				<EventTitle organizer={this.props.data[TITLE]} />
+				<EventSynopsis description={this.props.data[DESCRIPTION]} />
+				<EventLocation location={this.props.data[VENUE]} />
 			</div>
 		);
 	}
 });
 
+/*<EventBottom data={this.props.data} />*/
+
+EventDate = React.createClass({
+	render: function() {
+		return (
+			<div className="card-date">
+				{this.props.datetime} 
+			</div>
+		);
+	}
+});
+
+EventCategory = React.createClass({
+	render: function() {
+		return (
+			<div className="card-category">
+				{this.props.category} 
+			</div>
+		);
+	}
+});
+
+
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<span className="card-title grey-text text-darken-4">
+			<div className="activator card-title">
 				{this.props.organizer} 
-				<i className="mdi-navigation-more-vert right activator"></i>
-			</span>
+			</div>
 		);
 	}
+});
 
+EventSynopsis = React.createClass({
+	render: function() {
+		return (
+			<div className="card-summary">
+				{this.props.description} 
+			</div>
+		);
+	}
+});
+
+EventLocation = React.createClass({
+	render: function() {
+		return (
+			<div className="card-venue">
+				<i className="tiny mdi-action-room"></i>{this.props.location} 
+			</div>
+		);
+	}
 });
 
 EventBottom = React.createClass({
@@ -1187,10 +1243,12 @@ EventBottom = React.createClass({
 EventInformation = React.createClass({
 	render: function() {
 		return (
-			<div className="col s10 information">
-				<EventOrganizer organizer={this.props.organizer} />
-				<EventDateTime date={this.props.date} />
-				<EventVenue venue = {this.props.venue} />
+			<div className="col s10">
+				<div className="information">
+					<EventOrganizer organizer={this.props.organizer} />
+					<EventDateTime date={this.props.date} />
+					<EventVenue venue = {this.props.venue} />
+				</div>
 			</div>
 		);
 	}

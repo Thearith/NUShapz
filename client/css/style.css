@@ -279,7 +279,7 @@ input[type="text"]#search {
   	border: 2px;
   	background: #fff;
 
-  	margin-bottom: 15px;
+  	margin-bottom: 50px;
 }
 
 /* REDUCE CARD SIZE */
@@ -370,7 +370,7 @@ input[type="text"]#search {
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
 }
-
+/*
 @media screen and (min-width: 0px) and (max-width: 850px) {
   .organizer-title { font-size: 13px !important; }
   .datetime { font-size: 13px !important; }
@@ -382,7 +382,7 @@ input[type="text"]#search {
   .datetime { font-size: 11px !important; }
   .venue { font-size: 11px !important; }  
 }
-
+*/
 .mdi-navigation-close {
 	font-size: 28px !important;
 	cursor: pointer; cursor: hand !important;
@@ -494,11 +494,11 @@ input[type="text"]#search {
 .card-content {
 	padding: 20px !important;
 }
-
+/*
 .card-content .col {
 	padding-left: 0px;
 }
-
+*/
 .card .card-reveal{
 	padding-left: 5%;
 	padding-right: 5%;
@@ -529,13 +529,71 @@ input[type="text"]#search {
 	text-overflow: ellipsis;
 }
 
-.card-title:hover {
-	-webkit-transition: 0.5s ease-in-out;
-    -moz-transition: 0.5s ease-in-out;
-    -o-transition: 0.5s ease-in-out;
-    transition: 0.5s ease-in-out;
+.card-category {
+	color: #9e9e9e !important;
+	font-size: 14px !important;
+	text-transform: uppercase;
+	font-weight: 700 !important;
+}
 
-/*background-color: #ffe0b2;*/
+.card-date {
+	position: relative;
+	float: right;
+	font-size: 14px !important;	
+	font-weight: 700 !important;
+	text-transform: uppercase;
+	color: #757575;
+
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+
+.card-summary {
+	font-size: 14px;
+	font-weight: 600px;
+	width: 100%;
+	color: #616161;
+	white-space: nowrap;
+
+	/*
+	display: block; 
+	display: -webkit-box;
+	
+	height: 14px;
+	margin: 0 auto;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	*/
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.card-venue {
+	padding-top: 10px;
+	color: #757575 !important;
+	font-size: 14px !important;
+	text-transform: uppercase;
+	font-weight: 700 !important;
+
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.card-right-column {
+	float: right; 
+	height: 100%; 
+	background-color: #424242;
+}
+
+.position-star {
+	top: 50%; 
+	transform: translateY(-50%); 
+	padding: 10px;
+	color: #ffff00 !important;
 }
 
 .card-title-inner {
@@ -561,7 +619,7 @@ input[type="text"]#search {
 .information {
 	padding-top: 12px;
 	margin-top: 2px;
-	font-size: 14px;
+	font-size: 14px !important;
 	font-weight: 400;
 }
 

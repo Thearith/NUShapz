@@ -1129,7 +1129,7 @@ Event = React.createClass({
 	render: function() {
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventHeader category={this.props.data[CATEGORY]} title={this.props.data[TITLE]} />
+				<EventFavourite data={this.props.data} />
 				<EventContent data={this.props.data} />
 				<EventReveal data={this.props.data} />
 			</div>
@@ -1137,8 +1137,9 @@ Event = React.createClass({
 	}
 });
 
-EventHeader = React.createClass({
+/*				<EventHeader category={this.props.data[CATEGORY]} title={this.props.data[TITLE]} />*/
 
+EventHeader = React.createClass({
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
@@ -1150,16 +1151,53 @@ EventHeader = React.createClass({
 	}
 });
 
-EventContent = React.createClass({
+EventFavourite = React.createClass({
 	render: function() {
+		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
-			<div className="card-content">
-				<EventTitle organizer={this.props.data[TITLE]} />
-				<EventBottom data={this.props.data} />
+			<div className="card-right-column">
+				<a className="waves-effect waves-light position-star"><i className="small mdi-action-grade"></i></a>
 			</div>
 		);
 	}
 });
+
+EventContent = React.createClass({
+	render: function() {
+		return (
+			<div className="card-content">
+				<EventDate datetime={this.props.data[DATETIME]}/>
+				<EventCategory category={this.props.data[CATEGORY]} />
+				<EventTitle organizer={this.props.data[TITLE]} />
+				<EventSynopsis description={this.props.data[DESCRIPTION]} />
+				<EventLocation location={this.props.data[VENUE]} />
+			</div>
+		);
+	}
+});
+
+/*<EventBottom data={this.props.data} />*/
+
+EventDate = React.createClass({
+	render: function() {
+		return (
+			<div className="card-date">
+				{this.props.datetime} 
+			</div>
+		);
+	}
+});
+
+EventCategory = React.createClass({
+	render: function() {
+		return (
+			<div className="card-category">
+				{this.props.category} 
+			</div>
+		);
+	}
+});
+
 
 EventTitle = React.createClass({
 	render: function() {
@@ -1169,7 +1207,26 @@ EventTitle = React.createClass({
 			</div>
 		);
 	}
+});
 
+EventSynopsis = React.createClass({
+	render: function() {
+		return (
+			<div className="card-summary">
+				{this.props.description} 
+			</div>
+		);
+	}
+});
+
+EventLocation = React.createClass({
+	render: function() {
+		return (
+			<div className="card-venue">
+				<i className="tiny mdi-action-room"></i>{this.props.location} 
+			</div>
+		);
+	}
 });
 
 EventBottom = React.createClass({

@@ -1077,7 +1077,7 @@ NoEvents = React.createClass({
 		var json = getDate(this.props.index, false);
 		var date = json[DAY] + " " + json[MONTH];
 		return (
-			<div className="col l10 m12 cards no-events">
+			<div className="col l10 m12 s12 cards no-events">
 				No Events on {date}
 			</div>
 		);
@@ -1093,7 +1093,7 @@ CategorySections = React.createClass({
 		    );
 		});
 		return (
-			<div className="col l10 m12 cards">
+			<div className="col l10 m12 s12 cards">
 				{CategorySectionNode}
 			</div>
 		);
@@ -1143,7 +1143,7 @@ EventHeader = React.createClass({
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
 			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.title}</div>
+				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
 				<img className="activator" src={src}/>
 			</div>
 		);
@@ -1154,7 +1154,7 @@ EventContent = React.createClass({
 	render: function() {
 		return (
 			<div className="card-content">
-				<EventTitle organizer={this.props.data[CATEGORY]} />
+				<EventTitle organizer={this.props.data[TITLE]} />
 				<EventBottom data={this.props.data} />
 			</div>
 		);
@@ -1164,10 +1164,9 @@ EventContent = React.createClass({
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<span className="card-title grey-text text-darken-4">
+			<div className="activator card-title">
 				{this.props.organizer} 
-				<i className="mdi-navigation-more-vert right activator"></i>
-			</span>
+			</div>
 		);
 	}
 
@@ -1187,10 +1186,12 @@ EventBottom = React.createClass({
 EventInformation = React.createClass({
 	render: function() {
 		return (
-			<div className="col s10 information">
-				<EventOrganizer organizer={this.props.organizer} />
-				<EventDateTime date={this.props.date} />
-				<EventVenue venue = {this.props.venue} />
+			<div className="col s10">
+				<div className="information">
+					<EventOrganizer organizer={this.props.organizer} />
+					<EventDateTime date={this.props.date} />
+					<EventVenue venue = {this.props.venue} />
+				</div>
 			</div>
 		);
 	}

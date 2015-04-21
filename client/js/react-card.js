@@ -1229,17 +1229,6 @@ EventLocation = React.createClass({
 	}
 });
 
-EventBottom = React.createClass({
-	render: function() {
-		return (
-			<div className="row">
-				<EventInformation date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]}/>
-				<EventStar />
-			</div>
-		);
-	}
-});
-
 EventInformation = React.createClass({
 	render: function() {
 		return (
@@ -1329,6 +1318,7 @@ EventReveal = React.createClass({
 					<EventDescription description={this.props.data[DESCRIPTION]} />
 
 					<EventContact contact={this.props.data[CONTACT]} />
+					<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
 				</div>
 			</div>
 		);
@@ -1339,10 +1329,10 @@ Title = React.createClass({
 	render: function() {
 		return (
 			<div className="card-title grey-text text-darken-4 row">
-				<div className="col s11 card-title-inner">
+				<div className="col s10 card-title-inner">
 					<h4>{this.props.title}</h4>
 				</div>
-				<div className="col s1">
+				<div className="col s2">
 					<i className="mdi-navigation-close modal-close right"></i>
 				</div>
 

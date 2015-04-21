@@ -55,7 +55,7 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
+var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/staging/event/?id="; 
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 

@@ -495,6 +495,34 @@ input[type="text"]#search {
 	pointer-events: none;
 }
 
+.single-card .card-content {
+	padding-top: 25px !important;
+  	padding-left: 20px !important;
+  	padding-right: 20px !important;
+}
+
+.single-card .row {
+  	margin-bottom: 10px !important;
+}
+
+.single-card .description {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.single-card .contact .row {
+	margin-bottom: 0px !important;
+}
+
+.single-card .contact p {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.single-card .social-media {
+	margin-right: 20px;
+}
+
 .card .card-reveal{
 	padding-left: 5%;
 	padding-right: 5%;

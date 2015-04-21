@@ -1152,7 +1152,7 @@ Event = React.createClass({
 		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
 		
 		return (
-			<div className="collapsible popout" data-collapsible="accordion">
+			<div className="collapsible" data-collapsible="accordion">
 				<li>
 					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
 						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
@@ -1399,7 +1399,6 @@ EventContact = React.createClass({
 				<div className="contact">
 					<i className="icon-width contact-icon mdi-communication-email"></i>
 					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
-				</div>
 			</div>
 		);
 	}

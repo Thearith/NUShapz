@@ -1161,7 +1161,6 @@ EventFavourite = React.createClass({
 		this.setState({liked: !this.state.liked});
 	},
 	render: function() {
-		
 		var c = this.state.liked ?
 		" yellow-text lighten-4" : " white-text" ;
 		return (
@@ -1175,8 +1174,10 @@ EventFavourite = React.createClass({
 EventContent = React.createClass({
 	render: function() {
 
+		var link = "#reveal-" + this.props.data[EVENT_ID];
+
 		return (
-			<div className="card-content">
+			<div className="card-content modal-trigger" href={link}>
 				<EventDate datetime={this.props.data[DATETIME]}/>
 				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
 				<EventTitle organizer={this.props.data[TITLE]} />
@@ -1329,14 +1330,19 @@ EventStar = React.createClass({
 EventReveal = React.createClass({
 	render: function() {
 
+		var cardID = "reveal-" + this.props.data[EVENT_ID];
+
 		return (
-			<div className="row modal">
 
-				<EventDescription description={this.props.data[DESCRIPTION]} />
+			<div className="row modal" display={displayNone} id={cardID} >
+				<div className="modal-content">
 
-				<EventContact contact={this.props.data[CONTACT]} />
+					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
 
-				<EventSocialMedia cardID={this.props.data[EVENT_ID]} />
+					<EventDescription description={this.props.data[DESCRIPTION]} />
+
+					<EventContact contact={this.props.data[CONTACT]} />
+				</div>
 			</div>
 		);
 	}
@@ -1347,10 +1353,10 @@ Title = React.createClass({
 		return (
 			<div className="card-title grey-text text-darken-4 row">
 				<div className="col s11 card-title-inner">
-					{this.props.title}
+					<h4>{this.props.title}</h4>
 				</div>
 				<div className="col s1">
-					<i className="mdi-navigation-close right"></i>
+					<i className="mdi-navigation-close modal-close right"></i>
 				</div>
 
 				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />

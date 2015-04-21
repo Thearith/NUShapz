@@ -61,8 +61,41 @@ switch($cmd) {
 	case "stats":
 		echo getStats();
 		break;
+	case "singleEvent":
+		echo getSingleEvent($_GET["eventid"]);
+		break;
 	default:
 		break;
+}
+
+function getSingleEvent($eventid) {
+	if(!isset($eventid)) {
+		return invalidData();
+	}
+	$table;
+	switch (strlen($eventid)) {
+		case 1:
+		case 2:
+		case 3:
+			$table = "HAPZEVENTS";
+			break;
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+			$table = "NUSCOEEVENTS";
+			break;
+		case 36:
+			$table = "IVLEEVENTS";
+			break;
+		default:
+			return invalidData();
+	}
+
+	$query = "SELECT * FROM $table WHERE ID = $eventid";
+	$result = databaseQuery($query);
+	return json_encode($result->fetch_assoc());
+
 }
 
 function deleteEvent($eventid) {

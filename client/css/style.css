@@ -832,3 +832,17 @@ select.browser-default {
 .test {
 	float:right;
 }
+
+.collapsible-body {
+	background-color: #ffffff !important;
+	font-size: 13px !important;
+}
+
+a {
+	color: #ff8f00;
+}
+
+.collapsible-body img {
+	width: 100%;
+	height: auto;
+}

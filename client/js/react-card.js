@@ -1123,6 +1123,8 @@ EventSection = React.createClass({
 	}
 });
 
+var converter = new Showdown.converter();
+
 Event = React.createClass({
 	componentDidMount: function() {
 
@@ -1140,6 +1142,7 @@ Event = React.createClass({
 				break;
 			}
 
+		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
 		
 		return (
 		 <div className="collapsible popup" data-collapsible="accordion">
@@ -1154,7 +1157,8 @@ Event = React.createClass({
 				<EventLocation location={this.props.data[VENUE]} />
 			</div>
 		</div>
-		<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		<div className="collapsible-body">
+			<span dangerouslySetInnerHTML={{__html: rawMarkup}} /></div>
     	</li>
     	</div>
 

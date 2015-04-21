@@ -1125,11 +1125,11 @@ EventSection = React.createClass({
 
 Event = React.createClass({
 	componentDidMount: function() {
-
 	    $('.collapsible').collapsible({
-	      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	    });
 	},
+
 	render: function() {
 
 		var bgColorIndex = 0;
@@ -1142,34 +1142,20 @@ Event = React.createClass({
 
 		
 		return (
-		 <div className="collapsible popup" data-collapsible="accordion">
-    	 <li>
-		<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
-			<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-			<div>
-				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
-			</div>
-		</div>
-		<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    	</li>
-    	</div>
+			<div className="collapsible popup" data-collapsible="accordion">
+				<li>
+					<div className="collapsible-header">
+						<EventFavourite color={CATEGORY_BG_COLORS[bgColorIndex]} />
+					</div>
+					<div className="collapsible-body">
+						<p>Lorem ipsum dolor sit amet.</p>
+					</div>
+				</li>
+	    	</div>
+		);
+	}
+});
 
-		);
-	}
-});
-/*			<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />*/
-EventHeader = React.createClass({
-	render: function() {
-		var src = IMAGE_PATH + this.props.category + ".jpg";
-		return (
-			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
-				<img className="activator" src={src}/>
-			</div>
-		);
-	}
-});
 
 EventFavourite = React.createClass({
 	getInitialState: function() {
@@ -1190,14 +1176,11 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
-
-		var link = "#reveal-" + this.props.data[EVENT_ID];
-
 		return (
-			<div className="card-content-test" href={link}>
+			<div>
 				<EventDate datetime={this.props.data[DATETIME]}/>
 				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
-				<EventTitle organizer={this.props.data[TITLE]} />
+				<EventTitle title={this.props.data[TITLE]} />
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
 			</div>
@@ -1231,14 +1214,12 @@ EventCategory = React.createClass({
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<div className="card-title">
-				{this.props.organizer} 
-			</div>
+			<h4>
+				{this.props.title} 
+			</h4>
 		);
 	}
 });
-
-var converter = new Showdown.converter();
 
 EventSynopsis = React.createClass({
 	render: function() {

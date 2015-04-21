@@ -58,6 +58,9 @@ switch($cmd) {
 	case "delete":
 		echo deleteEvent($_POST["eventid"]);
 		break;
+	case "stats":
+		echo getStats();
+		break;
 	default:
 		break;
 }
@@ -580,6 +583,46 @@ function getEventsByTimeline() {
 	}
 }
 
+function getStats() {
+	$countTotalQuery = "SELECT (SELECT COUNT(*) FROM HAPZEVENTS) +	(SELECT COUNT(*) FROM IVLEEVENTS) +	(SELECT COUNT(*) FROM NUSCOEEVENTS) AS value";
+	$countTotal = databaseQuery($countTotalQuery);
+	$countTotal = $countTotal->fetch_assoc();
+
+	$countFlaggedQuery = "SELECT (SELECT COUNT(*) FROM HAPZEVENTS WHERE Flag = 1) +	(SELECT COUNT(*) FROM IVLEEVENTS WHERE Flag = 1) +	(SELECT COUNT(*) FROM NUSCOEEVENTS WHERE Flag = 1) AS value";
+	$countFlagged = databaseQuery($countFlaggedQuery);
+	$countFlagged = $countFlagged->fetch_assoc();
+
+	$countNewQuery = "SELECT COUNT(*) AS value FROM HAPZEVENTS WHERE Flag = 1";
+	$countNew = databaseQuery($countNewQuery);
+	$countNew = $countNew->fetch_assoc();
+
+	$countHapzQuery = "SELECT COUNT(*) AS value FROM HAPZEVENTS ";
+	$countHapz = databaseQuery($countHapzQuery);
+	$countHapz = $countHapz->fetch_assoc();
+
+	$countIVLEQuery = "SELECT COUNT(*) AS value FROM IVLEEVENTS";
+	$countIVLE = databaseQuery($countIVLEQuery);
+	$countIVLE = $countIVLE->fetch_assoc();
+
+	$countCOEQuery = "SELECT COUNT(*) AS value FROM NUSCOEEVENTS";
+	$countCOE = databaseQuery($countCOEQuery);
+	$countCOE = $countCOE->fetch_assoc();
+
+	$stats = array(
+		"total" => $countTotal,
+		"flagged" => $countFlagged,
+		"new" => $countNew,
+		"hapz" => $countHapz,
+		"ivle" => $countIVLE,
+		"coe" => $countCOE);
+
+	$data = array(
+		"Response" => "Valid",
+		"Stats" => $stats);
+
+	$json = json_encode($data);
+	return $json;
+}
 
 function getEventsByCategory() {
 	return "Not done";

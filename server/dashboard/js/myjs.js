@@ -36,8 +36,8 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 
 app.controller('tableController', 
-	['$scope', '$routeParams', 'EventAPI', '$location', 'eventService',
-	function($scope, $routeParams, EventGetAPI, $location, eventService ){
+	['$scope', '$routeParams', 'EventAPI', '$location', 'eventService', '$cacheFactory',
+	function($scope, $routeParams, EventGetAPI, $location, eventService, $cacheFactory ){
 		if ($routeParams.eventType != undefined) {
 			$scope.eventType = $routeParams.eventType.substring(1);
 			$scope.eventList = [];
@@ -50,6 +50,15 @@ app.controller('tableController',
 			$scope.eventform = function (event) {
 				eventService.setEvent($scope.eventType, event);
 				$location.path('/event/'+event.ID);
+			};
+			$scope.refresh = function (event) {
+				var $httpDefaultCache = $cacheFactory.get('$http');
+				$httpDefaultCache.removeAll();
+				$.get(NUSHAPZ_API, {cmd:'hapz'}, function(data){
+					if (data.Response == "Valid") {
+						$scope.eventList = data.Events;
+					}
+				});
 			};
 		}
 }]);
@@ -218,14 +227,18 @@ app.controller('createEventController', ['$scope', '$routeParams', 'eventService
 		$scope.today();
 }]);
 
-app.controller('homeController', ['$scope', 
-	function($scope){
+app.controller('homeController', ['$scope', '$location', 'eventService', 'EventAPI',
+	function($scope, $location, eventService, EventAPI){
+		EventAPI.query({cmd: "stats"}).$promise.then(function(data){
+			$scope.stats = data.Stats;
+			console.log($scope.stats);
+		});
 }])
 
 
 app.factory('EventAPI', ['$resource', function($resource){
-	return $resource((NUSHAPZ_API+'?cmd=:cmd'), {cmd : '@cmd'}, {
-		'query':  {method:'GET', isArray:false}
+	return $resource((NUSHAPZ_API+'?cmd=:cmd'), {cmd : '@cmd'}, 
+		{'query':  {method:'GET', isArray:false, cache:true} 
 	});
 }]);
 
@@ -237,8 +250,6 @@ app.service('eventService', function() {
 	this.setEvent = function(table, event) {
 		this.table = table;
 		this.event = event;
-
-
 	}
 
 	this.getEvent = function() {

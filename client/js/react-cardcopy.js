@@ -1166,6 +1166,8 @@ EventContent = React.createClass({
 	}
 });
 
+/*<EventBottom data={this.props.data} />*/
+
 EventDate = React.createClass({
 	render: function() {
 		return (
@@ -1197,14 +1199,11 @@ EventTitle = React.createClass({
 	}
 });
 
-var converter = new Showdown.converter();
-
 EventSynopsis = React.createClass({
-	var description = converter.makeHtml(this.props.description);
 	render: function() {
 		return (
 			<div className="card-summary">
-				<span dangerouslySetInnerHTML={{__html: rawMarkup}} /> 
+				{this.props.description} 
 			</div>
 		);
 	}
@@ -1310,7 +1309,7 @@ EventReveal = React.createClass({
 		};
 
 		return (
-			<div className="row modal" display={displayNone}>
+			<div className="row card-toggler" display={displayNone}>
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 

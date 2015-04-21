@@ -72,6 +72,8 @@ var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "Ongoing", "AndMore"];
 //Category
 var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
 var IMAGE_PATH = "../image/category/";
+var CATEGORY_BG_COLORS =  ["red", "pink", "purple", "indigo", "blue", "light-blue", "teal", "green", "light-green", "brown", "deep-orange"];
+
 
 // constants
 var TITLE_MAXIMUM_LENGTH = 30;
@@ -738,7 +740,11 @@ ModalForm = React.createClass({
 		var none = {
 			display: 'none'
 		};
-		
+
+		var title = {
+			fontWeight: '700'
+		};
+
 		return (
 			<div>
 				<div id="modal-newevent" className="modal modal-fixed-footer">
@@ -747,11 +753,11 @@ ModalForm = React.createClass({
 		      				<div className="col s10">
 		      					<h4>Create an Event</h4>
 		      				</div>
-		      				<div className="col s2">
+		      				<div className="col s2" style={title}>
 		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
 		      				</div>
 		      			</div>
-		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on IVLE and NUS Calendar of Events, and will appear only on NUSHapz. The process of creating an event on NUSHapz will be faster as the approval time is shorter than that of IVLE and NUS Calendar of Events. We hope you enjoy this free service.</p>
+		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on other portals, and will appear only on NUSHapz. Creating an event on NUSHapz will be faster compared to creating in IVLE due to the shorter approval times.</p>
 
 
 		  				<div className="row">
@@ -867,7 +873,7 @@ ModalForm = React.createClass({
 							        </div>
 							    </div>
 
-							    <p className="disclaimer">* Events submitted thru NUSHapz will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
+							    <p className="disclaimer">* Events submitted will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
 
 							    <div className="button-container">
 
@@ -1119,10 +1125,20 @@ EventSection = React.createClass({
 
 Event = React.createClass({
 	render: function() {
+
+		var bgColorIndex = 0;
+		var eventCategory = this.props.data[CATEGORY];
+		for(i=0; i<CATEGORY_ARRAY.length; i++)
+			if(eventCategory == CATEGORY_ARRAY[i]) {
+				bgColorIndex = i;
+				break;
+			}
+
+		
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventFavourite data={this.props.data} />
-				<EventContent data={this.props.data} />
+				<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+				<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 				<EventReveal data={this.props.data} />
 			</div>
 		);
@@ -1149,12 +1165,11 @@ EventFavourite = React.createClass({
 		this.setState({liked: !this.state.liked});
 	},
 	render: function() {
-		select_color = "orange lighten-2";
 		var c = this.state.liked ?
 		" yellow-text lighten-4" : " white-text" ;
 		return (
-			<div className={"card-right-column " + select_color} onClick={this.handleClick}>
-				<a className={"waves-effect waves-light position-star" + c}><i className="small mdi-action-grade"></i></a>
+			<div className={"card-right-column " + this.props.color + " lighten-2"} onClick={this.handleClick}>
+				<div className={"waves-effect waves-light position-star" + c}><i className="small"></i></div>
 			</div>
 		);
 	}
@@ -1162,11 +1177,13 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
+
 		var link = "#reveal-" + this.props.data[EVENT_ID];
+
 		return (
 			<div className="card-content modal-trigger" href={link}>
 				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} />
+				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
 				<EventTitle organizer={this.props.data[TITLE]} />
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
@@ -1177,9 +1194,11 @@ EventContent = React.createClass({
 
 EventDate = React.createClass({
 	render: function() {
+		var tokens = this.props.datetime.split(" ", 5);
+		var begin_date = tokens[0].concat(" ",tokens[1]," ",tokens[2]," ",tokens[3]," ",tokens[4]);
 		return (
 			<div className="card-date">
-				{this.props.datetime} 
+				{begin_date} 
 			</div>
 		);
 	}
@@ -1188,7 +1207,7 @@ EventDate = React.createClass({
 EventCategory = React.createClass({
 	render: function() {
 		return (
-			<div className="card-category">
+			<div className={"card-category " + this.props.color + "-text " + "darken-2"}>
 				{this.props.category} 
 			</div>
 		);
@@ -1303,14 +1322,12 @@ EventStar = React.createClass({
 
 EventReveal = React.createClass({
 	render: function() {
-		var displayNone = {
-			display: "none"
-		};
 
 		var cardID = "reveal-" + this.props.data[EVENT_ID];
 
 		return (
-			<div className="row modal" display={displayNone} id={cardID} >
+
+			<div className="row modal" id={cardID} >
 				<div className="modal-content">
 
 					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />

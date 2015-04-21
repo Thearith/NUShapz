@@ -906,19 +906,11 @@ EventSocialMedia = React.createClass({
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
 		return (
-			<p className="social-media right">
-				<span>
-					<a href={twitterURL} title="Share on Twitter" target="_blank" className="btn btn-social btn-twitter text-center">
-						<i className="fa fa-twitter"></i>
-					</a>
-					<a href={facebookURL} target="_blank" className="btn btn-social btn-facebook">
-						<i className="fa fa-facebook"></i>
-					</a>
-					<a href={googleURL} target="_blank" className="btn btn-social btn-googleplus">
-						<i className="fa fa-google-plus"></i>
-					</a>
-				</span>
-			</p>
+			<div className="socialmed">
+				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons"><i className="fa fa-twitter"></i></a>
+				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons"><i className="fa fa-facebook"></i></a>
+				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons"><i className="fa fa-google-plus"></i></a>
+			</div>
 		);
 	}
 });

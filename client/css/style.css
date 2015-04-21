@@ -630,6 +630,17 @@ input[type="text"]#search {
 	font-weight: 500 !important;
 }
 
+.single-card .description {
+	border-top: 1px solid #e5e5e5;
+	border-bottom:1px solid #e5e5e5;
+}
+
+.single-card .socialmed {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	margin-right: 0px;
+}
+
 .description {
 	padding: 10px;
 	padding-top: 10px;
@@ -653,6 +664,10 @@ input[type="text"]#search {
 	margin-left: 40px;
 	color: #757575 ;
 	font-size: 18px !important;
+}
+
+.contact p {
+	padding-left: 0px;
 }
 
 .contact .row {
@@ -690,19 +705,6 @@ input[type="text"]#search {
 
 .description {
 	font-size: 15px;
-}
-
-.social-media {
-	font-size: 17px;
-}
-
-.social-media a {
-	margin-left: 10px;
-}
-
-.social-media a i {
-	width: 20px;
-	border: 50%;
 }
 
 .card-footer p{

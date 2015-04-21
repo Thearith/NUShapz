@@ -1391,17 +1391,16 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
-		<div className="contact-footer">
-			<div className="contact">
+			<div className="contact-footer">
+				<div className="contact">
 					<i className="icon-width organizer-icon mdi-social-person"></i>
 					<span className="contact-text"> {this.props.organizer} </span>
-			</div>
-			<div className="contact">
+				</div>
+				<div className="contact">
 					<i className="icon-width contact-icon mdi-communication-email"></i>
 					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
 				</div>
 			</div>
-		</div>
 		);
 	}
 });
@@ -1412,26 +1411,11 @@ EventSocialMedia = React.createClass({
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
-		/*return (
-			<p className="social-media right">
-				<span>
-					<a href={twitterURL} title="Share on Twitter" target="_blank" className="btn btn-social btn-twitter text-center">
-						<i className="fa fa-twitter"></i>
-					</a>
-					<a href={facebookURL} target="_blank" className="btn btn-social btn-facebook">
-						<i className="fa fa-facebook"></i>
-					</a>
-					<a href={googleURL} target="_blank" className="btn btn-social btn-googleplus">
-						<i className="fa fa-google-plus"></i>
-					</a>
-				</span>
-			</p>
-		);*/
 		return (
 			<div className="socialmed">
-<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons"><i className="fa fa-twitter"></i></a>
-<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons"><i className="fa fa-facebook"></i></a>
-<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons"><i className="fa fa-google-plus"></i></a>
+				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons"><i className="fa fa-twitter"></i></a>
+				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons"><i className="fa fa-facebook"></i></a>
+				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons"><i className="fa fa-google-plus"></i></a>
 			</div>
 		);
 	}

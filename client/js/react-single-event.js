@@ -36,9 +36,10 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
+var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/staging/event/?id="; 
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
-var SERVER_GET_SINGLE_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=singleEvent&eventid=100";
+var SERVER_GET_SINGLE_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=singleEvent&eventid=";
+var QUERY = "id";
 
 // constants
 var NON_IDENTIFIED = "-";
@@ -90,80 +91,6 @@ function isRealValue(obj){
 	return obj && obj !== "null" && obj!== "undefined" && obj !== "-";
 }
 
-function getDateJSON(date, isLeftSidebar, index) {
-	if(date != null) {
-		day = date.getDate();
-		weekDay = WEEKDAYS[date.getDay()];
-		month = MONTHS[date.getMonth()];
-		return {
-			"day" : day,
-			"weekday" : weekDay,
-			"month" : month
-		};
-	} else {
-		if(isLeftSidebar) {
-			if(index == MORE_INDEX) {
-				return {
-					"day" : PLUS,
-					"weekday": MORE,
-					"month" : ""
-				};
-			} else if(index == ONGOING_INDEX) {
-				return {
-					"day" : "~",
-					"weekday" : "Ongoing" ,
-					"month" : ""
-				};
-			}
-		} else {
-			if(index == MORE_INDEX) {
-				return {
-					"day": "\"More",
-					"weekday": '',
-					"month": "Events\""
-				};
-			} else if(index == ONGOING_INDEX) {
-				return {
-					"day" : "\"Ongoing",
-					"weekday" : "" ,
-					"month" : "Events\""
-				};
-			}
-		}
-	}
-}
-
-function getDate(index, isLeftSidebar) {
-	var date = new Date();
-	var json;
-
-	switch(index) {
-		case TODAY_INDEX:
-			json = getDateJSON(date, isLeftSidebar, TODAY_INDEX);
-			break;
-
-		case TOMORROW_INDEX:
-			var tmrDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
-			json = getDateJSON(tmrDate, isLeftSidebar, TOMORROW_INDEX);
-			break;
-
-		case FEW_DAYS_INDEX:
-			var fewDaysDate = new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000);
-			json = getDateJSON(fewDaysDate, isLeftSidebar, FEW_DAYS_INDEX);
-			break;
-
-		case ONGOING_INDEX:
-			json = getDateJSON(null, isLeftSidebar, ONGOING_INDEX);
-			break;
-
-		case MORE_INDEX:
-			json = getDateJSON(null, isLeftSidebar, MORE_INDEX);
-			break;
-	}
-
-	return json;
-}
-
 function replaceTxtNotInA(html, regex, replace) {
 
 	html = '>' + html + '<';
@@ -198,12 +125,24 @@ function urlify(html) {
 
 Body = React.createClass({
 	getInitialState: function() {
-		return {data: ""};
+		return {
+			data: ""
+		};
+	},
+	getUrlParameter: function(sParam) {
+	    var sPageURL = window.location.search.substring(1);
+	    var sURLVariables = sPageURL.split('&');
+	    for (var i = 0; i < sURLVariables.length; i++) {
+	        var sParameterName = sURLVariables[i].split('=');
+	        if (sParameterName[0] == sParam) 
+        		return sParameterName[1];
+	    }
 	},
 	componentDidMount: function() {
+		var id = this.getUrlParameter(QUERY);
 	    $.ajax({
 			type: 'GET',
-	     	url: this.props.url,
+	     	url: this.props.url + id,
 	      	dataType: 'json',
 	      	success: function(data) {
 	      		this.setState({data: data});
@@ -214,37 +153,28 @@ Body = React.createClass({
 	    });
 	},
 	render: function() {
-		console.log(this.state.data);
+		var id = this.getUrlParameter(QUERY);
 		return (
 			<div>
 				{ this.state.data ?  
 					<App data={this.state.data} urlPost={this.props.urlPost}/> : 
-					<Loading /> 
+					<NoData id={id}/> 
 				}
 			</div>
 		);
 	}
 });
 
-Loading = React.createClass({
+NoData = React.createClass({
 	render: function() {
+		var style = {
+			marginTop: "120px"
+		};
 		return (
-			<div className="row loading">
-				<div className="col s12 m12 center">
-					<div className="preloader-wrapper big active">
-		    			<div className="spinner-layer spinner-yellow-only">
-		      				<div className="circle-clipper left">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="gap-patch">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="circle-clipper right">
-		        				<div className="circle"></div>
-		      				</div>
-		    			</div>
-		  			</div>
-		  		</div>
+			<div className="row">
+				<div className="col s12 center" style={style}>
+					<h3>Event with id {this.props.id} is not found</h3>
+				</div>
 		  	</div>
   		);
 	}
@@ -797,19 +727,18 @@ Event = React.createClass({
 			}
 		
 		return (
-			<div className="collapsible popup" data-collapsible="accordion">
+			<div className="container single-card z-depth-1 white" data-collapsible="accordion">
 				<li>
-					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
+					<div className="row" id={this.props.data[EVENT_ID]} >
 						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 						<div className="card-content">
 							<EventDate datetime={this.props.data[DATETIME]}/>
 							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
 							<EventTitle title={this.props.data[TITLE]} />
-							<EventSynopsis description={this.props.data[DESCRIPTION]} />
 							<EventLocation location={this.props.data[VENUE]} />
 						</div>
 					</div>
-					<div className="collapsible-body">
+					<div className="row">
 						<EventDescription description={this.props.data[DESCRIPTION]} />
 						<EventContact contact={this.props.data[CONTACT]} />
 						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
@@ -833,20 +762,6 @@ EventFavourite = React.createClass({
 		" yellow-text lighten-4" : " white-text" ;
 		return (
 			<div className={"card-left-column " + this.props.color + " lighten-2"}>
-			</div>
-		);
-	}
-});
-
-EventContent = React.createClass({
-	render: function() {
-		return (
-			<div>
-				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
-				<EventTitle title={this.props.data[TITLE]} />
-				<EventSynopsis description={this.props.data[DESCRIPTION]} />
-				<EventLocation location={this.props.data[VENUE]} />
 			</div>
 		);
 	}
@@ -880,17 +795,6 @@ EventTitle = React.createClass({
 		return (
 			<div className="card-title">
 				{this.props.title} 
-			</div>
-		);
-	}
-});
-
-EventSynopsis = React.createClass({
-	render: function() {
-		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, ''); 
-		return (
-			<div className="card-summary">
-				{removeHTML}
 			</div>
 		);
 	}
@@ -982,8 +886,14 @@ EventContact = React.createClass({
 		var rawMarkup = converter.makeHtml(contact);
 		return (
 			<div className="contact">
-				<i className="fa fa-envelope"></i>
-				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				<div className="row">
+					<i className="icon-width organizer-icon mdi-social-person"></i>
+					<span className="contact-text"> {this.props.organizer} </span>
+				</div>
+				<div className="row">
+					<i className="icon-width contact-icon mdi-communication-email"></i>
+					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				</div>
 			</div>
 		);
 	}

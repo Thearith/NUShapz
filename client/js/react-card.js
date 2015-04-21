@@ -55,7 +55,7 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
+var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/staging/event/?id="; 
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 
@@ -930,7 +930,7 @@ SearchTimeline = React.createClass({
 });
 
 EmptySearch = React.createClass({
-	
+
 	render: function() {
 		return (
 			<div className="no-events">
@@ -1152,7 +1152,7 @@ Event = React.createClass({
 		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
 		
 		return (
-			<div className="collapsible popup" data-collapsible="accordion">
+			<div className="collapsible popout" data-collapsible="accordion">
 				<li>
 					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
 						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
@@ -1391,16 +1391,17 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
-			<div className="contact-footer">
+		<div className="contact-footer">
 			<div className="contact">
-				<i className="icon-width organizer-icon mdi-social-person"></i>
-				<span className="contact-text"> {this.props.organizer} </span>
+					<i className="icon-width organizer-icon mdi-social-person"></i>
+					<span className="contact-text"> {this.props.organizer} </span>
 			</div>
 			<div className="contact">
-				<i className="icon-width contact-icon mdi-communication-email"></i>
-				<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+					<i className="icon-width contact-icon mdi-communication-email"></i>
+					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				</div>
 			</div>
-			</div>
+		</div>
 		);
 	}
 });

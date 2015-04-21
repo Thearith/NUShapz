@@ -337,19 +337,8 @@ input[type="text"]#search {
   .resize-on-xs { font-size: 26px; padding-top: 40px; /*94*/}  
 }
 
-/*
-.category-title:hover {
-	padding-top: 5px;
-	white-space: normal;
-}
-*/
 .text-overflow {
 	text-overflow: ellipsis;
-}
-
-.favorite:hover {
-	/*background-color: #ffc107 !important;
-	opacity: 0.9;*/
 }
 
 #contain {
@@ -369,20 +358,25 @@ input[type="text"]#search {
     -o-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
-}
-/*
-@media screen and (min-width: 0px) and (max-width: 850px) {
-  .organizer-title { font-size: 13px !important; }
-  .datetime { font-size: 13px !important; }
-  .venue { font-size: 13px !important; }  
+
 }
 
-@media screen and (min-width: 0px) and (max-width: 650px) {
-  .organizer-title { font-size: 11px !important; }
-  .datetime { font-size: 11px !important; }
-  .venue { font-size: 11px !important; }  
+@media screen and (min-width: 0px) and (max-width: 860px) {
+	.card-date { font-size: 10px !important; } 
+	.card-category  { font-size: 10px !important; }
 }
-*/
+
+@media screen and (min-width: 0px) and (max-width: 670px) {
+	.card-date { 
+		font-size: 10px !important; 
+		white-space: normal !important;
+	} 
+	.card-category  { font-size: 10px !important; }  
+	.card-title { font-size: 16px !important; }
+	.card-summary { font-size: 12px !important; }
+	.card-venue { font-size: 12px !important; }
+}
+
 .mdi-navigation-close {
 	font-size: 28px !important;
 	cursor: pointer; cursor: hand !important;
@@ -403,7 +397,7 @@ input[type="text"]#search {
     -o-transform: scale(1.3);
     -ms-transform: scale(1.3);
 }
-
+/*
 ::-webkit-scrollbar
 {
 	width: 6px;
@@ -421,7 +415,7 @@ input[type="text"]#search {
 	border-radius: 10px;
 	background-color: #ff6e40;
 }
-
+*/
 .activator:hover {
 	cursor: pointer; cursor: hand;
 }
@@ -494,11 +488,7 @@ input[type="text"]#search {
 .card-content {
 	padding: 20px !important;
 }
-/*
-.card-content .col {
-	padding-left: 0px;
-}
-*/
+
 .card .card-reveal{
 	padding-left: 5%;
 	padding-right: 5%;
@@ -519,7 +509,7 @@ input[type="text"]#search {
 
 .card-title {
 	color: #424242 !important;
-	font-size: 20px !important;
+	font-size: 20px;
 	text-transform: capitalize;
 	font-weight: 700 !important;
 	margin-bottom: 5px;
@@ -531,7 +521,7 @@ input[type="text"]#search {
 
 .card-category {
 	color: #9e9e9e !important;
-	font-size: 14px !important;
+	font-size: 14px;
 	text-transform: uppercase;
 	font-weight: 700 !important;
 }
@@ -539,7 +529,7 @@ input[type="text"]#search {
 .card-date {
 	position: relative;
 	float: right;
-	font-size: 14px !important;	
+	font-size: 14px;	
 	font-weight: 700 !important;
 	text-transform: uppercase;
 	color: #757575;
@@ -573,7 +563,7 @@ input[type="text"]#search {
 .card-venue {
 	padding-top: 10px;
 	color: #757575 !important;
-	font-size: 14px !important;
+	font-size: 14px;
 	text-transform: uppercase;
 	font-weight: 700 !important;
 
@@ -586,14 +576,15 @@ input[type="text"]#search {
 .card-right-column {
 	float: right; 
 	height: 100%; 
-	background-color: #424242;
+	background-color: #e57373;
+	margin-right: 4px;
 }
 
 .position-star {
 	top: 50%; 
 	transform: translateY(-50%); 
 	padding: 10px;
-	color: #ffff00 !important;
+	color: #ffffff !important;
 }
 
 .card-title-inner {

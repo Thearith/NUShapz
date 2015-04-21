@@ -292,12 +292,6 @@ App = React.createClass({
         }
     },
 
-    componentDidMount: function() {
-    	$('.collapsible').collapsible({
-	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	    });
-    },
-
 	doSearch:function(queryText){
         
 		var queryResult = [];
@@ -913,6 +907,12 @@ MainContainer = React.createClass({
 });
 
 SearchTimeline = React.createClass({
+	componentDidMount: function() {
+    	$('.collapsible').collapsible({
+	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });
+    },
+
 	render: function() {
 		return (
 			<div className="row">
@@ -941,6 +941,12 @@ EmptySearch = React.createClass({
 });
 
 NoSearchTimeline = React.createClass({
+	componentDidMount: function() {
+    	$('.collapsible').collapsible({
+	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });
+    },
+
 	render: function() {
 		return (
 			<div className="row">

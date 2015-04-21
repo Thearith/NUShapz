@@ -598,12 +598,17 @@ input[type="text"]#search {
 }
 
 .description {
-	padding: 17px;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	line-height: 25px;
 	border-top: 1px solid #e5e5e5;
 	border-bottom:1px solid #e5e5e5;
+}
+
+.collapsible-body p {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .description p {
@@ -611,9 +616,22 @@ input[type="text"]#search {
 }
 
 .contact {
-	padding: 0 0.75rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	margin-left: 40px;
+	color: #757575 ;
+	font-size: 18px !important;
+}
+
+.contact-icon {
+	margin-top: 2px;
+	float: left;
+	font-size: 20px !important;
+}
+
+.contact-text {
+	position: relative;
+	font-size: 600;
 }
 
 .information {
@@ -669,25 +687,17 @@ input[type="text"]#search {
 .description img {
 	padding: 5px;
 	width: 300px;
-	height: 300px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #bdbdbd;
 	border-radius: 5px;
 }
 
-.contact {
-	font-size: 14px;
-}
-
-.contact i {
-	margin-right: 5px;
-}
-
+/*
 .contact ul, .contact i, .contact p, .contact li:first-child{
 	display: inline;
 }
-
+*/
 .email li:nth-child(n+2) {
 	margin-left: 25px;
 }
@@ -845,4 +855,19 @@ a {
 .collapsible-body img {
 	width: 100%;
 	height: auto;
+}
+
+.contact-text {
+	font-size: 14px !important;
+}
+
+.icon-width {
+	width: 20px;
+}
+
+.organizer-icon {
+	margin-top: 2px;
+	float: left;
+	font-size: 22px !important;
+	margin-right: 10px;
 }

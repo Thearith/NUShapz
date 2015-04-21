@@ -3,7 +3,6 @@
 var Body;
 
 var App;
-var Loading;
 
 var Navbar;
 var MainContainer;
@@ -12,29 +11,11 @@ var ModalForm;
 var Logo;
 var NavbarForm;
 
-var Search;
-var SearchMobile;
-
 var NewEvent;
 var NewEventMobile;
 
 var Content;
-var Sidebar;
 
-var Timeline;  //contains timeline sections
-
-var TimelineSection; //contains categories within the same timeline section
-
-var SearchTimeline;
-var NoSearchTimeline;
-
-var LeftSideBar;
-var CategoriesContainer
-
-var CategorySections;
-var NoEvents;
-
-var CategorySection; // contains events of the same category
 var EventSection;
 var Event;
 var EventHeader;
@@ -55,26 +36,10 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var HOMEPAGE = "http://hapz.nusmods.com";
-var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
-//var SERVER = "timeline.json";
 
-//Timeline
-var TIMELINE = "Timeline";
-var TODAY_INDEX = 0;
-var TOMORROW_INDEX = 1;
-var FEW_DAYS_INDEX = 2;
-var ONGOING_INDEX = 3;
-var MORE_INDEX = 4;
-var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "Ongoing", "AndMore"];
-
-//Category
-var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
-var IMAGE_PATH = "../image/category/";
 
 // constants
-var TITLE_MAXIMUM_LENGTH = 30;
 var NON_IDENTIFIED = "-";
 
 // date
@@ -235,6 +200,10 @@ Body = React.createClass({
 	    $.ajax({
 			type: 'GET',
 	     	url: this.props.url,
+	     	data: {
+	     		"cmd": "singleEvent",
+	     		"eventid": 69259
+	     	},
 	      	dataType: 'json',
 	      	success: function(data) {
 	      		this.setState({data: data});
@@ -248,7 +217,7 @@ Body = React.createClass({
 		return (
 			<div>
 				{ Object.keys(this.state.data).length != 0 ?  
-					<App data={this.state.data[TIMELINE]} urlPost={this.props.urlPost}/> : 
+					<App data={this.state.data} urlPost={this.props.urlPost}/> : 
 					<Loading /> 
 				}
 			</div>
@@ -257,81 +226,15 @@ Body = React.createClass({
 	}
 });
 
-Loading = React.createClass({
-	render: function() {
-		return (
-			<div className="row loading">
-				<div className="col s12 m12 center">
-					<div className="preloader-wrapper big active">
-		    			<div className="spinner-layer spinner-yellow-only">
-		      				<div className="circle-clipper left">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="gap-patch">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="circle-clipper right">
-		        				<div className="circle"></div>
-		      				</div>
-		    			</div>
-		  			</div>
-		  		</div>
-		  	</div>
-  		);
-	}
-});
-
 App = React.createClass({
-	 getInitialState:function(){
-        return{
-            query:'',
-            filteredData: this.props.data,
-            isSearch: false
-        }
-    },
-
-	doSearch:function(queryText){
-        
-		var queryResult = [];
-
-		if(queryText === '') {
-			this.setState({
-	            query:'',
-	            filteredData: this.props.data,
-	            isSearch: false
-	        });
-			return;
-		}
-			
-
-        for(i=0; i<TIMELINE_ARRAY.length; i++) {
-	        
-	        this.props.data[TIMELINE_ARRAY[i]].forEach(function(category){
-	        	category[EVENTS].forEach(function(event) {
-	        		if(event[TITLE].toLowerCase().indexOf(queryText.toLowerCase())!=-1 ||
-	        		   event[ORGANIZER].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[CATEGORY].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[DESCRIPTION].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[DATETIME].toLowerCase().indexOf(queryText.toLowerCase()) != -1) 
-	        			queryResult.push(event);
-	        	});
-	        });
-	    }
- 
-        this.setState({
-            query:queryText,
-            filteredData: queryResult,
-            isSearch: true
-        });
-    },
 
 	render: function() {
 		return (
 			<div>
-				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
+				<Navbar />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
-				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} query={this.state.query} />
+				<MainContainer data={this.props.data} />
 			</div>
 		);
 	}
@@ -345,10 +248,8 @@ Navbar = React.createClass({
     				<div className="nav-wrapper orange">
 						<Logo />
 						<NewEvent data={this.props.data} />
-						<Search query={this.props.query} doSearch={this.props.doSearch} />
 						<MobileNav data={this.props.data} />
 					</div>
-					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
 				</nav>
 			</div>
 		);
@@ -364,67 +265,6 @@ Logo = React.createClass({
 		);
 	}
 });
-
-SearchMobile = React.createClass({
-	doSearch:function(){
-        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
-        this.props.doSearch(query);
-    },
-    componentDidMount: function() {
-    	$('#search').on('keydown', this.handleKeyDown);
-    },
-    handleKeyDown: function(e) {
-    	var ENTER = 13;
-        if( e.keyCode == ENTER ) {
-            e.preventDefault();
-            return false;
-        }
-    },
-	render:function() {
-		return (
-			<div className="searchbar-mobile input-field hide-on-med-and-up">
-				<div className="searchbar-mobile-size"> 
-					<div className="input-field">
-						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-						<label htmlFor="search">
-							<i className="mdi-action-search search-icon"></i>
-						</label>
-					</div>
-				</div>
-			</div>
-		);
-	}
-});
-
-Search = React.createClass ({
-	doSearch:function(){
-        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
-        this.props.doSearch(query);
-    },
-    componentDidMount: function() {
-    	$('#search').on('keydown', this.handleKeyDown);
-    },
-    handleKeyDown: function(e) {
-    	var ENTER = 13;
-        if( e.keyCode == ENTER ) {
-            e.preventDefault();
-            return false;
-        }
-    },
-	render: function() {
-		return (
-			<form>
-	        	<div className="input-field search-outer hide-on-small-only">    		
-	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-	          		<label htmlFor="search">
-	          			<i className="mdi-action-search search-icon"></i>
-	          		</label>
-	        	</div>
-			</form>
-		);
-	}
-});
-
 
 NewEvent = React.createClass({
 	render: function() {
@@ -738,7 +578,11 @@ ModalForm = React.createClass({
 		var none = {
 			display: 'none'
 		};
-		
+
+		var title = {
+			fontWeight: '700'
+		};
+
 		return (
 			<div>
 				<div id="modal-newevent" className="modal modal-fixed-footer">
@@ -747,11 +591,11 @@ ModalForm = React.createClass({
 		      				<div className="col s10">
 		      					<h4>Create an Event</h4>
 		      				</div>
-		      				<div className="col s2">
+		      				<div className="col s2" style={title}>
 		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
 		      				</div>
 		      			</div>
-		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on IVLE and NUS Calendar of Events, and will appear only on NUSHapz. The process of creating an event on NUSHapz will be faster as the approval time is shorter than that of IVLE and NUS Calendar of Events. We hope you enjoy this free service.</p>
+		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on other portals, and will appear only on NUSHapz. Creating an event on NUSHapz will be faster compared to creating in IVLE due to the shorter approval times.</p>
 
 
 		  				<div className="row">
@@ -867,7 +711,7 @@ ModalForm = React.createClass({
 							        </div>
 							    </div>
 
-							    <p className="disclaimer">* Events submitted thru NUSHapz will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
+							    <p className="disclaimer">* Events submitted will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
 
 							    <div className="button-container">
 
@@ -891,10 +735,7 @@ MainContainer = React.createClass({
 	render: function() {
 		return (
 			<div className="container-fluid" id="main-container">
-				{this.props.isSearch ?
-					<SearchTimeline data={this.props.data} query={this.props.query} /> :
-					<NoSearchTimeline data={this.props.data} />
-				}
+				<EventSection data={this.}
 			</div>
 		);
 	}
@@ -1118,13 +959,30 @@ EventSection = React.createClass({
 });
 
 Event = React.createClass({
+	componentDidMount: function() {
+		/*
+	    $('.collapsible').collapsible({
+	      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });*/
+	},
 	render: function() {
+
+		var bgColorIndex = 0;
+		var eventCategory = this.props.data[CATEGORY];
+		for(i=0; i<CATEGORY_ARRAY.length; i++)
+			if(eventCategory == CATEGORY_ARRAY[i]) {
+				bgColorIndex = i;
+				break;
+			}
+
+		
 		return (
-			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventFavourite data={this.props.data} />
-				<EventContent data={this.props.data} />
-				<EventReveal data={this.props.data} />
-			</div>
+
+		<div className="card small" id={this.props.data[EVENT_ID]} >
+			<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+			<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+		</div>
+
 		);
 	}
 });
@@ -1142,11 +1000,18 @@ EventHeader = React.createClass({
 });
 
 EventFavourite = React.createClass({
+	getInitialState: function() {
+		return {liked : false};
+	},
+	handleClick: function(e) {
+		this.setState({liked: !this.state.liked});
+	},
 	render: function() {
-		var src = IMAGE_PATH + this.props.category + ".jpg";
+		var c = this.state.liked ?
+		" yellow-text lighten-4" : " white-text" ;
 		return (
-			<div className="card-right-column">
-				<a className="waves-effect waves-light position-star"><i className="small mdi-action-grade"></i></a>
+			<div className={"card-right-column " + this.props.color + " lighten-2"} onClick={this.handleClick}>
+				<div className={"waves-effect waves-light position-star" + c}><i className="small"></i></div>
 			</div>
 		);
 	}
@@ -1154,10 +1019,13 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
+
+		var link = "#reveal-" + this.props.data[EVENT_ID];
+
 		return (
-			<div className="card-content">
+			<div className="card-content modal-trigger" href={link}>
 				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} />
+				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
 				<EventTitle organizer={this.props.data[TITLE]} />
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
@@ -1166,13 +1034,13 @@ EventContent = React.createClass({
 	}
 });
 
-/*<EventBottom data={this.props.data} />*/
-
 EventDate = React.createClass({
 	render: function() {
+		var tokens = this.props.datetime.split(" ", 5);
+		var begin_date = tokens[0].concat(" ",tokens[1]," ",tokens[2]," ",tokens[3]," ",tokens[4]);
 		return (
 			<div className="card-date">
-				{this.props.datetime} 
+				{begin_date} 
 			</div>
 		);
 	}
@@ -1181,7 +1049,7 @@ EventDate = React.createClass({
 EventCategory = React.createClass({
 	render: function() {
 		return (
-			<div className="card-category">
+			<div className={"card-category " + this.props.color + "-text " + "darken-2"}>
 				{this.props.category} 
 			</div>
 		);
@@ -1192,18 +1060,21 @@ EventCategory = React.createClass({
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<div className="activator card-title">
+			<div className="card-title">
 				{this.props.organizer} 
 			</div>
 		);
 	}
 });
 
+var converter = new Showdown.converter();
+
 EventSynopsis = React.createClass({
 	render: function() {
+		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, ''); 
 		return (
 			<div className="card-summary">
-				{this.props.description} 
+				{removeHTML}
 			</div>
 		);
 	}
@@ -1304,18 +1175,20 @@ EventStar = React.createClass({
 
 EventReveal = React.createClass({
 	render: function() {
-		var displayNone = {
-			display: "none"
-		};
+
+		var cardID = "reveal-" + this.props.data[EVENT_ID];
 
 		return (
-			<div className="row card-toggler" display={displayNone}>
 
-				<EventDescription description={this.props.data[DESCRIPTION]} />
+			<div className="row modal" id={cardID} >
+				<div className="modal-content">
 
-				<EventContact contact={this.props.data[CONTACT]} />
+					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
 
-				<EventSocialMedia cardID={this.props.data[EVENT_ID]} />
+					<EventDescription description={this.props.data[DESCRIPTION]} />
+
+					<EventContact contact={this.props.data[CONTACT]} />
+				</div>
 			</div>
 		);
 	}
@@ -1326,10 +1199,10 @@ Title = React.createClass({
 		return (
 			<div className="card-title grey-text text-darken-4 row">
 				<div className="col s11 card-title-inner">
-					{this.props.title}
+					<h4>{this.props.title}</h4>
 				</div>
 				<div className="col s1">
-					<i className="mdi-navigation-close right"></i>
+					<i className="mdi-navigation-close modal-close right"></i>
 				</div>
 
 				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />

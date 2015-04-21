@@ -55,7 +55,7 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var HOMEPAGE = "http://hapz.nusmods.com";
+var SERVER_GET_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 //var SERVER = "timeline.json";
@@ -290,6 +290,12 @@ App = React.createClass({
             filteredData: this.props.data,
             isSearch: false
         }
+    },
+
+    componentDidMount: function() {
+    	$('.collapsible').collapsible({
+	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });
     },
 
 	doSearch:function(queryText){
@@ -1126,12 +1132,7 @@ EventSection = React.createClass({
 var converter = new Showdown.converter();
 
 Event = React.createClass({
-	componentDidMount: function() {
 
-	    $('.collapsible').collapsible({
-	      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	    });
-	},
 	render: function() {
 
 		var bgColorIndex = 0;
@@ -1145,36 +1146,24 @@ Event = React.createClass({
 		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
 		
 		return (
-		 <div className="collapsible popup" data-collapsible="accordion">
-    	 <li>
-		<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
-			<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-			<div className="card-content">
-				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
-				<EventTitle organizer={this.props.data[TITLE]} />
-				<EventSynopsis description={this.props.data[DESCRIPTION]} />
-				<EventLocation location={this.props.data[VENUE]} />
-			</div>
-		</div>
-		<div className="collapsible-body">
-			<span dangerouslySetInnerHTML={{__html: rawMarkup}} /></div>
-    	</li>
-    	</div>
-
-		);
-	}
-});
-
-/*				<EventLocation location={this.props.data[VENUE]} />*/
-/*			<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />*/
-EventHeader = React.createClass({
-	render: function() {
-		var src = IMAGE_PATH + this.props.category + ".jpg";
-		return (
-			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
-				<img className="activator" src={src}/>
+			<div className="collapsible popup" data-collapsible="accordion">
+				<li>
+					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
+						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+						<div className="card-content">
+							<EventDate datetime={this.props.data[DATETIME]}/>
+							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
+							<EventTitle title={this.props.data[TITLE]} />
+							<EventSynopsis description={this.props.data[DESCRIPTION]} />
+							<EventLocation location={this.props.data[VENUE]} />
+						</div>
+					</div>
+					<div className="collapsible-body">
+						<EventDescription description={this.props.data[DESCRIPTION]} />
+						<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
+						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
+					</div>
+				</li>
 			</div>
 		);
 	}
@@ -1199,14 +1188,11 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
-
-		var link = "#reveal-" + this.props.data[EVENT_ID];
-
 		return (
-			<div className="card-content-test" href={link}>
+			<div>
 				<EventDate datetime={this.props.data[DATETIME]}/>
 				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
-				<EventTitle organizer={this.props.data[TITLE]} />
+				<EventTitle title={this.props.data[TITLE]} />
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
 			</div>
@@ -1241,13 +1227,11 @@ EventTitle = React.createClass({
 	render: function() {
 		return (
 			<div className="card-title">
-				{this.props.organizer} 
+				{this.props.title} 
 			</div>
 		);
 	}
 });
-
-var converter = new Showdown.converter();
 
 EventSynopsis = React.createClass({
 	render: function() {
@@ -1356,7 +1340,7 @@ EventReveal = React.createClass({
 
 					<EventDescription description={this.props.data[DESCRIPTION]} />
 
-					<EventContact contact={this.props.data[CONTACT]} />
+					<EventContact contact={this.props.data[CONTACT]}  />
 					<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
 				</div>
 			</div>
@@ -1404,9 +1388,15 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
+			<div>
 			<div className="contact">
-				<i className="fa fa-envelope"></i>
-				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				<i className="icon-width organizer-icon mdi-social-person"></i>
+				<span className="contact-text"> {this.props.organizer} </span>
+			</div>
+			<div className="contact">
+				<i className="icon-width contact-icon mdi-communication-email"></i>
+				<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+			</div>
 			</div>
 		);
 	}
@@ -1414,7 +1404,7 @@ EventContact = React.createClass({
 
 EventSocialMedia = React.createClass({
 	render: function() {
-		var url = HOMEPAGE + "/#" + this.props.cardID;
+		var url = SERVER_GET_SINGLE_EVENT + this.props.cardID;
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;

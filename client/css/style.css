@@ -583,6 +583,7 @@ input[type="text"]#search {
 	width: 20px; 
 	/*background-color: #e57373;*/
 	margin-left: 5px;
+	pointer-events: none;
 }
 
 .position-star {
@@ -602,8 +603,8 @@ input[type="text"]#search {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	line-height: 25px;
-	border-top: 1px solid #e5e5e5;
-	border-bottom:1px solid #e5e5e5;
+	/*border-top: 1px solid #e5e5e5;*/
+	/*border-bottom:1px solid #e5e5e5;*/
 }
 
 .collapsible-body p {
@@ -617,7 +618,7 @@ input[type="text"]#search {
 
 .contact {
 	margin-top: 10px;
-	margin-bottom: 10px;
+	/*margin-bottom: 10px;*/
 	margin-left: 40px;
 	color: #757575 ;
 	font-size: 18px !important;
@@ -870,4 +871,20 @@ a {
 	float: left;
 	font-size: 22px !important;
 	margin-right: 10px;
+}
+
+.socialmed {
+	float: right; 
+	margin-top: 25px;
+	margin-right: 15px;
+}
+.social-icons {
+	margin-right: 15px;
+	border-radius: 2px !important;
+}
+
+.contact-footer {
+	border-top: 1px solid #e5e5e5;
+	background-color: #fafafa;
+	margin-bottom: 10px;
 }

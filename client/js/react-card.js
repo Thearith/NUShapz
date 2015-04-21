@@ -1166,8 +1166,8 @@ Event = React.createClass({
 					</div>
 					<div className="collapsible-body">
 						<EventDescription description={this.props.data[DESCRIPTION]} />
-						<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
 						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
+						<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
 					</div>
 				</li>
 			</div>
@@ -1341,13 +1341,10 @@ EventReveal = React.createClass({
 
 			<div className="row modal" id={cardID} >
 				<div className="modal-content">
-
 					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
-
 					<EventDescription description={this.props.data[DESCRIPTION]} />
-
+					<EventSocialMedia cardID={this.props.data[EVENT_ID]} />
 					<EventContact contact={this.props.data[CONTACT]}  />
-					<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
 				</div>
 			</div>
 		);
@@ -1394,7 +1391,7 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
-			<div>
+			<div className="contact-footer">
 			<div className="contact">
 				<i className="icon-width organizer-icon mdi-social-person"></i>
 				<span className="contact-text"> {this.props.organizer} </span>
@@ -1414,7 +1411,7 @@ EventSocialMedia = React.createClass({
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
-		return (
+		/*return (
 			<p className="social-media right">
 				<span>
 					<a href={twitterURL} title="Share on Twitter" target="_blank" className="btn btn-social btn-twitter text-center">
@@ -1428,6 +1425,13 @@ EventSocialMedia = React.createClass({
 					</a>
 				</span>
 			</p>
+		);*/
+		return (
+			<div className="socialmed">
+<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons"><i className="fa fa-twitter"></i></a>
+<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons"><i className="fa fa-facebook"></i></a>
+<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons"><i className="fa fa-google-plus"></i></a>
+			</div>
 		);
 	}
 });

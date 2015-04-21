@@ -520,7 +520,7 @@ input[type="text"]#search {
 }
 
 .card-category {
-	color: #9e9e9e !important;
+	/*color: #9e9e9e !important;*/
 	font-size: 14px;
 	text-transform: uppercase;
 	font-weight: 700 !important;
@@ -574,10 +574,10 @@ input[type="text"]#search {
 }
 
 .card-right-column {
-	float: right; 
+	float: left; 
 	height: 100%; 
 	/*background-color: #e57373;*/
-	margin-right: 4px;
+	margin-left: 5px;
 }
 
 .position-star {

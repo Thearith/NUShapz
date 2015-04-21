@@ -72,6 +72,8 @@ var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "Ongoing", "AndMore"];
 //Category
 var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
 var IMAGE_PATH = "../image/category/";
+var CATEGORY_BG_COLORS =  ["red", "pink", "deep-purple", "indigo", "blue", "light-blue", "teal", "green", "light-green", "brown", "deep-orange"];
+
 
 // constants
 var TITLE_MAXIMUM_LENGTH = 30;
@@ -1119,10 +1121,20 @@ EventSection = React.createClass({
 
 Event = React.createClass({
 	render: function() {
+
+		var bgColorIndex = 0;
+		var eventCategory = this.props.data[CATEGORY];
+		for(i=0; i<CATEGORY_ARRAY.length; i++)
+			if(eventCategory == CATEGORY_ARRAY[i]) {
+				bgColorIndex = i;
+				break;
+			}
+
+		
 		return (
 			<div className="card small" id={this.props.data[EVENT_ID]} >
-				<EventFavourite data={this.props.data} />
-				<EventContent data={this.props.data} />
+				<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+				<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 				<EventReveal data={this.props.data} />
 			</div>
 		);
@@ -1149,18 +1161,12 @@ EventFavourite = React.createClass({
 		this.setState({liked: !this.state.liked});
 	},
 	render: function() {
-		/*
-		var bg_colors = ["red lighten-2", "pink lighten-2", "purple lighten-2", "deep-purple lighten-2", "indigo lighten-2", "blue lighten-2", "light-blue lighten-2", "cyan lighten-2", " teal lighten-2", "green lighten-2", "light-green lighten-2", "lime lighten-2", "amber lighten-2", "orange lighten-2", "deep-orange lighten-2"];
-		var total_colors = bg_colors.length;
-		var random_color = Math.floor(Math.random() * total_colors);
-		var select_color = bg_colors[random_color];
-		*/
-		select_color = "orange lighten-2";
+		
 		var c = this.state.liked ?
 		" yellow-text lighten-4" : " white-text" ;
 		return (
-			<div className={"card-right-column " + select_color} onClick={this.handleClick}>
-				<a className={"waves-effect waves-light position-star" + c}><i className="small mdi-action-grade"></i></a>
+			<div className={"card-right-column " + this.props.color + " lighten-2"} onClick={this.handleClick}>
+				<div className={"waves-effect waves-light position-star" + c}><i className="small"></i></div>
 			</div>
 		);
 	}
@@ -1168,10 +1174,11 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
+
 		return (
 			<div className="card-content">
 				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} />
+				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
 				<EventTitle organizer={this.props.data[TITLE]} />
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
@@ -1182,9 +1189,11 @@ EventContent = React.createClass({
 
 EventDate = React.createClass({
 	render: function() {
+		var tokens = this.props.datetime.split(" ", 5);
+		var begin_date = tokens[0].concat(" ",tokens[1]," ",tokens[2]," ",tokens[3]," ",tokens[4]);
 		return (
 			<div className="card-date">
-				{this.props.datetime} 
+				{begin_date} 
 			</div>
 		);
 	}
@@ -1193,7 +1202,7 @@ EventDate = React.createClass({
 EventCategory = React.createClass({
 	render: function() {
 		return (
-			<div className="card-category">
+			<div className={"card-category " + this.props.color + "-text " + "darken-2"}>
 				{this.props.category} 
 			</div>
 		);
@@ -1214,7 +1223,6 @@ EventTitle = React.createClass({
 var converter = new Showdown.converter();
 
 EventSynopsis = React.createClass({
-	var description = converter.makeHtml(this.props.description);
 	render: function() {
 		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, ''); 
 		return (
@@ -1320,12 +1328,9 @@ EventStar = React.createClass({
 
 EventReveal = React.createClass({
 	render: function() {
-		var displayNone = {
-			display: "none"
-		};
 
 		return (
-			<div className="row modal" display={displayNone}>
+			<div className="row modal">
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 

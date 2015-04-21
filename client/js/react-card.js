@@ -72,7 +72,7 @@ var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "Ongoing", "AndMore"];
 //Category
 var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
 var IMAGE_PATH = "../image/category/";
-var CATEGORY_BG_COLORS =  ["red", "pink", "deep-purple", "indigo", "blue", "light-blue", "teal", "green", "light-green", "brown", "deep-orange"];
+var CATEGORY_BG_COLORS =  ["red", "pink", "purple", "indigo", "blue", "light-blue", "teal", "green", "light-green", "brown", "deep-orange"];
 
 
 // constants
@@ -740,7 +740,11 @@ ModalForm = React.createClass({
 		var none = {
 			display: 'none'
 		};
-		
+
+		var title = {
+			fontWeight: '700'
+		};
+
 		return (
 			<div>
 				<div id="modal-newevent" className="modal modal-fixed-footer">
@@ -749,11 +753,11 @@ ModalForm = React.createClass({
 		      				<div className="col s10">
 		      					<h4>Create an Event</h4>
 		      				</div>
-		      				<div className="col s2">
+		      				<div className="col s2" style={title}>
 		      					<i className="mdi-navigation-close modal-close right closeSign" onClick={this.handleClick}></i>
 		      				</div>
 		      			</div>
-		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on IVLE and NUS Calendar of Events, and will appear only on NUSHapz. The process of creating an event on NUSHapz will be faster as the approval time is shorter than that of IVLE and NUS Calendar of Events. We hope you enjoy this free service.</p>
+		      			<p>NUSHapz syncs events from IVLE and NUS Calendar of Events. Events created through NUSHapz will not be reflected on other portals, and will appear only on NUSHapz. Creating an event on NUSHapz will be faster compared to creating in IVLE due to the shorter approval times.</p>
 
 
 		  				<div className="row">
@@ -869,7 +873,7 @@ ModalForm = React.createClass({
 							        </div>
 							    </div>
 
-							    <p className="disclaimer">* Events submitted thru NUSHapz will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
+							    <p className="disclaimer">* Events submitted will not be displayed immediately as they have to be approved by our NUSHapz admins first. The approval time takes between 2-3 working days.</p>
 
 							    <div className="button-container">
 
@@ -1334,7 +1338,7 @@ EventReveal = React.createClass({
 
 		return (
 
-			<div className="row modal" display={displayNone} id={cardID} >
+			<div className="row modal" id={cardID} >
 				<div className="modal-content">
 
 					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />

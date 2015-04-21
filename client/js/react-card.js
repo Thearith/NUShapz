@@ -291,6 +291,12 @@ App = React.createClass({
         }
     },
 
+    componentDidMount: function() {
+    	$('.collapsible').collapsible({
+	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });
+    },
+
 	doSearch:function(queryText){
         
 		var queryResult = [];
@@ -1122,12 +1128,9 @@ EventSection = React.createClass({
 	}
 });
 
+var converter = new Showdown.converter();
+
 Event = React.createClass({
-	componentDidMount: function() {
-	    $('.collapsible').collapsible({
-	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	    });
-	},
 
 	render: function() {
 
@@ -1139,6 +1142,7 @@ Event = React.createClass({
 				break;
 			}
 
+		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
 		
 		return (
 			<div className="collapsible popup" data-collapsible="accordion">
@@ -1148,19 +1152,18 @@ Event = React.createClass({
 						<div className="card-content">
 							<EventDate datetime={this.props.data[DATETIME]}/>
 							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
-							<EventTitle organizer={this.props.data[TITLE]} />
+							<EventTitle title={this.props.data[TITLE]} />
 							<EventSynopsis description={this.props.data[DESCRIPTION]} />
 							<EventLocation location={this.props.data[VENUE]} />
 						</div>
 					</div>
 					<div className="collapsible-body">
 						<EventDescription description={this.props.data[DESCRIPTION]} />
-						<EventContact contact={this.props.data[CONTACT]} />
+						<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
 						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
 					</div>
 				</li>
 			</div>
-
 		);
 	}
 });
@@ -1336,7 +1339,7 @@ EventReveal = React.createClass({
 
 					<EventDescription description={this.props.data[DESCRIPTION]} />
 
-					<EventContact contact={this.props.data[CONTACT]} />
+					<EventContact contact={this.props.data[CONTACT]}  />
 					<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
 				</div>
 			</div>
@@ -1384,9 +1387,15 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
+			<div>
 			<div className="contact">
-				<i className="fa fa-envelope"></i>
-				<span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				<i className="icon-width organizer-icon mdi-social-person"></i>
+				<span className="contact-text"> {this.props.organizer} </span>
+			</div>
+			<div className="contact">
+				<i className="icon-width contact-icon mdi-communication-email"></i>
+				<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+			</div>
 			</div>
 		);
 	}

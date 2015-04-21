@@ -616,10 +616,22 @@ input[type="text"]#search {
 }
 
 .contact {
-	padding-left: 2rem;
-	padding-right: 2rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	margin-left: 40px;
+	color: #757575 ;
+	font-size: 18px !important;
+}
+
+.contact-icon {
+	margin-top: 2px;
+	float: left;
+	font-size: 20px !important;
+}
+
+.contact-text {
+	position: relative;
+	font-size: 600;
 }
 
 .information {
@@ -681,18 +693,11 @@ input[type="text"]#search {
 	border-radius: 5px;
 }
 
-.contact {
-	font-size: 14px;
-}
-
-.contact i {
-	margin-right: 5px;
-}
-
+/*
 .contact ul, .contact i, .contact p, .contact li:first-child{
 	display: inline;
 }
-
+*/
 .email li:nth-child(n+2) {
 	margin-left: 25px;
 }
@@ -836,4 +841,33 @@ select.browser-default {
 
 .test {
 	float:right;
+}
+
+.collapsible-body {
+	background-color: #ffffff !important;
+	font-size: 13px !important;
+}
+
+a {
+	color: #ff8f00;
+}
+
+.collapsible-body img {
+	width: 100%;
+	height: auto;
+}
+
+.contact-text {
+	font-size: 14px !important;
+}
+
+.icon-width {
+	width: 20px;
+}
+
+.organizer-icon {
+	margin-top: 2px;
+	float: left;
+	font-size: 22px !important;
+	margin-right: 10px;
 }

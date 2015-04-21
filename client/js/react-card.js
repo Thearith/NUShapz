@@ -930,6 +930,7 @@ SearchTimeline = React.createClass({
 });
 
 EmptySearch = React.createClass({
+	
 	render: function() {
 		return (
 			<div className="no-events">

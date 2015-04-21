@@ -55,10 +55,9 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var SERVER_GET_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
+var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
-//var SERVER = "timeline.json";
 
 //Timeline
 var TIMELINE = "Timeline";
@@ -1395,7 +1394,7 @@ EventContact = React.createClass({
 
 EventSocialMedia = React.createClass({
 	render: function() {
-		var url = SERVER_GET_SINGLE_EVENT + this.props.cardID;
+		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;

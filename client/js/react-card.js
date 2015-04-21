@@ -1149,12 +1149,6 @@ EventFavourite = React.createClass({
 		this.setState({liked: !this.state.liked});
 	},
 	render: function() {
-		/*
-		var bg_colors = ["red lighten-2", "pink lighten-2", "purple lighten-2", "deep-purple lighten-2", "indigo lighten-2", "blue lighten-2", "light-blue lighten-2", "cyan lighten-2", " teal lighten-2", "green lighten-2", "light-green lighten-2", "lime lighten-2", "amber lighten-2", "orange lighten-2", "deep-orange lighten-2"];
-		var total_colors = bg_colors.length;
-		var random_color = Math.floor(Math.random() * total_colors);
-		var select_color = bg_colors[random_color];
-		*/
 		select_color = "orange lighten-2";
 		var c = this.state.liked ?
 		" yellow-text lighten-1" : " white-text" ;
@@ -1168,8 +1162,9 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
+		var link = "#reveal-" + this.props.data[EVENT_ID];
 		return (
-			<div className="card-content">
+			<div className="card-content modal-trigger" href={link}>
 				<EventDate datetime={this.props.data[DATETIME]}/>
 				<EventCategory category={this.props.data[CATEGORY]} />
 				<EventTitle organizer={this.props.data[TITLE]} />
@@ -1214,11 +1209,11 @@ EventTitle = React.createClass({
 var converter = new Showdown.converter();
 
 EventSynopsis = React.createClass({
-	var description = converter.makeHtml(this.props.description);
 	render: function() {
+		var rawMarkup = converter.makeHtml(this.props.description);
 		return (
 			<div className="card-summary">
-				<span dangerouslySetInnerHTML={{__html: rawMarkup}} /> 
+				{this.props.description}
 			</div>
 		);
 	}
@@ -1323,14 +1318,18 @@ EventReveal = React.createClass({
 			display: "none"
 		};
 
+		var cardID = "reveal-" + this.props.data[EVENT_ID];
+
 		return (
-			<div className="row modal" display={displayNone}>
+			<div className="row modal" display={displayNone} id={cardID} >
+				<div className="modal-content">
 
-				<EventDescription description={this.props.data[DESCRIPTION]} />
+					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
 
-				<EventContact contact={this.props.data[CONTACT]} />
+					<EventDescription description={this.props.data[DESCRIPTION]} />
 
-				<EventSocialMedia cardID={this.props.data[EVENT_ID]} />
+					<EventContact contact={this.props.data[CONTACT]} />
+				</div>
 			</div>
 		);
 	}
@@ -1341,10 +1340,10 @@ Title = React.createClass({
 		return (
 			<div className="card-title grey-text text-darken-4 row">
 				<div className="col s11 card-title-inner">
-					{this.props.title}
+					<h4>{this.props.title}</h4>
 				</div>
 				<div className="col s1">
-					<i className="mdi-navigation-close right"></i>
+					<i className="mdi-navigation-close modal-close right"></i>
 				</div>
 
 				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />

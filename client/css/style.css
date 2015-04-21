@@ -593,8 +593,10 @@ input[type="text"]#search {
 }
 
 .description {
-	padding-top: 7px;
-	padding-bottom: 7px;
+	padding: 17px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	line-height: 25px;
 	border-top: 1px solid #e5e5e5;
 	border-bottom:1px solid #e5e5e5;
 }
@@ -604,7 +606,9 @@ input[type="text"]#search {
 }
 
 .contact {
+	padding: 0 0.75rem;
 	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .information {

@@ -1142,25 +1142,11 @@ EventHeader = React.createClass({
 });
 
 EventFavourite = React.createClass({
-	getInitialState: function() {
-		return {liked : false};
-	},
-	handleClick: function(e) {
-		this.setState({liked: !this.state.liked});
-	},
 	render: function() {
-		/*
-		var bg_colors = ["red lighten-2", "pink lighten-2", "purple lighten-2", "deep-purple lighten-2", "indigo lighten-2", "blue lighten-2", "light-blue lighten-2", "cyan lighten-2", " teal lighten-2", "green lighten-2", "light-green lighten-2", "lime lighten-2", "amber lighten-2", "orange lighten-2", "deep-orange lighten-2"];
-		var total_colors = bg_colors.length;
-		var random_color = Math.floor(Math.random() * total_colors);
-		var select_color = bg_colors[random_color];
-		*/
-		select_color = "orange lighten-2";
-		var c = this.state.liked ?
-		" yellow-text lighten-4" : " white-text" ;
+		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
-			<div className={"card-right-column " + select_color} onClick={this.handleClick}>
-				<a className={"waves-effect waves-light position-star" + c}><i className="small mdi-action-grade"></i></a>
+			<div className="card-right-column">
+				<a className="waves-effect waves-light position-star"><i className="small mdi-action-grade"></i></a>
 			</div>
 		);
 	}
@@ -1179,6 +1165,8 @@ EventContent = React.createClass({
 		);
 	}
 });
+
+/*<EventBottom data={this.props.data} />*/
 
 EventDate = React.createClass({
 	render: function() {
@@ -1211,15 +1199,11 @@ EventTitle = React.createClass({
 	}
 });
 
-var converter = new Showdown.converter();
-
 EventSynopsis = React.createClass({
-	var description = converter.makeHtml(this.props.description);
 	render: function() {
-		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, ''); 
 		return (
 			<div className="card-summary">
-				{removeHTML}
+				{this.props.description} 
 			</div>
 		);
 	}
@@ -1325,7 +1309,7 @@ EventReveal = React.createClass({
 		};
 
 		return (
-			<div className="row modal" display={displayNone}>
+			<div className="row card-toggler" display={displayNone}>
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 

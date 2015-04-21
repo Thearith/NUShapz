@@ -488,6 +488,7 @@ input[type="text"]#search {
 .card-content { 
 	width: 100%;
 	padding: 10px 20px 20px 40px !important;
+	pointer-events: none;
 }
 
 .card .card-reveal{
@@ -564,7 +565,6 @@ input[type="text"]#search {
 }
 
 .card-venue {
-	padding-top: 10px;
 	color: #757575 !important;
 	font-size: 14px;
 	text-transform: uppercase;
@@ -598,12 +598,17 @@ input[type="text"]#search {
 }
 
 .description {
-	padding: 17px;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	line-height: 25px;
 	border-top: 1px solid #e5e5e5;
 	border-bottom:1px solid #e5e5e5;
+}
+
+.collapsible-body p {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .description p {
@@ -611,7 +616,8 @@ input[type="text"]#search {
 }
 
 .contact {
-	padding: 0 0.75rem;
+	padding-left: 2rem;
+	padding-right: 2rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
@@ -669,7 +675,6 @@ input[type="text"]#search {
 .description img {
 	padding: 5px;
 	width: 300px;
-	height: 300px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #bdbdbd;
@@ -818,4 +823,17 @@ select.browser-default {
 	height: 150px !important;
 	padding: 0px !important;
 	line-height: 30px !important;
+	z-index:999;
+}
+
+.mdi-action-room {
+	margin-right:0 !important;
+}
+
+.venue-text {
+	margin-top: 7px;
+}
+
+.test {
+	float:right;
 }

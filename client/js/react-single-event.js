@@ -735,10 +735,7 @@ MainContainer = React.createClass({
 	render: function() {
 		return (
 			<div className="container-fluid" id="main-container">
-				{this.props.isSearch ?
-					<SearchTimeline data={this.props.data} query={this.props.query} /> :
-					<NoSearchTimeline data={this.props.data} />
-				}
+				<EventSection data={this.}
 			</div>
 		);
 	}

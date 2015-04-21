@@ -55,7 +55,7 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var HOMEPAGE = "http://hapz.nusmods.com";
+var SERVER_GET_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
 //var SERVER = "timeline.json";
@@ -1142,15 +1142,25 @@ Event = React.createClass({
 
 		
 		return (
-			<ul className="collapsible popup" data-collapsible="accordion">
+			<div className="collapsible popup" data-collapsible="accordion">
 				<li>
 					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
 						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-						<EventContent data={this.props.data} />
+						<div className="card-content">
+							<EventDate datetime={this.props.data[DATETIME]}/>
+							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
+							<EventTitle organizer={this.props.data[TITLE]} />
+							<EventSynopsis description={this.props.data[DESCRIPTION]} />
+							<EventLocation location={this.props.data[VENUE]} />
+						</div>
 					</div>
-					<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+					<div className="collapsible-body">
+						<EventDescription description={this.props.data[DESCRIPTION]} />
+						<EventContact contact={this.props.data[CONTACT]} />
+						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
+					</div>
 				</li>
-			</ul>
+			</div>
 
 		);
 	}
@@ -1235,7 +1245,7 @@ EventLocation = React.createClass({
 	render: function() {
 		return (
 			<div className="card-venue">
-				<i className="tiny mdi-action-room"></i>{this.props.location} 
+				<i className="tiny mdi-action-room"></i><div className="venue-text">{this.props.location} </div>
 			</div>
 		);
 	}
@@ -1385,7 +1395,7 @@ EventContact = React.createClass({
 
 EventSocialMedia = React.createClass({
 	render: function() {
-		var url = HOMEPAGE + "/#" + this.props.cardID;
+		var url = SERVER_GET_SINGLE_EVENT + this.props.cardID;
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;

@@ -576,7 +576,7 @@ input[type="text"]#search {
 .card-right-column {
 	float: right; 
 	height: 100%; 
-	background-color: #e57373;
+	/*background-color: #e57373;*/
 	margin-right: 4px;
 }
 
@@ -584,7 +584,7 @@ input[type="text"]#search {
 	top: 50%; 
 	transform: translateY(-50%); 
 	padding: 10px;
-	color: #ffffff !important;
+	/*color: #ffffff !important;*/
 }
 
 .card-title-inner {

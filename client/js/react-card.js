@@ -317,14 +317,6 @@ App = React.createClass({
 	        	});
 	        });
 	    }
-
-	    // timelines = {
-	    // 	"Today" : queryResult[TODAY_INDEX],
-	    // 	"Tomorrow": queryResult[TOMORROW_INDEX],
-	    // 	"InAFewDays": queryResult[FEW_DAYS_INDEX],
-	    // 	"Ongoing": queryResult[ONGOING_INDEX],
-	    // 	"AndMore": queryResult[MORE_INDEX]
-	    // };
  
         this.setState({
             query:queryText,
@@ -1138,7 +1130,6 @@ Event = React.createClass({
 });
 
 EventHeader = React.createClass({
-
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
 		return (
@@ -1225,8 +1216,6 @@ EventVenue = React.createClass({
 	render: function() {
 		var venue = isRealValue(this.props.venue) ?
 				this.props.venue : NON_IDENTIFIED;
-		// var venue = venue.length <= 100 ?
-		// 			venue : venue.substring(0, TITLE_MAXIMUM_LENGTH) + "...";
 		return (
 			<div className="venue row">
 				<div className="col s11"><div className="showicon"><i className="fa fa-map-marker"></i></div>
@@ -1258,9 +1247,12 @@ EventStar = React.createClass({
 
 EventReveal = React.createClass({
 	render: function() {
+		var displayNone = {
+			display: "none"
+		};
+
 		return (
-			<div className="card-reveal">
-				<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
+			<div className="row card-toggler" display={displayNone}>
 
 				<EventDescription description={this.props.data[DESCRIPTION]} />
 

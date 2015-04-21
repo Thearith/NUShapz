@@ -1146,10 +1146,14 @@ Event = React.createClass({
     	 <li>
 		<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
 			<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-			<div>
+			<div className="card-content">
 				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
+				<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
+				<EventTitle organizer={this.props.data[TITLE]} />
+				<EventSynopsis description={this.props.data[DESCRIPTION]} />
+				<EventLocation location={this.props.data[VENUE]} />
 			</div>
+
 		</div>
 		<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
     	</li>

@@ -485,10 +485,9 @@ input[type="text"]#search {
 	font-size: 25px;
 }
 
-.card-content {
-	position: relative;
+.card-content { 
 	width: 100%;
-	padding: 20px !important;
+	padding: 10px 20px 20px 40px !important;
 }
 
 .card .card-reveal{
@@ -526,6 +525,7 @@ input[type="text"]#search {
 	font-size: 14px;
 	text-transform: uppercase;
 	font-weight: 700 !important;
+	padding-bottom: 0px !important;
 }
 
 .card-date {
@@ -539,6 +539,7 @@ input[type="text"]#search {
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
+  	padding-bottom: 0px !important;
 }
 
 
@@ -816,4 +817,5 @@ select.browser-default {
 .collapsible-header {
 	height: 150px !important;
 	padding: 0px !important;
+	line-height: 30px !important;
 }

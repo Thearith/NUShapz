@@ -1151,7 +1151,7 @@ EventFavourite = React.createClass({
 	render: function() {
 		select_color = "orange lighten-2";
 		var c = this.state.liked ?
-		" yellow-text lighten-1" : " white-text" ;
+		" yellow-text lighten-4" : " white-text" ;
 		return (
 			<div className={"card-right-column " + select_color} onClick={this.handleClick}>
 				<a className={"waves-effect waves-light position-star" + c}><i className="small mdi-action-grade"></i></a>
@@ -1210,10 +1210,10 @@ var converter = new Showdown.converter();
 
 EventSynopsis = React.createClass({
 	render: function() {
-		var rawMarkup = converter.makeHtml(this.props.description);
+		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, ''); 
 		return (
 			<div className="card-summary">
-				{this.props.description}
+				{removeHTML}
 			</div>
 		);
 	}

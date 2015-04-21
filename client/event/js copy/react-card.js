@@ -1124,12 +1124,6 @@ EventSection = React.createClass({
 });
 
 Event = React.createClass({
-	componentDidMount: function() {
-
-	    $('.collapsible').collapsible({
-	      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	    });
-	},
 	render: function() {
 
 		var bgColorIndex = 0;
@@ -1142,23 +1136,15 @@ Event = React.createClass({
 
 		
 		return (
-		 <div className="collapsible popup" data-collapsible="accordion">
-    	 <li>
-		<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
-			<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-			<div>
-				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
+			<div className="card small" id={this.props.data[EVENT_ID]} >
+				<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+				<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+				<EventReveal data={this.props.data} />
 			</div>
-		</div>
-		<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    	</li>
-    	</div>
-
 		);
 	}
 });
-/*			<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />*/
+
 EventHeader = React.createClass({
 	render: function() {
 		var src = IMAGE_PATH + this.props.category + ".jpg";
@@ -1182,7 +1168,8 @@ EventFavourite = React.createClass({
 		var c = this.state.liked ?
 		" yellow-text lighten-4" : " white-text" ;
 		return (
-			<div className={"card-left-column " + this.props.color + " lighten-2"}>
+			<div className={"card-right-column " + this.props.color + " lighten-2"} onClick={this.handleClick}>
+				<div className={"waves-effect waves-light position-star" + c}><i className="small"></i></div>
 			</div>
 		);
 	}
@@ -1194,7 +1181,7 @@ EventContent = React.createClass({
 		var link = "#reveal-" + this.props.data[EVENT_ID];
 
 		return (
-			<div className="card-content-test" href={link}>
+			<div className="card-content modal-trigger" href={link}>
 				<EventDate datetime={this.props.data[DATETIME]}/>
 				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
 				<EventTitle organizer={this.props.data[TITLE]} />
@@ -1231,7 +1218,7 @@ EventCategory = React.createClass({
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<div className="card-title">
+			<div className="activator card-title">
 				{this.props.organizer} 
 			</div>
 		);

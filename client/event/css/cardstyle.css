@@ -1,0 +1,321 @@
+h2 {
+	font-family:"Arvo";
+  	text-align: center;
+  	margin: 0;
+  	padding: 0;
+  	font-weight: 600;
+  	/*text-shadow: 1px 1px #333;*/
+}
+
+ul {
+	padding-left: 5px;
+}
+
+li {
+	list-style: none;
+}
+
+hr {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border-top: 2px solid #eee;
+}
+
+.clear { 
+	clear: both; 
+}
+
+.card h2 {
+  	font-size: 30px;
+}
+
+.card-title hr {
+	margin-top: 2%;
+	margin-bottom: 5%;
+}
+
+.center { 
+	margin: 0 auto; 
+}
+
+.clear { 
+	clear: both; 
+}
+
+.card {
+	width: 329px;
+	height: 330px;
+
+	border-radius: 2%;
+	box-shadow: 2px 2px 2px 2px #666666;
+
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	letter-spacing: 0.5px;
+
+}
+
+.card-title {
+	height: 100px;
+	background-color: #1fa67a;
+  	color: #1a1a1a;
+
+  	padding-top: 4%;
+}
+
+.card .card-title {
+	border-top-left-radius: 5px;
+  	border-top-right-radius: 5px;
+}
+
+#title {
+	width: 80%;
+	text-align: center;
+	background-color: white;
+	padding-top: 10px;
+	margin-top: 5%;
+	border-radius: 7px;
+}
+
+#organizer {
+	margin-right: 10px;
+	margin-top: 5px;
+	text-align: right;
+}
+
+.card #organizer {
+	font-size: 12px;
+}
+
+#organizer p {
+	display: inline;
+	text-transform: uppercase;
+}
+
+.card-body {
+	margin-top: 10%;
+
+	width: 100%;
+
+	font-family: 'Raleway';
+	font-size: 17px;
+}
+
+.card .card-body {
+	height: 45%;
+	padding-top: 8%;
+	padding-left: 10%;
+	padding-right: 10%;
+	padding-bottom: 8%;
+}
+
+.card-body div {
+	margin-bottom: 2%;
+}
+
+#timestamp p, #venue p, #contact p {
+	display: inline;
+}
+
+.card-body .icon {
+	width: 20px;
+}
+
+.card-body #contact a {
+	opacity: 0.6;
+  	text-decoration: none;
+  	color: black;
+}
+
+.card-body #contact a:hover {
+	opacity: 1;
+}
+
+.card-footer {
+	width: 100%;
+
+	padding: 10px;
+
+	background-color: #1fa67a;
+}
+
+.card .card-footer {
+	height: 15%;
+
+	border-bottom-left-radius: 5px;
+  	border-bottom-right-radius: 5px;
+}
+
+.card-footer p{
+	display: inline;
+	margin-left: 5px;
+}
+
+.card-footer p a {
+	margin-right: 5%;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #666666;
+	margin-right: 1%;
+	margin-top: 1%;
+}
+
+#favorite {
+	float: right;
+}
+
+.popup {
+	width: 60%;
+
+	border-radius: 2%;
+	box-shadow: 2px 2px 2px 2px #666666;
+
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	letter-spacing: 0.5px;
+	font-size: 17px;
+}
+
+.popup .card-title {
+	border-top-left-radius: 15px;
+  	border-top-right-radius: 15px;
+}
+
+.popup h2 {
+	font-size: 40px;
+}
+
+.popup #favorite {
+	margin-right: 10px;
+	width: 40px;
+	height: 40px;
+	margin-top: -3%;
+}
+
+.popup #organizer {
+	font-size: 15px;
+}
+
+.popup #timestamp, .popup #venue {
+	text-align: left;
+	margin-left: 20px;
+}
+
+.popup #timestamp {
+	margin-top: 15px;
+}
+
+.popup .card-body {
+	padding-top: 10%;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+.card-body img {
+	border-radius: 1%;
+	box-shadow: 2px 2px #eee;
+	margin-top: 2%;
+}
+
+#description {
+	margin-top: 5%;
+}
+
+#description p {
+	font-family: 'Montserrat';
+}
+
+#contact {
+	margin-top: 4%;
+}
+
+#headcount {
+	display: inline;
+	float: right;
+}
+
+.popup .card-footer {
+	border-bottom-left-radius: 15px;
+  	border-bottom-right-radius: 15px;
+  	padding-right: 5%;
+  	padding-left: 5%;
+  	padding-top: 3%;
+}
+
+#tag {
+	margin-top: 1%;
+	display: block;
+	font-style: italic;
+	color: white;
+	font-size: 15px;
+	text-align: right;
+}
+
+#contact ul, #contact li:first-child{
+	display: inline;
+}
+
+#contact li:nth-child(n+2) {
+	margin-left: 25px;
+}
+
+@media (max-width: 1200px) {
+	.popup {
+		width: 60%;
+	}
+}
+
+@media (max-width: 900px) {
+	.popup {
+		width: 65%;
+	}
+
+	#headcount {
+		display: block;
+		float: none;
+	}
+}
+
+@media (max-width: 768px) {
+	.popup {
+		width: 70%;
+	}
+
+
+	.popup #organizer {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 600px) {
+	.popup {
+		width: 80%;
+	}
+
+	.card-footer p a {
+		margin-right: 3%;
+		margin-top: 2%;
+		margin-bottom: 2%;
+	}
+
+
+	.popup #organizer {
+		font-size: 13px;
+	}
+}
+
+@media (max-width: 480px) {
+	.popup {
+		width: 90%;
+	}
+
+	.card-footer p a {
+		margin-right: 1%;
+		margin-bottom: 1%;
+	}
+
+
+	.popup #organizer {
+		font-size: 12px;
+	}
+}

@@ -36,11 +36,15 @@ var Title;
 var EventDescription;
 var EventContact;
 
+var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
-
+var SERVER_GET_SINGLE_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=singleEvent&eventid=100";
 
 // constants
 var NON_IDENTIFIED = "-";
+
+var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
+var CATEGORY_BG_COLORS =  ["red", "pink", "purple", "indigo", "blue", "light-blue", "teal", "green", "light-green", "brown", "deep-orange"];
 
 // date
 var MONTHS = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -194,16 +198,12 @@ function urlify(html) {
 
 Body = React.createClass({
 	getInitialState: function() {
-		return {data: []};
+		return {data: ""};
 	},
 	componentDidMount: function() {
 	    $.ajax({
 			type: 'GET',
 	     	url: this.props.url,
-	     	data: {
-	     		"cmd": "singleEvent",
-	     		"eventid": 69259
-	     	},
 	      	dataType: 'json',
 	      	success: function(data) {
 	      		this.setState({data: data});
@@ -214,27 +214,50 @@ Body = React.createClass({
 	    });
 	},
 	render: function() {
+		console.log(this.state.data);
 		return (
 			<div>
-				{ Object.keys(this.state.data).length != 0 ?  
+				{ this.state.data ?  
 					<App data={this.state.data} urlPost={this.props.urlPost}/> : 
 					<Loading /> 
 				}
 			</div>
-
 		);
 	}
 });
 
-App = React.createClass({
+Loading = React.createClass({
+	render: function() {
+		return (
+			<div className="row loading">
+				<div className="col s12 m12 center">
+					<div className="preloader-wrapper big active">
+		    			<div className="spinner-layer spinner-yellow-only">
+		      				<div className="circle-clipper left">
+		        				<div className="circle"></div>
+		      				</div>
+		      				<div className="gap-patch">
+		        				<div className="circle"></div>
+		      				</div>
+		      				<div className="circle-clipper right">
+		        				<div className="circle"></div>
+		      				</div>
+		    			</div>
+		  			</div>
+		  		</div>
+		  	</div>
+  		);
+	}
+});
 
+App = React.createClass({
 	render: function() {
 		return (
 			<div>
 				<Navbar />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
-				<MainContainer data={this.props.data} />
+				<MainContainer data={this.props.data}/>
 			</div>
 		);
 	}
@@ -260,7 +283,7 @@ Logo = React.createClass({
 	render: function() {
 		return (
 			<a href="#" className="brand-logo logo-align">
-				<img src={"image/logo.png"} id="logo" />
+				<img src={"../image/logo.png"} id="logo" />
 			</a>
 		);
 	}
@@ -735,22 +758,19 @@ MainContainer = React.createClass({
 	render: function() {
 		return (
 			<div className="container-fluid" id="main-container">
-				<EventSection data={this.}
+				<Timeline data={this.props.data} />
 			</div>
 		);
 	}
 });
 
-SearchTimeline = React.createClass({
+Timeline = React.createClass({
 	render: function() {
 		return (
 			<div className="row">
 				<div className="col l10 m9 s12 section cards search-timeline">
 					<div className="col l10 m9 s12 offset-l2">
-						{	this.props.data.length != 0 ?
-							<EventSection events={this.props.data} /> :
-							<EmptySearch query={this.props.query} />
-						}
+						<Event data={this.props.data} />
 					</div>
 				</div>
 				<div className="col l2 m3 hide-on-small-only"></div>
@@ -759,212 +779,13 @@ SearchTimeline = React.createClass({
 	}
 });
 
-EmptySearch = React.createClass({
-	render: function() {
-		return (
-			<div className="no-events">
-				No Search Result for "{this.props.query}"
-			</div>
-		);
-	}
-});
-
-NoSearchTimeline = React.createClass({
-	render: function() {
-		return (
-			<div className="row">
-				<Timeline data={this.props.data} />
-				<Sidebar />
-			</div>
-		);
-	}
-});
-
-Sidebar = React.createClass ({
-	render: function() {
-		return (
-			<div className="col l2 m3 hide-on-small-only">
-				<div className="side-bar z-depth-1">
-					<div className="side-content">
-						<div className="browse-events">Browse Events</div>
-
-			    		<a className="date" href={"#section-1"}>
-			    			<div className="browse-date"><ul>Today</ul></div>
-			    		</a>
-			    		<a className="date" href={"#section-2"}>
-			    			<div className="browse-date"><ul>Tomorrow</ul></div>
-			    		</a>
-			    		<a className="date" href={"#section-3"}>
-			    			<div className="browse-date"><ul>In a few days</ul></div>
-			    		</a>
-
-			    		<a className="date" href={"#section-4"}>
-			    			<div className="browse-date"><ul>Ongoing</ul></div>
-			    		</a>
-
-			    		<a className="date" href={"#section-5"}>
-			    			<div className="browse-date"><ul>And more</ul></div>
-			    		</a>
-
-					</div>
-				</div>
-			</div>
-		);
-	}
-});
-
-
-Timeline = React.createClass({
-	componentDidMount: function() {
-		$('.scrollspy').scrollSpy();
-	},
-	render: function() {
-		return (	
-			<div className="col l10 m9 s12" id="content">
-				<div className="section scrollspy" id="section-1">
-					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TODAY_INDEX]]}
-						index={0} />
-				</div>
-
-				<div className="section scrollspy" id="section-2">
-					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TOMORROW_INDEX]]} 
-						index={1}/>
-				</div>
-
-				<div className="section scrollspy" id="section-3">
-					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[FEW_DAYS_INDEX]]}
-						index={2} />
-				</div>
-
-				<div className="section scrollspy" id="section-4">
-					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[ONGOING_INDEX]]}
-						index={3} />
-				</div>
-
-				<div className="section scrollspy" id="section-5">
-					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[MORE_INDEX]]} 
-						index={4} />
-				</div>
-			</div>
-		);
-	}
-
-});
-
-// contains a timeline with leftsidebar and a lot of categorysections
-TimelineSection = React.createClass({
-	render: function() {
-		return (
-			<div className="row">
-				<LeftSideBar index = {this.props.index} />
-				<CategoriesContainer categories = {this.props.categories} index={this.props.index} />
-			</div>
-		);
-	}
-});
-
-
-LeftSideBar = React.createClass({
-
-	render: function() {
-		var json = getDate(this.props.index, true);
-
-		return (
-			<div className="col l2 hide-on-med-and-down">
-				<div className="date-content center">
-					<div className="cal">
-						<div className="cal-day">{json[WEEKDAY]}</div>
-						<div className="cal-date">{json[DAY]}</div>
-						<div className="cal-month">{json[MONTH]}</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
-});
-
-CategoriesContainer = React.createClass({
-	hasEvents: function(categories) {
-		for(i in categories) {
-			if(categories[i][EVENTS].length > 0)
-				return true;
-		}
-
-		return false;
-	},
-	render: function() {
-		return (
-			<div>
-				{ this.hasEvents(this.props.categories) ?
-				  <CategorySections categories = {this.props.categories} /> :
-				  <NoEvents index={this.props.index}/>
-				}
-			</div>
-		);
-	}
-});
-
-NoEvents = React.createClass({
-
-	render: function() {
-		var json = getDate(this.props.index, false);
-		var date = json[DAY] + " " + json[MONTH];
-		return (
-			<div className="col l10 m12 s12 cards no-events">
-				No Events on {date}
-			</div>
-		);
-	}
-});
-
-//contains a lot of categories
-CategorySections = React.createClass({
-	render: function() {
-		var CategorySectionNode = this.props.categories.map(function(category, index) {
-      		return ( 
-      			<CategorySection category={category} key={index} />
-		    );
-		});
-		return (
-			<div className="col l10 m12 s12 cards">
-				{CategorySectionNode}
-			</div>
-		);
-	}
-});
-
-// contains a lot of events
-CategorySection = React.createClass({
-	render: function(){
-		return (
-			<EventSection events={this.props.category[EVENTS]} />
-		);
-	}
-});
-
-EventSection = React.createClass({
-	render: function() {
-		var EventNode = this.props.events.map(function(data, index) {
-			return (
-				<Event data={data} key={index}/>
-			);
-		});
-
-		return (
-			<div>
-				{EventNode}
-			</div>
-		);
-	}
-});
-
 Event = React.createClass({
 	componentDidMount: function() {
-		/*
 	    $('.collapsible').collapsible({
-	      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	    });*/
+	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    });
 	},
+
 	render: function() {
 
 		var bgColorIndex = 0;
@@ -974,27 +795,28 @@ Event = React.createClass({
 				bgColorIndex = i;
 				break;
 			}
-
 		
 		return (
-
-		<div className="card small" id={this.props.data[EVENT_ID]} >
-			<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-			<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
-		</div>
-
-		);
-	}
-});
-
-EventHeader = React.createClass({
-	render: function() {
-		var src = IMAGE_PATH + this.props.category + ".jpg";
-		return (
-			<div className="card-image waves-effect waves-block waves-light">
-				<div className="activator category-title resize-on-medium resize-on-xs">{this.props.category}</div>
-				<img className="activator" src={src}/>
+			<div className="collapsible popup" data-collapsible="accordion">
+				<li>
+					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
+						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+						<div className="card-content">
+							<EventDate datetime={this.props.data[DATETIME]}/>
+							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
+							<EventTitle title={this.props.data[TITLE]} />
+							<EventSynopsis description={this.props.data[DESCRIPTION]} />
+							<EventLocation location={this.props.data[VENUE]} />
+						</div>
+					</div>
+					<div className="collapsible-body">
+						<EventDescription description={this.props.data[DESCRIPTION]} />
+						<EventContact contact={this.props.data[CONTACT]} />
+						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
+					</div>
+				</li>
 			</div>
+
 		);
 	}
 });
@@ -1010,8 +832,7 @@ EventFavourite = React.createClass({
 		var c = this.state.liked ?
 		" yellow-text lighten-4" : " white-text" ;
 		return (
-			<div className={"card-right-column " + this.props.color + " lighten-2"} onClick={this.handleClick}>
-				<div className={"waves-effect waves-light position-star" + c}><i className="small"></i></div>
+			<div className={"card-left-column " + this.props.color + " lighten-2"}>
 			</div>
 		);
 	}
@@ -1019,14 +840,11 @@ EventFavourite = React.createClass({
 
 EventContent = React.createClass({
 	render: function() {
-
-		var link = "#reveal-" + this.props.data[EVENT_ID];
-
 		return (
-			<div className="card-content modal-trigger" href={link}>
+			<div>
 				<EventDate datetime={this.props.data[DATETIME]}/>
 				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
-				<EventTitle organizer={this.props.data[TITLE]} />
+				<EventTitle title={this.props.data[TITLE]} />
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
 			</div>
@@ -1061,13 +879,11 @@ EventTitle = React.createClass({
 	render: function() {
 		return (
 			<div className="card-title">
-				{this.props.organizer} 
+				{this.props.title} 
 			</div>
 		);
 	}
 });
-
-var converter = new Showdown.converter();
 
 EventSynopsis = React.createClass({
 	render: function() {
@@ -1084,18 +900,7 @@ EventLocation = React.createClass({
 	render: function() {
 		return (
 			<div className="card-venue">
-				<i className="tiny mdi-action-room"></i>{this.props.location} 
-			</div>
-		);
-	}
-});
-
-EventBottom = React.createClass({
-	render: function() {
-		return (
-			<div className="row">
-				<EventInformation date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]}/>
-				<EventStar />
+				<i className="tiny mdi-action-room"></i><div className="venue-text">{this.props.location} </div>
 			</div>
 		);
 	}
@@ -1153,64 +958,6 @@ EventVenue = React.createClass({
 	}
 });
 
-EventStar = React.createClass({
-	getInitialState: function() {
-		return {liked : false};
-	},
-	handleClick: function(e) {
-		this.setState({liked: !this.state.liked});
-	},
-	render: function() {
-		var c = this.state.liked ?
-			" amber lighten-1" : " amber lighten-3" ;
-		return (
-			<div className="col s2 favorite-container" onClick={this.handleClick}>
-				<a className={"btn-floating btn-large waves-effect waves-light right" + c + " favorite"}>
-				 	<i className="mdi-action-grade"></i>
-				</a>
-			</div>
-		);
-	}
-});
-
-EventReveal = React.createClass({
-	render: function() {
-
-		var cardID = "reveal-" + this.props.data[EVENT_ID];
-
-		return (
-
-			<div className="row modal" id={cardID} >
-				<div className="modal-content">
-
-					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
-
-					<EventDescription description={this.props.data[DESCRIPTION]} />
-
-					<EventContact contact={this.props.data[CONTACT]} />
-				</div>
-			</div>
-		);
-	}
-});
-
-Title = React.createClass({
-	render: function() {
-		return (
-			<div className="card-title grey-text text-darken-4 row">
-				<div className="col s11 card-title-inner">
-					<h4>{this.props.title}</h4>
-				</div>
-				<div className="col s1">
-					<i className="mdi-navigation-close modal-close right"></i>
-				</div>
-
-				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />
-			</div>
-		);
-	}
-});
-
 var converter = new Showdown.converter();
 
 EventDescription = React.createClass({
@@ -1244,7 +991,7 @@ EventContact = React.createClass({
 
 EventSocialMedia = React.createClass({
 	render: function() {
-		var url = HOMEPAGE + "/#" + this.props.cardID;
+		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
@@ -1267,6 +1014,6 @@ EventSocialMedia = React.createClass({
 });
 
 React.render(
-  <Body url={SERVER_GET_EVENTS} urlPost={SERVER_POST_EVENT}/>,
-  document.body
+  	<Body url={SERVER_GET_SINGLE_EVENT} urlPost={SERVER_POST_EVENT}/>,
+  	document.body
 );

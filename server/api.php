@@ -94,7 +94,18 @@ function getSingleEvent($eventid) {
 
 	$query = "SELECT * FROM $table WHERE ID = $eventid";
 	$result = databaseQuery($query);
-	return json_encode($result->fetch_assoc());
+
+	$tempResult = $result->fetch_assoc();
+	$dateJSON = json_decode($tempResult['DateAndTime']);
+	if($dateJSON != null) {
+		$convertStartDate = date(DATEFORMAT, $dateJSON->Start);
+		$convertEndDate = date(DATEFORMAT, $dateJSON->End);
+		if ($convertStartDate !== false) {
+			$tempResult['DateAndTime'] = $convertStartDate." - ".$convertEndDate;
+		}
+	}
+
+	return json_encode($tempResult);
 
 }
 

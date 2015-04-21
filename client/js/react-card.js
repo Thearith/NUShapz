@@ -1142,20 +1142,19 @@ Event = React.createClass({
 
 		
 		return (
-			<div className="collapsible popup" data-collapsible="accordion">
+			<ul className="collapsible popup" data-collapsible="accordion">
 				<li>
-					<div className="collapsible-header">
-						<EventFavourite color={CATEGORY_BG_COLORS[bgColorIndex]} />
+					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
+						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+						<EventContent data={this.props.data} />
 					</div>
-					<div className="collapsible-body">
-						<p>Lorem ipsum dolor sit amet.</p>
-					</div>
+					<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
 				</li>
-	    	</div>
+			</ul>
+
 		);
 	}
 });
-
 
 EventFavourite = React.createClass({
 	getInitialState: function() {
@@ -1214,9 +1213,9 @@ EventCategory = React.createClass({
 EventTitle = React.createClass({
 	render: function() {
 		return (
-			<h4>
+			<div className="card-title">
 				{this.props.title} 
-			</h4>
+			</div>
 		);
 	}
 });

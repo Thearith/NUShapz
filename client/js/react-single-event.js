@@ -3,7 +3,6 @@
 var Body;
 
 var App;
-var Loading;
 
 var Navbar;
 var MainContainer;
@@ -12,29 +11,11 @@ var ModalForm;
 var Logo;
 var NavbarForm;
 
-var Search;
-var SearchMobile;
-
 var NewEvent;
 var NewEventMobile;
 
 var Content;
-var Sidebar;
 
-var Timeline;  //contains timeline sections
-
-var TimelineSection; //contains categories within the same timeline section
-
-var SearchTimeline;
-var NoSearchTimeline;
-
-var LeftSideBar;
-var CategoriesContainer
-
-var CategorySections;
-var NoEvents;
-
-var CategorySection; // contains events of the same category
 var EventSection;
 var Event;
 var EventHeader;
@@ -55,27 +36,10 @@ var Title;
 var EventDescription;
 var EventContact;
 
-var SERVER_GET_SINGLE_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=singleEvent&eventid="; 
-var SERVER_GET_EVENTS = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
-
-//Timeline
-var TIMELINE = "Timeline";
-var TODAY_INDEX = 0;
-var TOMORROW_INDEX = 1;
-var FEW_DAYS_INDEX = 2;
-var ONGOING_INDEX = 3;
-var MORE_INDEX = 4;
-var TIMELINE_ARRAY = ["Today", "Tomorrow", "InAFewDays", "Ongoing", "AndMore"];
-
-//Category
-var CATEGORY_ARRAY = ["Arts","Workshops","Conferences","Competitions","Fairs","Recreation","Wellness","Social","Volunteering","Recruitments","Others"];
-var IMAGE_PATH = "../image/category/";
-var CATEGORY_BG_COLORS =  ["red", "pink", "purple", "indigo", "blue", "light-blue", "teal", "green", "light-green", "brown", "deep-orange"];
 
 
 // constants
-var TITLE_MAXIMUM_LENGTH = 30;
 var NON_IDENTIFIED = "-";
 
 // date
@@ -236,6 +200,10 @@ Body = React.createClass({
 	    $.ajax({
 			type: 'GET',
 	     	url: this.props.url,
+	     	data: {
+	     		"cmd": "singleEvent",
+	     		"eventid": 69259
+	     	},
 	      	dataType: 'json',
 	      	success: function(data) {
 	      		this.setState({data: data});
@@ -249,7 +217,7 @@ Body = React.createClass({
 		return (
 			<div>
 				{ Object.keys(this.state.data).length != 0 ?  
-					<App data={this.state.data[TIMELINE]} urlPost={this.props.urlPost}/> : 
+					<App data={this.state.data} urlPost={this.props.urlPost}/> : 
 					<Loading /> 
 				}
 			</div>
@@ -258,81 +226,15 @@ Body = React.createClass({
 	}
 });
 
-Loading = React.createClass({
-	render: function() {
-		return (
-			<div className="row loading">
-				<div className="col s12 m12 center">
-					<div className="preloader-wrapper big active">
-		    			<div className="spinner-layer spinner-yellow-only">
-		      				<div className="circle-clipper left">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="gap-patch">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="circle-clipper right">
-		        				<div className="circle"></div>
-		      				</div>
-		    			</div>
-		  			</div>
-		  		</div>
-		  	</div>
-  		);
-	}
-});
-
 App = React.createClass({
-	 getInitialState:function(){
-        return{
-            query:'',
-            filteredData: this.props.data,
-            isSearch: false
-        }
-    },
-
-	doSearch:function(queryText){
-        
-		var queryResult = [];
-
-		if(queryText === '') {
-			this.setState({
-	            query:'',
-	            filteredData: this.props.data,
-	            isSearch: false
-	        });
-			return;
-		}
-			
-
-        for(i=0; i<TIMELINE_ARRAY.length; i++) {
-	        
-	        this.props.data[TIMELINE_ARRAY[i]].forEach(function(category){
-	        	category[EVENTS].forEach(function(event) {
-	        		if(event[TITLE].toLowerCase().indexOf(queryText.toLowerCase())!=-1 ||
-	        		   event[ORGANIZER].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[CATEGORY].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[DESCRIPTION].toLowerCase().indexOf(queryText.toLowerCase()) != -1 ||
-	        		   event[DATETIME].toLowerCase().indexOf(queryText.toLowerCase()) != -1) 
-	        			queryResult.push(event);
-	        	});
-	        });
-	    }
- 
-        this.setState({
-            query:queryText,
-            filteredData: queryResult,
-            isSearch: true
-        });
-    },
 
 	render: function() {
 		return (
 			<div>
-				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
+				<Navbar />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
-				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} query={this.state.query} />
+				<MainContainer data={this.props.data} />
 			</div>
 		);
 	}
@@ -346,10 +248,8 @@ Navbar = React.createClass({
     				<div className="nav-wrapper orange">
 						<Logo />
 						<NewEvent data={this.props.data} />
-						<Search query={this.props.query} doSearch={this.props.doSearch} />
 						<MobileNav data={this.props.data} />
 					</div>
-					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
 				</nav>
 			</div>
 		);
@@ -365,67 +265,6 @@ Logo = React.createClass({
 		);
 	}
 });
-
-SearchMobile = React.createClass({
-	doSearch:function(){
-        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
-        this.props.doSearch(query);
-    },
-    componentDidMount: function() {
-    	$('#search').on('keydown', this.handleKeyDown);
-    },
-    handleKeyDown: function(e) {
-    	var ENTER = 13;
-        if( e.keyCode == ENTER ) {
-            e.preventDefault();
-            return false;
-        }
-    },
-	render:function() {
-		return (
-			<div className="searchbar-mobile input-field hide-on-med-and-up">
-				<div className="searchbar-mobile-size"> 
-					<div className="input-field">
-						<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-						<label htmlFor="search">
-							<i className="mdi-action-search search-icon"></i>
-						</label>
-					</div>
-				</div>
-			</div>
-		);
-	}
-});
-
-Search = React.createClass ({
-	doSearch:function(){
-        var query=this.refs.searchInput.getDOMNode().value; // this is the search text
-        this.props.doSearch(query);
-    },
-    componentDidMount: function() {
-    	$('#search').on('keydown', this.handleKeyDown);
-    },
-    handleKeyDown: function(e) {
-    	var ENTER = 13;
-        if( e.keyCode == ENTER ) {
-            e.preventDefault();
-            return false;
-        }
-    },
-	render: function() {
-		return (
-			<form>
-	        	<div className="input-field search-outer hide-on-small-only">    		
-	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-	          		<label htmlFor="search">
-	          			<i className="mdi-action-search search-icon"></i>
-	          		</label>
-	        	</div>
-			</form>
-		);
-	}
-});
-
 
 NewEvent = React.createClass({
 	render: function() {
@@ -1408,7 +1247,7 @@ EventContact = React.createClass({
 
 EventSocialMedia = React.createClass({
 	render: function() {
-		var url = SERVER_GET_SINGLE_EVENT + this.props.cardID;
+		var url = HOMEPAGE + "/#" + this.props.cardID;
 		var twitterURL = "https://twitter.com/home?status=" + url;
 		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;

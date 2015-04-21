@@ -460,6 +460,10 @@ input[type="text"]#search {
 	float:left;
 }
 
+.collapsible-body {
+	padding-bottom: 10px;
+}
+
 .inline {
 	display: inline;
 }
@@ -616,11 +620,14 @@ input[type="text"]#search {
 }
 
 .contact {
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 5px;
 	margin-left: 40px;
 	color: #757575 ;
 	font-size: 18px !important;
+}
+
+.contact .row {
+	margin-bottom: 0px;
 }
 
 .contact-icon {
@@ -664,6 +671,11 @@ input[type="text"]#search {
 	margin-left: 10px;
 }
 
+.social-media a i {
+	width: 20px;
+	border: 50%;
+}
+
 .card-footer p{
 	display: inline;
 	margin-left: 5px;
@@ -691,6 +703,16 @@ input[type="text"]#search {
 	margin-bottom: 10px;
 	border: 1px solid #bdbdbd;
 	border-radius: 5px;
+}
+
+.description table {
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+.description ul {
+	margin-left: 30px;
+	margin-right: 30px;
 }
 
 /*

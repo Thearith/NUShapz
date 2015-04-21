@@ -930,7 +930,7 @@ SearchTimeline = React.createClass({
 });
 
 EmptySearch = React.createClass({
-	
+
 	render: function() {
 		return (
 			<div className="no-events">
@@ -1152,7 +1152,7 @@ Event = React.createClass({
 		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
 		
 		return (
-			<div className="collapsible popup" data-collapsible="accordion">
+			<div className="collapsible popout" data-collapsible="accordion">
 				<li>
 					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
 						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
@@ -1394,15 +1394,15 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
-			<div>
 			<div className="contact">
-				<i className="icon-width organizer-icon mdi-social-person"></i>
-				<span className="contact-text"> {this.props.organizer} </span>
-			</div>
-			<div className="contact">
-				<i className="icon-width contact-icon mdi-communication-email"></i>
-				<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
-			</div>
+				<div className="row">
+					<i className="icon-width organizer-icon mdi-social-person"></i>
+					<span className="contact-text"> {this.props.organizer} </span>
+				</div>
+				<div className="row">
+					<i className="icon-width contact-icon mdi-communication-email"></i>
+					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+				</div>
 			</div>
 		);
 	}

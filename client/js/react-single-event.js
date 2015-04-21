@@ -38,7 +38,8 @@ var EventContact;
 
 var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_POST_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php";
-var SERVER_GET_SINGLE_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=singleEvent&eventid=100";
+var SERVER_GET_SINGLE_EVENT = "http://ec2-52-74-127-35.ap-southeast-1.compute.amazonaws.com/api.php?cmd=singleEvent&eventid=";
+var QUERY = "id";
 
 // constants
 var NON_IDENTIFIED = "-";
@@ -198,12 +199,24 @@ function urlify(html) {
 
 Body = React.createClass({
 	getInitialState: function() {
-		return {data: ""};
+		return {
+			data: ""
+		};
+	},
+	getUrlParameter: function(sParam) {
+	    var sPageURL = window.location.search.substring(1);
+	    var sURLVariables = sPageURL.split('&');
+	    for (var i = 0; i < sURLVariables.length; i++) {
+	        var sParameterName = sURLVariables[i].split('=');
+	        if (sParameterName[0] == sParam) 
+        		return sParameterName[1];
+	    }
 	},
 	componentDidMount: function() {
+		var id = this.getUrlParameter(QUERY);
 	    $.ajax({
 			type: 'GET',
-	     	url: this.props.url,
+	     	url: this.props.url + id,
 	      	dataType: 'json',
 	      	success: function(data) {
 	      		this.setState({data: data});
@@ -214,37 +227,28 @@ Body = React.createClass({
 	    });
 	},
 	render: function() {
-		console.log(this.state.data);
+		var id = this.getUrlParameter(QUERY);
 		return (
 			<div>
 				{ this.state.data ?  
 					<App data={this.state.data} urlPost={this.props.urlPost}/> : 
-					<Loading /> 
+					<NoData id={id}/> 
 				}
 			</div>
 		);
 	}
 });
 
-Loading = React.createClass({
+NoData = React.createClass({
 	render: function() {
+		var style = {
+			marginTop: "120px"
+		};
 		return (
-			<div className="row loading">
-				<div className="col s12 m12 center">
-					<div className="preloader-wrapper big active">
-		    			<div className="spinner-layer spinner-yellow-only">
-		      				<div className="circle-clipper left">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="gap-patch">
-		        				<div className="circle"></div>
-		      				</div>
-		      				<div className="circle-clipper right">
-		        				<div className="circle"></div>
-		      				</div>
-		    			</div>
-		  			</div>
-		  		</div>
+			<div className="row">
+				<div className="col s12 center" style={style}>
+					<h3>Event with id {this.props.id} is not found</h3>
+				</div>
 		  	</div>
   		);
 	}

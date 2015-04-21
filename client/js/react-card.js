@@ -1153,7 +1153,6 @@ Event = React.createClass({
 				<EventSynopsis description={this.props.data[DESCRIPTION]} />
 				<EventLocation location={this.props.data[VENUE]} />
 			</div>
-
 		</div>
 		<div className="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
     	</li>
@@ -1162,6 +1161,8 @@ Event = React.createClass({
 		);
 	}
 });
+
+/*				<EventLocation location={this.props.data[VENUE]} />*/
 /*			<EventContent data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />*/
 EventHeader = React.createClass({
 	render: function() {
@@ -1259,7 +1260,7 @@ EventLocation = React.createClass({
 	render: function() {
 		return (
 			<div className="card-venue">
-				<i className="tiny mdi-action-room"></i>{this.props.location} 
+				<i className="tiny mdi-action-room"></i><div className="venue-text">{this.props.location} </div>
 			</div>
 		);
 	}

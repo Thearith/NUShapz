@@ -665,9 +665,13 @@ input[type="text"]#search {
 
 .contact {
 	margin-top: 5px;
-	margin-left: 40px;
+	margin-left: 25px;
 	color: #424242;
 	font-size: 16px !important;
+}
+
+.contact .organizer-text, .contact .contact-text {
+	margin-left: 5px;
 }
 
 
@@ -923,6 +927,11 @@ a {
 	/*width: calc(400px);*/
 	overflow: hidden;
 	text-overflow: ellipsis;
+	width: 50%;
+}
+
+.contact-text p {
+	margin-top: 5px;
 }
 
 

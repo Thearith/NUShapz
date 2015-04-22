@@ -1288,7 +1288,7 @@ EventContact = React.createClass({
 				</div>
 				<div className="contact">
 					<i className="icon-width contact-icon mdi-communication-email"></i>
-					<div className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}}></div>
+					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
 				</div>
 			</div>
 		);

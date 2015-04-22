@@ -352,7 +352,7 @@ Navbar = React.createClass({
 Logo = React.createClass({
 	render: function() {
 		return (
-			<a href="#" className="brand-logo logo-align">
+			<a href="http://hapz.nusmods.com" className="brand-logo logo-align">
 				<img src={"image/logo.png"} id="logo" />
 			</a>
 		);

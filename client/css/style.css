@@ -667,23 +667,7 @@ input[type="text"]#search {
 	color: #757575 ;
 	font-size: 18px !important;
 }
-/*
-.contact .row {
-	margin-bottom: 0px;
-}
-*/
-.contact-icon {
-	position: relative;
-	margin-top: 2px;
-	font-size: 20px !important;
-	margin-left: -27px;
-}
 
-.contact-text {
-	position: absolute;
-	display: inline !important;
-	font-size: 600;
-}
 
 .information {
 	padding-top: 12px;
@@ -910,21 +894,36 @@ a {
 	height: auto;
 }
 
-.contact-text {
-	position: relative;
-	display: inline;
-	font-size: 14px !important;
-}
-
 .icon-width {
 	width: 20px;
 }
+
 
 .organizer-icon {
 	margin-top: 2px;
 	font-size: 22px !important;
 	/*margin-right: 10px;*/
 }
+
+.organizer-text {
+	position: relative;
+	font-size : 14px;
+	display: inline !important;
+	font-size: 600;
+}
+
+.contact-icon {
+	margin-top: 2px;
+	font-size: 20px !important;
+}
+
+.contact-text {
+	position: absolute;
+	font-size : 14px;
+	font-size: 600;
+	display: inline !important;
+}
+
 
 .socialmed {
 	float: right; 

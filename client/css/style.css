@@ -880,6 +880,9 @@ select.browser-default {
 
 .venue-text {
 	margin-top: 7px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .test {

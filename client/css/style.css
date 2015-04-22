@@ -504,6 +504,7 @@ input[type="text"]#search {
 .single-card .description {
 	padding-left: 20px;
 	padding-right: 20px;
+	font-size: 15px;
 }
 
 .single-card .contact .row {
@@ -511,12 +512,16 @@ input[type="text"]#search {
 }
 
 .single-card .contact p {
-	margin-top: 0px;
+	margin-top: 5px;
 	margin-bottom: 0px;
 }
 
 .single-card .social-media {
 	margin-right: 20px;
+}
+
+.single-card .venue-text {
+	display: inline;
 }
 
 .card .card-reveal{

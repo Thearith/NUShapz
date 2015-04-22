@@ -38,7 +38,7 @@ var EventContact;
 
 var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/staging/event/?id="; 
 var SERVER_POST_EVENT = "http://hapz.nusmods.com/api.php";
-var SERVER_GET_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
+var SERVER_GET_SINGLE_EVENT = "http://hapz.nusmods.com/api.php?cmd=singleEvent&eventid="; 
 var QUERY = "id";
 
 // constants

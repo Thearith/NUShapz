@@ -1282,19 +1282,18 @@ EventContact = React.createClass({
 		var rawMarkup = converter.makeHtml(contact);
 		return (
 			<div>
-				<div className="contact">
+				<div className="organizer">
 					<i className="icon-width organizer-icon mdi-social-person"></i>
 					<div className="organizer-text">{this.props.organizer}</div>
 				</div>
 				<div className="contact">
-					<i className="icon-width contact-icon mdi-communication-email"></i>
 					<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
 				</div>
 			</div>
 		);
 	}
 });
-
+/*<i className="icon-width contact-icon mdi-communication-email"></i>*/
 EventSocialMedia = React.createClass({
 	render: function() {
 		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;

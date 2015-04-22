@@ -667,18 +667,18 @@ input[type="text"]#search {
 .description p {
 	margin: 0 auto;
 }
-
+/*
 .contact {
 	margin-top: 5px;
 	margin-left: 25px;
 	color: #424242;
-	font-size: 16px !important;
+	font-size: 20px !important;
 }
 
 .contact .organizer-text, .contact .contact-text {
 	margin-left: 5px;
 }
-
+*/
 
 .information {
 	padding-top: 12px;
@@ -907,10 +907,19 @@ a {
 	width: 20px;
 }
 
+.organizer {
+
+}
+
+.contact {
+	margin-left: 25px;
+	color: #424242;
+	font-size: 20px !important;
+}
 
 .organizer-icon {
 	font-size: 22px !important;
-	/*margin-right: 10px;*/
+	margin-right: 5px;
 }
 
 .organizer-text {
@@ -927,7 +936,7 @@ a {
 }
 
 .contact-text {
-	position: absolute;
+	position: relative;
 	font-size: 14px;
 	font-weight: 600;
 	display: inline !important;
@@ -937,11 +946,11 @@ a {
 	text-overflow: ellipsis;
 	width: 50%;
 }
-
+/*
 .contact-text p {
 	margin-top: 5px;
 }
-
+*/
 
 .socialmed {
 	float: right; 
@@ -956,7 +965,8 @@ a {
 .contact-footer {
 	border-top: 1px solid #e5e5e5;
 	background-color: #fafafa;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
+	margin-bottom: 0 !important; 
 }
 
 .collapsible {

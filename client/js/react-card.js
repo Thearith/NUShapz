@@ -1394,13 +1394,11 @@ EventContact = React.createClass({
 			<div className="contact-footer">
 				<div className="contact">
 					<i className="icon-width organizer-icon mdi-social-person"></i>
-					<span className="contact-text"> {this.props.organizer} </span>
+					<div className="organizer-text">{this.props.organizer}</div>
 				</div>
 				<div className="contact">
 					<i className="icon-width contact-icon mdi-communication-email"></i>
-					<div>
-						<span className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}} />
-					</div>
+					<div className="contact-text" dangerouslySetInnerHTML={{__html: rawMarkup}}></div>
 				</div>
 			</div>
 		);

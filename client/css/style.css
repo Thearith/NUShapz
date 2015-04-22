@@ -645,13 +645,18 @@ input[type="text"]#search {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	line-height: 25px;
+	padding-left: 40px;
+
 	/*border-top: 1px solid #e5e5e5;*/
 	/*border-bottom:1px solid #e5e5e5;*/
 }
 
 .collapsible-body p {
+	/*
 	padding-top: 5px;
 	padding-bottom: 5px;
+	*/
+	padding: 0px;
 }
 
 .description p {
@@ -665,21 +670,6 @@ input[type="text"]#search {
 	font-size: 18px !important;
 }
 
-.contact .row {
-	margin-bottom: 0px;
-}
-
-.contact-icon {
-	margin-top: 2px;
-	float: left;
-	font-size: 20px !important;
-	margin-left: -27px;
-}
-
-.contact-text {
-	position: relative;
-	font-size: 600;
-}
 
 .information {
 	padding-top: 12px;
@@ -700,7 +690,7 @@ input[type="text"]#search {
 }
 
 .description {
-	font-size: 15px;
+	font-size: 13px;
 }
 
 .card-footer p{
@@ -906,20 +896,35 @@ a {
 	height: auto;
 }
 
-.contact-text {
-	font-size: 14px !important;
-}
-
 .icon-width {
 	width: 20px;
 }
 
+
 .organizer-icon {
-	margin-top: 2px;
-	float: left;
 	font-size: 22px !important;
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
+
+.organizer-text {
+	position: relative;
+	font-size : 14px;
+	font-size: 700;
+	display: inline !important;
+}
+
+.contact-icon {
+	font-size: 20px !important;
+	margin-right: 2px;
+}
+
+.contact-text {
+	position: absolute;
+	font-size: 14px;
+	font-size: 700;
+	display: inline !important;
+}
+
 
 .socialmed {
 	float: right; 
@@ -934,5 +939,9 @@ a {
 .contact-footer {
 	border-top: 1px solid #e5e5e5;
 	background-color: #fafafa;
-	margin-bottom: 10px;
+	padding-bottom: 20px;
+}
+
+.collapsible {
+	margin: 0 0 30px 0 !important; 
 }

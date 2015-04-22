@@ -645,6 +645,8 @@ input[type="text"]#search {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	line-height: 25px;
+	padding-left: 40px;
+
 	/*border-top: 1px solid #e5e5e5;*/
 	/*border-bottom:1px solid #e5e5e5;*/
 }
@@ -688,7 +690,7 @@ input[type="text"]#search {
 }
 
 .description {
-	font-size: 15px;
+	font-size: 13px;
 }
 
 .card-footer p{
@@ -900,7 +902,6 @@ a {
 
 
 .organizer-icon {
-	margin-top: 2px;
 	font-size: 22px !important;
 	/*margin-right: 10px;*/
 }
@@ -908,19 +909,19 @@ a {
 .organizer-text {
 	position: relative;
 	font-size : 14px;
+	font-size: 700;
 	display: inline !important;
-	font-size: 600;
 }
 
 .contact-icon {
-	margin-top: 2px;
 	font-size: 20px !important;
+	margin-right: 2px;
 }
 
 .contact-text {
 	position: absolute;
-	font-size : 14px;
-	font-size: 600;
+	font-size: 14px;
+	font-size: 700;
 	display: inline !important;
 }
 

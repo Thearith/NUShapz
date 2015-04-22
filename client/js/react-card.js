@@ -45,13 +45,6 @@ var EventTitle;
 var EventOrganizer;
 var EventBottom;
 
-var EventInformation;
-var EventStar;
-
-var EventDateTime;
-var EventVenue;
-
-var Title;
 var EventDescription;
 var EventContact;
 
@@ -1166,8 +1159,14 @@ Event = React.createClass({
 					</div>
 					<div className="collapsible-body">
 						<EventDescription description={this.props.data[DESCRIPTION]} />
-						<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
-						<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
+						<div className="row contact-footer">
+							<div className="col s9">
+								<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
+							</div>
+							<div className="col s3">
+								<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
+							</div>
+						</div>
 					</div>
 				</li>
 			</div>
@@ -1187,20 +1186,6 @@ EventFavourite = React.createClass({
 		" yellow-text lighten-4" : " white-text" ;
 		return (
 			<div className={"card-left-column " + this.props.color + " lighten-2"}>
-			</div>
-		);
-	}
-});
-
-EventContent = React.createClass({
-	render: function() {
-		return (
-			<div>
-				<EventDate datetime={this.props.data[DATETIME]}/>
-				<EventCategory category={this.props.data[CATEGORY]} color={this.props.color}/>
-				<EventTitle title={this.props.data[TITLE]} />
-				<EventSynopsis description={this.props.data[DESCRIPTION]} />
-				<EventLocation location={this.props.data[VENUE]} />
 			</div>
 		);
 	}
@@ -1260,20 +1245,6 @@ EventLocation = React.createClass({
 	}
 });
 
-EventInformation = React.createClass({
-	render: function() {
-		return (
-			<div className="col s10">
-				<div className="information">
-					<EventOrganizer organizer={this.props.organizer} />
-					<EventDateTime date={this.props.date} />
-					<EventVenue venue = {this.props.venue} />
-				</div>
-			</div>
-		);
-	}
-});
-
 EventOrganizer = React.createClass({
 	render: function() {
 		var organizer = isRealValue(this.props.organizer) ?
@@ -1282,87 +1253,6 @@ EventOrganizer = React.createClass({
 			<div className="organizer row">
 				<div className="col s11"><div className="showicon"><i className="fa fa-user"></i></div>
 				<div className="inline"><p className="organizer-title">{organizer}</p></div></div>
-			</div>
-		);
-	}
-});
-
-EventDateTime = React.createClass({
-	render: function() {
-		return (
-			<div className="datetime row">
-				<div className="col s11"><div className="showicon"><i className="fa fa-clock-o"></i></div>
-				<div className="inline">{this.props.date}</div></div>	
-			</div>
-		);
-	}
-});
-
-EventVenue = React.createClass({
-		
-	render: function() {
-		var venue = isRealValue(this.props.venue) ?
-				this.props.venue : NON_IDENTIFIED;
-		return (
-			<div className="venue row">
-				<div className="col s11"><div className="showicon"><i className="fa fa-map-marker"></i></div>
-				<div className="inline"><p>{venue}</p></div></div>
-			</div>
-		);
-	}
-});
-
-EventStar = React.createClass({
-	getInitialState: function() {
-		return {liked : false};
-	},
-	handleClick: function(e) {
-		this.setState({liked: !this.state.liked});
-	},
-	render: function() {
-		var c = this.state.liked ?
-			" amber lighten-1" : " amber lighten-3" ;
-		return (
-			<div className="col s2 favorite-container" onClick={this.handleClick}>
-				<a className={"btn-floating btn-large waves-effect waves-light right" + c + " favorite"}>
-				 	<i className="mdi-action-grade"></i>
-				</a>
-			</div>
-		);
-	}
-});
-
-EventReveal = React.createClass({
-	render: function() {
-
-		var cardID = "reveal-" + this.props.data[EVENT_ID];
-
-		return (
-
-			<div className="row modal" id={cardID} >
-				<div className="modal-content">
-					<Title title={this.props.data[TITLE]} date={this.props.data[DATETIME]} venue={this.props.data[VENUE]} organizer={this.props.data[ORGANIZER]} />
-					<EventDescription description={this.props.data[DESCRIPTION]} />
-					<EventSocialMedia cardID={this.props.data[EVENT_ID]} />
-					<EventContact contact={this.props.data[CONTACT]}  />
-				</div>
-			</div>
-		);
-	}
-});
-
-Title = React.createClass({
-	render: function() {
-		return (
-			<div className="card-title grey-text text-darken-4 row">
-				<div className="col s10 card-title-inner">
-					<h4>{this.props.title}</h4>
-				</div>
-				<div className="col s2">
-					<i className="mdi-navigation-close modal-close right"></i>
-				</div>
-
-				<EventInformation date={this.props.date} venue={this.props.venue} organizer={this.props.organizer} />
 			</div>
 		);
 	}
@@ -1391,7 +1281,7 @@ EventContact = React.createClass({
 				urlify(this.props.contact) : NON_IDENTIFIED;
 		var rawMarkup = converter.makeHtml(contact);
 		return (
-			<div className="contact-footer">
+			<div>
 				<div className="contact">
 					<i className="icon-width organizer-icon mdi-social-person"></i>
 					<div className="organizer-text">{this.props.organizer}</div>

@@ -722,11 +722,6 @@ input[type="text"]#search {
 	border-radius: 5px;
 }
 
-.description table {
-	margin-left: 30px;
-	margin-right: 30px;
-}
-
 .description ul {
 	margin-left: 30px;
 	margin-right: 30px;
@@ -926,7 +921,6 @@ a {
 	display: inline !important;
 	font-family: 'Open Sans', sans-serif !important;
 	/*width: calc(400px);*/
-	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }

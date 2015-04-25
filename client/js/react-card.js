@@ -1299,7 +1299,8 @@ EventContact = React.createClass({
 EventSocialMedia = React.createClass({
 	render: function() {
 		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;
-		var twitterURL = "https://twitter.com/home?status=" + url;
+		//var twitterURL = "https://twitter.com/home?status=" + url;
+		var twitterURL = "https://twitter.com/intent/tweet?text=" + this.props.title + "&url=" + url + "&hashtags=NUSHapz";
 		//var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var facebookURL = "https://www.facebook.com/dialog/feed?"
 			+ "app_id=1609950215915876" 

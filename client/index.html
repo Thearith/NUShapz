@@ -6,6 +6,13 @@
 		<meta content="utf-8" http-equiv="encoding">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
+		<!-- Facebook Crawlers -->
+		<meta property="og:type" 	content="website" />
+		<meta property="og:image" 	content="http://hapz.nusmods.com/image/nice_logo.png" />
+		<meta property="og:url" 	content="http://hapz.nusmods.com/" />
+		<meta property="og:title"	content="NUSHapz" />
+		<meta property="og:description"	content="Bringing you the latest NUS happenings and events" />
+
 		<title>NUSHapz</title>
 		<link rel="icon" type="image/png" href="image/logosq.png">
 
@@ -52,6 +59,24 @@
 
 		<!-- written js -->
 		<script type="text/jsx" src="js/react-card.js">
+		</script>
+
+		<script>
+			window.fbAsyncInit = function() {
+			    FB.init({
+			      appId      : '1609950215915876',
+			      xfbml      : true,
+			      version    : 'v2.3'
+			    });
+			  };
+
+			(function(d, s, id){
+			 var js, fjs = d.getElementsByTagName(s)[0];
+			 if (d.getElementById(id)) {return;}
+			 js = d.createElement(s); js.id = id;
+			 js.src = "//connect.facebook.net/en_US/sdk.js";
+			 fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
 		</script>
 	</body>
 	

@@ -1164,7 +1164,9 @@ Event = React.createClass({
 								<EventContact contact={this.props.data[CONTACT]} organizer={this.props.data[ORGANIZER]}/>
 							</div>
 							<div className="col s3">
-								<EventSocialMedia cardID = {this.props.data[EVENT_ID]} />
+								<EventSocialMedia cardID = {this.props.data[EVENT_ID]} 
+								 title={this.props.data[TITLE]}
+								 description={this.props.data[DESCRIPTION]}	/>
 							</div>
 						</div>
 					</div>
@@ -1298,8 +1300,18 @@ EventContact = React.createClass({
 EventSocialMedia = React.createClass({
 	render: function() {
 		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;
-		var twitterURL = "https://twitter.com/home?status=" + url;
-		var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+		//var twitterURL = "https://twitter.com/home?status=" + url;
+		var twitterURL = "https://twitter.com/intent/tweet?text=" + this.props.title + "&url=" + url + "&hashtags=NUSHapz";
+		//var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+		var facebookURL = "https://www.facebook.com/dialog/feed?"
+			+ "app_id=1609950215915876" 
+			+ "&name=" + this.props.title
+			+ "&description=" + this.props.description
+			+ "&display=popup"
+			+ "&caption=" + "Hosted on NUSHapz" 
+			+ "&picture=http://hapz.nusmods.com/image/nice_logo.png"
+			+ "&redirect_uri=http://hapz.nusmods.com"
+			+ "&link=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
 		return (
 			<div className="socialmed">

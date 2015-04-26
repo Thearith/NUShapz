@@ -48,7 +48,7 @@ var EventBottom;
 var EventDescription;
 var EventContact;
 
-var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/staging/event/?id="; 
+var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_GET_EVENTS = "http://hapz.nusmods.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://hapz.nusmods.com/api.php";
 
@@ -1186,6 +1186,7 @@ EventFavourite = React.createClass({
 		" yellow-text lighten-4" : " white-text" ;
 		return (
 			<div className={"card-left-column " + this.props.color + " lighten-2"}>
+			<i className="mdi-navigation-arrow-drop-up bookmark"></i>
 			</div>
 		);
 	}
@@ -1226,7 +1227,7 @@ EventTitle = React.createClass({
 
 EventSynopsis = React.createClass({
 	render: function() {
-		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, ''); 
+		var removeHTML = this.props.description.replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/gi,'').replace(/&#39;/gi,'').replace(/&ndash;/gi,''); 
 		return (
 			<div className="card-summary">
 				{removeHTML}

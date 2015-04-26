@@ -960,6 +960,7 @@ a {
 .social-icons {
 	margin-right: 15px;
 	border-radius: 2px !important;
+	margin-bottom: 10px;
 }
 
 .contact-footer {
@@ -971,4 +972,11 @@ a {
 
 .collapsible {
 	margin: 0 0 30px 0 !important; 
+}
+
+.bookmark {
+	color: #ffffff; 
+	font-size: 48px !important; 
+	margin-left: -14px; 
+	margin-top: 124px;
 }

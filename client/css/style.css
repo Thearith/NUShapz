@@ -651,6 +651,7 @@ input[type="text"]#search {
 	padding-bottom: 10px;
 	line-height: 25px;
 	padding-left: 40px;
+	padding-right: 40px;
 
 	/*border-top: 1px solid #e5e5e5;*/
 	/*border-bottom:1px solid #e5e5e5;*/
@@ -710,9 +711,10 @@ input[type="text"]#search {
 
 .no-events {
 	text-align: center;
-	font-size: 45px;
+	font-size: 36px;
 	margin-top: 40px;
-	color: #666;
+	color: #757575;
+	font-weight: 700;
 }
 
 .card-footer p a {
@@ -725,10 +727,14 @@ input[type="text"]#search {
 .description img {
 	padding: 5px;
 	width: 300px;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	/*
 	border: 1px solid #bdbdbd;
-	border-radius: 5px;
+	border-radius: 5px;*/
+
+	border: 0px;
+	border-radius: 30px;
 }
 
 .description ul {
@@ -899,8 +905,10 @@ a {
 }
 
 .collapsible-body img {
-	width: 100%;
+	width: 80%;
 	height: auto;
+	display: block;
+	margin: auto;
 }
 
 .icon-width {
@@ -972,6 +980,13 @@ a {
 
 .collapsible {
 	margin: 0 0 30px 0 !important; 
+	-webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+}
+
+.collapsible:hover {
+	box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .bookmark {

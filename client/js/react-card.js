@@ -1311,6 +1311,6 @@ EventSocialMedia = React.createClass({
 });
 
 React.render(
-  <Body url={SERVER_GET_EVENTS} urlPost={SERVER_POST_EVENT}/>,
-  document.body
+	<Body url={SERVER_GET_EVENTS} urlPost={SERVER_POST_EVENT}/>,
+	document.body
 );

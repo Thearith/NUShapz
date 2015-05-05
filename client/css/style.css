@@ -571,7 +571,7 @@ input[type="text"]#search {
 .card-left-column {
 	position: relative;
 	float: left; 
-	height: 45%;
+	height: 50%;
 	width: 20px; 
 	margin-left: 5px;
 	-webkit-transition: 0.4s ease-in-out;

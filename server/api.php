@@ -64,8 +64,72 @@ switch($cmd) {
 	case "singleEvent":
 		echo getSingleEvent($_GET["eventid"]);
 		break;
+	case "mail":
+		echo sendMail($_POST["event"]);
+		break;
 	default:
 		break;
+}
+
+function sendMail($event) {
+	if(!isset($event)) {
+		return invalidData();
+	}
+
+	$event = json_decode($event);
+	$to = escapeChar($event->Contact);
+	$subject = "NUSHapz | Your event post has been approved!";
+
+	$txt = '<html><body>';
+	$txt .= '<h3>The following event submission has been posted <a href="http://hapz.nusmods.com/">NUSHapz</a>: </h3>';
+
+	$txt .= '<table rules="all" style="border-color: #666;" cellpadding="10">';
+	$txt .= "<tr style='background: #eee;'><td><strong>Title:</strong> </td><td><strong>" . $event->Title . "</strong></td></tr>";
+	$txt .= "<tr><td><strong>Description:</strong> </td><td>" . $event->Description . "</td></tr>";
+	$txt .= "<tr><td><strong>Venue:</strong> </td><td>" . $event->Venue . "</td></tr>";
+	$txt .= "<tr><td><strong>Price:</strong> </td><td>" . $event->Price . "</td></tr>";
+	$txt .= "<tr><td><strong>Organizer:</strong> </td><td>" . $event->Organizer . "</td></tr>";
+
+	/*$dateAndTime = stripslashes($event->DateAndTime);
+	$dateAndTime = json_decode($dateAndTime);
+	$startDate = date("F j, Y, g:i a", $dateAndTime->Start); 
+	$endDate = date("F j, Y, g:i a", $dateAndTime->End);
+	$txt .= "<tr><td><strong>Start Date & Time:</strong> </td><td>" . $startDate . "</td></tr>";
+	$txt .= "<tr><td><strong>End  Date & Time:</strong> </td><td>" . $endDate . "</td></tr>";
+	*/
+	$dateAndTime = escapeChar($event->DateAndTime);
+	$dates = explode(" - ", $dateAndTime);
+	if (count($dates) > 0) {
+		$startDate = $dates[0]; 
+		$endDate = $dates[1]; 
+	}
+	$txt .= "<tr><td><strong>Start Date & Time:</strong> </td><td>" . $startDate . "</td></tr>";
+	$txt .= "<tr><td><strong>End  Date & Time:</strong> </td><td>" . $endDate . "</td></tr>";
+
+	$txt .= "<tr><td><strong>Agenda:</strong> </td><td>" . $event->Agenda . "</td></tr>";
+	$txt .= "</table>";
+
+	$txt .= '<h4>To view this event, click <a href="http://hapz.nusmods.com/event/?id=' . $event->ID . '">here</a>.</h4>';
+
+	$txt .= "<br>" . "=======================================================" . "<br>";
+	$txt .= "<p>This is an auto-generated email. Please do not reply.</p>";
+	$txt .= "</body></html>";
+/*	$txt .= "Title: " . $event->Title . "\r\n";
+	$txt .= "Description: " . $event->Description . "\r\n";
+	$txt .= "Venue: " . $event->Venue . "\r\n";
+	$txt .= "Price: " . $event->Price . "\r\n";
+	$txt .= "Organizer: " . $event->Organizer . "\r\n";
+	$txt .= "Agenda: " . $event->Agenda . "\r\n" . "\r\n";
+	$txt .= "===============================================================" . "\r\n";
+	$txt .= "This is an auto-generated email. Please do not reply. Thank you";
+*/
+	$headers = "From: NUSHapz@hapz.com" . "\r\n" . "BCC: tan.kenson@gmail.com" . "\r\n";
+	$headers .= "MIME-Version: 1.0\r\n";
+	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
+	mail($to,$subject,$txt,$headers);
+
+	return convertToOutputData(json_encode($event));
 }
 
 function getSingleEvent($eventid) {

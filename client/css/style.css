@@ -957,3 +957,12 @@ a {
 	bottom: 0;
 	margin-bottom: -20px;
 }
+
+.switch {
+	background-color: #ff9800;
+	height: 56px;
+}
+
+.switch:hover {
+	background-color: #ff9800;
+}

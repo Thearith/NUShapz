@@ -929,7 +929,7 @@ MainContainer = React.createClass({
 SearchTimeline = React.createClass({
 	componentDidMount: function() {
     	$('.collapsible').collapsible({
-	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+	    	accordion : false
 	    });
     },
 
@@ -1183,6 +1183,25 @@ var converter = new Showdown.converter();
 
 Event = React.createClass({
 
+	getInitialState: function() {
+		var like = false;
+		if(localStorage.getItem(this.props.data[EVENT_ID]))
+			like = true;
+
+		return {liked: like};
+	},
+
+	doClick: function() {
+		this.setState({liked: !this.state.liked});
+
+		var eventID = this.props.data[EVENT_ID];
+		if(localStorage.getItem(eventID)) {
+			localStorage.removeItem(eventID);
+		} else {
+			localStorage.setItem(eventID, true);
+		}
+	},
+
 	render: function() {
 
 		var bgColorIndex = 0;
@@ -1194,12 +1213,15 @@ Event = React.createClass({
 			}
 
 		var rawMarkup = converter.makeHtml(this.props.data[DESCRIPTION]);
+
+		var blueBorder = this.state.liked ?
+			" blue-border" : "";
 		
 		return (
-			<div className="collapsible" data-collapsible="accordion">
+			<div className={"collapsible" + blueBorder} data-collapsible="accordion">
 				<li>
-					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
-						<EventFavourite id={this.props.data[EVENT_ID]} color={CATEGORY_BG_COLORS[bgColorIndex]} />
+					<div className="collapsible-header" >
+						<EventFavourite color={CATEGORY_BG_COLORS[bgColorIndex]} liked={this.state.liked} doClick={this.doClick}/>
 						<div className="card-content">
 							<EventDate datetime={this.props.data[DATETIME]}/>
 							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
@@ -1228,28 +1250,17 @@ Event = React.createClass({
 });
 
 EventFavourite = React.createClass({
-	getInitialState: function() {
-		var like = false;
-		if(localStorage.getItem(this.props.id))
-			like = true;
-
-		return {liked: like};
-	},
-	handleClick: function(e) {
-		this.setState({liked: !this.state.liked});
-		if(localStorage.getItem(this.props.id)) {
-			localStorage.removeItem(this.props.id);
-		} else {
-			localStorage.setItem(this.props.id, true);
-		}
+	
+	doClick: function(e) {
+		this.props.doClick();
 	},
 	render: function() {
-		var height = this.state.liked ?
+		var height = this.props.liked ?
 			" card-left-column-favorited " : " ";
-		var lighten = this.state.liked ?
+		var lighten = this.props.liked ?
 			"lighten-1" : "lighten-2";
 		return (
-			<div className={"card-left-column " + this.props.color + height + lighten} onClick={this.handleClick}>
+			<div className={"card-left-column " + this.props.color + height + lighten} onClick={this.doClick}>
 				<i className="mdi-navigation-arrow-drop-up bookmark"></i>
 			</div>
 		);

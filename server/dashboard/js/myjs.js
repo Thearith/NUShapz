@@ -76,6 +76,14 @@ app.controller('eventFormController', ['$scope', '$routeParams', 'eventService',
 				}
 			});
 		};
+		$scope.mail = function() {
+			$scope.event.DateAndTime = $scope.event.CurrentDateAndTime;
+			$.post(NUSHAPZ_API, {cmd:'mail', event: JSON.stringify($scope.event)}, function(data){
+				if (data.Response == "Valid") {
+					alert("Sent Approved Email " + $scope.event.ID + " - " + $scope.event.Title);
+				}
+			});
+		};
 		$scope.submitnewevent = function() {
 			$scope.event.DateAndTime = $scope.event.CurrentDateAndTime;
 			$.post(NUSHAPZ_API, {cmd:'post', event: JSON.stringify($scope.event)}, function(data){

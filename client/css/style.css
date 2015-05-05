@@ -576,7 +576,6 @@ input[type="text"]#search {
 	height: 45%;
 	width: 20px; 
 	margin-left: 5px;
-	/*pointer-events: none;*/
 	-webkit-transition: 0.3s ease-in-out;
     -moz-transition: 0.3s ease-in-out;
     -o-transition: 0.3s ease-in-out;
@@ -842,7 +841,7 @@ select.browser-default {
 
 .event-source-outer {
 	float: right;
-	margin: top;
+	margin-top: 7px;
 }
 
 .event-source-styling {

@@ -1,53 +1,9 @@
-// React components
+/*
+*	Using React.js
+*
+*/
 
-var Body;
-
-var App;
-var Loading;
-
-var Navbar;
-var MainContainer;
-var ModalForm;
-
-var Logo;
-var NavbarForm;
-
-var Search;
-var SearchMobile;
-
-var NewEvent;
-var NewEventMobile;
-
-var Content;
-var Sidebar;
-
-var Timeline;  //contains timeline sections
-
-var TimelineSection; //contains categories within the same timeline section
-
-var SearchTimeline;
-var NoSearchTimeline;
-
-var LeftSideBar;
-var CategoriesContainer
-
-var CategorySections;
-var NoEvents;
-
-var CategorySection; // contains events of the same category
-var EventSection;
-var Event;
-var EventHeader;
-var EventContent;
-var EventReveal;
-
-var EventTitle;
-var EventOrganizer;
-var EventBottom;
-
-var EventDescription;
-var EventContact;
-
+// Server links
 var SERVER_SHARE_SINGLE_EVENT = "http://hapz.nusmods.com/event/?id="; 
 var SERVER_GET_EVENTS = "http://hapz.nusmods.com/api.php?cmd=timeline";
 var SERVER_POST_EVENT = "http://hapz.nusmods.com/api.php";
@@ -109,6 +65,18 @@ var DATETIME = 'DateAndTime';
 var ORGANIZER = 'Organizer';
 var CONTACT = 'Contact'
 var VENUE = 'Venue';
+
+//Event source
+var EVENT_SOURCE = ["IVLE", "HAPZ", "NUS CAL"];
+
+var IVLE_SOURCE_INDEX = 0;
+var HAPZ_SOURCE_INDEX = 1;
+var NUS_CAL_SOURCE_INDEX = 2;
+
+var IVLE_ID_LENGTH = 36;
+var HAPZ_ID_LENGTH = 3;
+var NUS_CAL_ID_LENGTH = 5;
+
 
 // check null objects
 function isRealValue(obj){
@@ -1229,14 +1197,14 @@ Event = React.createClass({
 		return (
 			<div className="collapsible" data-collapsible="accordion">
 				<li>
-					<EventFavourite id={this.props.data[EVENT_ID]} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
+						<EventFavourite id={this.props.data[EVENT_ID]} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 						<div className="card-content">
 							<EventDate datetime={this.props.data[DATETIME]}/>
 							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
 							<EventTitle title={this.props.data[TITLE]} />
 							<EventSynopsis description={this.props.data[DESCRIPTION]} />
-							<EventLocation location={this.props.data[VENUE]} />
+							<EventFooter location={this.props.data[VENUE]} id={this.props.data[EVENT_ID]} />
 						</div>
 					</div>
 					<div className="collapsible-body">
@@ -1275,12 +1243,9 @@ EventFavourite = React.createClass({
 		}
 	},
 	render: function() {
-		var color = this.state.liked ?
-			" amber lighten-1" : " amber lighten-3" ;
 		return (
 			<div className={"card-left-column " + this.props.color + " lighten-2"}>
-				<i className={ "mdi-action-star-rate bookmark" + color} onClick={this.handleClick}>
-				</i>
+				<i className="mdi-navigation-arrow-drop-up bookmark"></i>
 			</div>
 		);
 	}
@@ -1330,16 +1295,6 @@ EventSynopsis = React.createClass({
 	}
 });
 
-EventLocation = React.createClass({
-	render: function() {
-		return (
-			<div className="card-venue">
-				<i className="tiny mdi-action-room"></i><div className="venue-text">{this.props.location} </div>
-			</div>
-		);
-	}
-});
-
 EventOrganizer = React.createClass({
 	render: function() {
 		var organizer = isRealValue(this.props.organizer) ?
@@ -1348,6 +1303,54 @@ EventOrganizer = React.createClass({
 			<div className="organizer row">
 				<div className="col s11"><div className="showicon"><i className="fa fa-user"></i></div>
 				<div className="inline"><p className="organizer-title">{organizer}</p></div></div>
+			</div>
+		);
+	}
+});
+
+EventFooter = React.createClass({
+	render: function() {
+		return (
+			<div className="card-venue">
+				<EventLocation location={this.props.location} />
+				<EventSource id={this.props.id} />
+			</div>
+		);
+	}
+});
+
+EventLocation = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<i className="tiny mdi-action-room"></i>
+				<div className="venue-text">{this.props.location} </div>
+			</div>
+		);
+	}
+});
+
+EventSource = React.createClass({
+	render: function() {
+		var source = EVENT_SOURCE[HAPZ_SOURCE_INDEX];
+		var idLength = this.props.id.length;
+		console.log(idLength);
+		
+		if(idLength == HAPZ_ID_LENGTH) {
+			source = EVENT_SOURCE[HAPZ_SOURCE_INDEX];
+		} else if(idLength == NUS_CAL_ID_LENGTH) {
+			source = EVENT_SOURCE[NUS_CAL_SOURCE_INDEX]
+		} else if(idLength == IVLE_ID_LENGTH) {
+			source = EVENT_SOURCE[IVLE_SOURCE_INDEX];
+		} else {
+			console.log("ERROR WITH EVENT ID LENGTH");
+		} 
+
+		return (
+			<div className="event-source-outer">
+				<div className="event-source-styling">
+					<div className="event-source-text">{source}</div>
+				</div>
 			</div>
 		);
 	}
@@ -1388,7 +1391,7 @@ EventContact = React.createClass({
 		);
 	}
 });
-/*<i className="icon-width contact-icon mdi-communication-email"></i>*/
+
 EventSocialMedia = React.createClass({
 	render: function() {
 		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;

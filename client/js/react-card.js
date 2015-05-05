@@ -344,11 +344,8 @@ Navbar = React.createClass({
 				<nav>
     				<div className="nav-wrapper orange">
 						<Logo />
-						<NewEvent data={this.props.data} />
-						<form>
-							<Search query={this.props.query} doSearch={this.props.doSearch} />
-							<ToggleSwitch doSwitch={this.props.doSwitch} />
-						</form>
+						<NewEvent data={this.props.data} doSwitch={this.props.doSwitch}/>
+						<Search query={this.props.query} doSearch={this.props.doSearch} />
 						<MobileNav data={this.props.data} />
 					</div>
 					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
@@ -364,26 +361,6 @@ Logo = React.createClass({
 			<a href="http://hapz.nusmods.com" className="brand-logo logo-align">
 				<img src={"image/logo.png"} id="logo" />
 			</a>
-		);
-	}
-});
-
-ToggleSwitch = React.createClass({
-	doSwitch: function() {
-		var switched = this.refs.switchInput.getDOMNode().checked;
-		this.props.doSwitch(switched);
-	},
-
-	render: function() {
-		return (
-			<div className="switch">
-			    <label>
-					Off
-					<input type="checkbox" ref="switchInput" onChange={this.doSwitch} />
-					<span className="lever"></span>
-					On
-			    </label>
-		  	</div>
 		);
 	}
 });
@@ -436,12 +413,14 @@ Search = React.createClass ({
     },
 	render: function() {
 		return (
-        	<div className="input-field search-outer hide-on-small-only">    		
-          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-          		<label htmlFor="search">
-          			<i className="mdi-action-search search-icon"></i>
-          		</label>
-        	</div>
+			<form>
+	        	<div className="input-field search-outer hide-on-small-only">    		
+	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+	          		<label htmlFor="search">
+	          			<i className="mdi-action-search search-icon"></i>
+	          		</label>
+	        	</div>
+	        </form>
 		);
 	}
 });
@@ -451,6 +430,9 @@ NewEvent = React.createClass({
 	render: function() {
 		return (
 			<ul id="nav-mobile" className="right hide-on-small-only">
+				<li>
+					<ToggleSwitch doSwitch={this.props.doSwitch} />
+				</li>
         		<li>
 					<div className="new-event right">
 			        	<a className="modal-trigger" href={"#modal-newevent"}>
@@ -460,6 +442,25 @@ NewEvent = React.createClass({
 					</div>
 				</li>
         	</ul>
+		);
+	}
+});
+
+ToggleSwitch = React.createClass({
+	doSwitch: function() {
+		var switched = this.refs.switchInput.getDOMNode().checked;
+		this.props.doSwitch(switched);
+	},
+
+	render: function() {
+		return (
+			<div className="switch">
+			    <label>
+					<input type="checkbox" ref="switchInput" onChange={this.doSwitch} />
+					<span className="lever">
+					</span>
+			    </label>
+		  	</div>
 		);
 	}
 });
@@ -1243,8 +1244,12 @@ EventFavourite = React.createClass({
 		}
 	},
 	render: function() {
+		var height = this.state.liked ?
+			" card-left-column-favorited " : " ";
+		var lighten = this.state.liked ?
+			"lighten-1" : "lighten-2";
 		return (
-			<div className={"card-left-column " + this.props.color + " lighten-2"}>
+			<div className={"card-left-column " + this.props.color + height + lighten} onClick={this.handleClick}>
 				<i className="mdi-navigation-arrow-drop-up bookmark"></i>
 			</div>
 		);
@@ -1334,7 +1339,6 @@ EventSource = React.createClass({
 	render: function() {
 		var source = EVENT_SOURCE[HAPZ_SOURCE_INDEX];
 		var idLength = this.props.id.length;
-		console.log(idLength);
 		
 		if(idLength == HAPZ_ID_LENGTH) {
 			source = EVENT_SOURCE[HAPZ_SOURCE_INDEX];

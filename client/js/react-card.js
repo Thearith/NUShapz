@@ -328,7 +328,7 @@ App = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<Navbar query={this.state.query} doSearch={this.doSearch} doSwitch={this.doSwitch} />
+				<Navbar query={this.state.query} doSearch={this.doSearch} doSwitch={this.doSwitch} isSearch={this.state.isSearch}/>
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
 				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} query={this.state.query} isSwitch={this.state.isSwitch} />
@@ -344,7 +344,7 @@ Navbar = React.createClass({
 				<nav>
     				<div className="nav-wrapper orange">
 						<Logo />
-						<NewEvent data={this.props.data} doSwitch={this.props.doSwitch}/>
+						<NewEvent data={this.props.data} doSwitch={this.props.doSwitch} isSearch={this.props.isSearch}/>
 						<Search query={this.props.query} doSearch={this.props.doSearch} />
 						<MobileNav data={this.props.data} />
 					</div>
@@ -431,7 +431,7 @@ NewEvent = React.createClass({
 		return (
 			<ul id="nav-mobile" className="right hide-on-small-only">
 				<li>
-					<ToggleSwitch doSwitch={this.props.doSwitch} />
+					<ToggleSwitch doSwitch={this.props.doSwitch} isSearch={this.props.isSearch}/>
 				</li>
         		<li>
 					<div className="new-event right">
@@ -456,7 +456,10 @@ ToggleSwitch = React.createClass({
 		return (
 			<div className="switch">
 			    <label>
-					<input type="checkbox" ref="switchInput" onChange={this.doSwitch} />
+			    	{ !this.props.isSearch ? 
+						<input type="checkbox" ref="switchInput" onChange={this.doSwitch} /> :
+						<input disabled type="checkbox" ref="switchInput" onChange={this.doSwitch} />
+					}
 					<span className="lever">
 					</span>
 			    </label>

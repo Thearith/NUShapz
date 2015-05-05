@@ -822,6 +822,7 @@ select.browser-default {
 }
 
 .mdi-action-room {
+	margin-top: -10px;
 	margin-right:0 !important;
 }
 
@@ -830,12 +831,12 @@ select.browser-default {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	float: left;
 }
 
 .event-source-outer {
 	float: right;
 	margin-top: 7px;
+	padding-left: 10px;
 }
 
 .event-source-styling {
@@ -951,4 +952,13 @@ a {
 	position: absolute;
 	bottom: 0;
 	margin-bottom: -20px;
+}
+
+.switch {
+	background-color: #ff9800;
+	height: 56px;
+}
+
+.switch:hover {
+	background-color: #ff9800;
 }

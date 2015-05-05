@@ -962,3 +962,19 @@ a {
 .switch:hover {
 	background-color: #ff9800;
 }
+
+.switch label {
+	color: #ffffff;
+}
+
+.switch label .lever:after {
+	background-image: url(../image/bookmarked.png);
+	background-size: 10px 10px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+html {
+overflow: -moz-scrollbars-vertical; 
+overflow-y: scroll;
+}

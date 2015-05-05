@@ -337,6 +337,7 @@ input[type="text"]#search {
 @media screen and (min-width: 0px) and (max-width: 860px) {
 	.card-date { font-size: 10px !important; } 
 	.card-category  { font-size: 10px !important; }
+	.event-source-text { font-size: 10px !important; }
 }
 
 @media screen and (min-width: 0px) and (max-width: 670px) {
@@ -348,6 +349,7 @@ input[type="text"]#search {
 	.card-title { font-size: 16px !important; }
 	.card-summary { font-size: 12px !important; }
 	.card-venue { font-size: 12px !important; }
+	.event-source-text { font-size: 10px !important; }
 }
 
 .mdi-navigation-close {
@@ -839,7 +841,7 @@ select.browser-default {
 
 .event-source-outer {
 	float: right;
-	margin-top: 7px;
+	margin-top: 22px;
 	padding-left: 10px;
 }
 
@@ -848,7 +850,7 @@ select.browser-default {
 	padding: 0 10px; 
 	color: #ffffff; 
 	background-color: #bdbdbd; 
-	border-radius: 3px; 
+	border-radius: 2px; 
 	height: 16px; 
 	margin-top: 7px;
 }
@@ -955,7 +957,7 @@ a {
 	/*margin-top: 41px;*/ /*124*/
 	position: absolute;
 	bottom: 0;
-	margin-bottom: -20px;
+	margin-bottom: -19px;
 }
 
 .switch {

@@ -568,10 +568,14 @@ input[type="text"]#search {
   	text-overflow: ellipsis;
 }
 
+.blue-border {
+	/*border: 2px solid #90caf9;*/
+}
+
 .card-left-column {
 	position: relative;
 	float: left; 
-	height: 45%;
+	height: 50%;
 	width: 20px; 
 	margin-left: 5px;
 	-webkit-transition: 0.4s ease-in-out;

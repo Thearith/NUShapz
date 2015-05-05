@@ -614,12 +614,12 @@ input[type="text"]#search {
 }
 
 .description {
-	padding: 10px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	line-height: 25px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	line-height: 30px;
 	padding-left: 40px;
 	padding-right: 40px;
+	font-size: 15px;
 }
 
 .collapsible-body p {
@@ -647,10 +647,6 @@ input[type="text"]#search {
 .card-body {
 	margin-top: 20px;
 	font-size: 17px;
-}
-
-.description {
-	font-size: 13px;
 }
 
 .card-footer p{

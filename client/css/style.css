@@ -616,7 +616,6 @@ input[type="text"]#search {
 	width: 20px; 
 	/*background-color: #e57373;*/
 	margin-left: 5px;
-	pointer-events: none;
 }
 
 .position-star {

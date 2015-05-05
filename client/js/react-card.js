@@ -280,7 +280,8 @@ App = React.createClass({
         return{
             query:'',
             filteredData: this.props.data,
-            isSearch: false
+            isSearch: false,
+            isSwitch: false
         }
     },
 
@@ -292,7 +293,8 @@ App = React.createClass({
 			this.setState({
 	            query:'',
 	            filteredData: this.props.data,
-	            isSearch: false
+	            isSearch: false,
+	            isSwitch: false,
 	        });
 			return;
 		}
@@ -315,17 +317,53 @@ App = React.createClass({
         this.setState({
             query:queryText,
             filteredData: queryResult,
-            isSearch: true
+            isSearch: true,
+            isSwitch: false
         });
+    },
+
+    doSwitch: function(val) {
+
+    	var queryResult = [];
+
+    	if(val == false) {
+    		this.setState({
+    			query:'',
+	            filteredData: this.props.data,
+	            isSearch: false,
+	            isSwitch: false,
+    		});
+    		return;
+
+    	} else {
+    		for(i=0; i<TIMELINE_ARRAY.length; i++) {
+    			this.props.data[TIMELINE_ARRAY[i]].forEach(function(category){
+		        	category[EVENTS].forEach(function(event) {
+		        		for(j=0; j<localStorage.length; j++) {
+		        			if(localStorage.key(j) === event[EVENT_ID])
+		        				queryResult.push(event);
+		        		}
+		        	});
+	        	});
+    		}
+
+    		this.setState({
+	            query: '',
+	            filteredData: queryResult,
+	            isSearch: false,
+	            isSwitch: true
+        	});
+    	}
+
     },
 
 	render: function() {
 		return (
 			<div>
-				<Navbar query={this.state.query} doSearch={this.doSearch} switchVal={this.props.switchVal} onSwitch={this.onSwitch} />
+				<Navbar query={this.state.query} doSearch={this.doSearch} doSwitch={this.doSwitch} />
 				<div className="searchbar-mobile-offset hide-on-med-and-up"></div>
 				<ModalForm urlPost={this.props.urlPost}/>
-				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} query={this.state.query} />
+				<MainContainer data={this.state.filteredData} isSearch={this.state.isSearch} query={this.state.query} isSwitch={this.state.isSwitch} />
 			</div>
 		);
 	}
@@ -339,7 +377,10 @@ Navbar = React.createClass({
     				<div className="nav-wrapper orange">
 						<Logo />
 						<NewEvent data={this.props.data} />
-						<Search query={this.props.query} doSearch={this.props.doSearch} />
+						<form>
+							<Search query={this.props.query} doSearch={this.props.doSearch} />
+							<ToggleSwitch doSwitch={this.props.doSwitch} />
+						</form>
 						<MobileNav data={this.props.data} />
 					</div>
 					<SearchMobile query={this.props.query} doSearch={this.props.doSearch} />
@@ -355,6 +396,26 @@ Logo = React.createClass({
 			<a href="http://hapz.nusmods.com" className="brand-logo logo-align">
 				<img src={"image/logo.png"} id="logo" />
 			</a>
+		);
+	}
+});
+
+ToggleSwitch = React.createClass({
+	doSwitch: function() {
+		var switched = this.refs.switchInput.getDOMNode().checked;
+		this.props.doSwitch(switched);
+	},
+
+	render: function() {
+		return (
+			<div className="switch">
+			    <label>
+					Off
+					<input type="checkbox" ref="switchInput" onChange={this.doSwitch} />
+					<span className="lever"></span>
+					On
+			    </label>
+		  	</div>
 		);
 	}
 });
@@ -407,14 +468,12 @@ Search = React.createClass ({
     },
 	render: function() {
 		return (
-			<form>
-	        	<div className="input-field search-outer hide-on-small-only">    		
-	          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
-	          		<label htmlFor="search">
-	          			<i className="mdi-action-search search-icon"></i>
-	          		</label>
-	        	</div>
-			</form>
+        	<div className="input-field search-outer hide-on-small-only">    		
+          		<input id="search" type="text" placeholder="Search for events" ref="searchInput" value={this.props.query} onChange={this.doSearch} />
+          		<label htmlFor="search">
+          			<i className="mdi-action-search search-icon"></i>
+          		</label>
+        	</div>
 		);
 	}
 });
@@ -889,8 +948,8 @@ MainContainer = React.createClass({
 	render: function() {
 		return (
 			<div className="container-fluid" id="main-container">
-				{this.props.isSearch ?
-					<SearchTimeline data={this.props.data} query={this.props.query} /> :
+				{this.props.isSearch || this.props.isSwitch ?
+					<SearchTimeline data={this.props.data} query={this.props.query} isSearch={this.props.isSearch} isSwitch={this.props.isSwitch} /> :
 					<NoSearchTimeline data={this.props.data} />
 				}
 			</div>
@@ -912,11 +971,24 @@ SearchTimeline = React.createClass({
 					<div className="col l10 m9 s12 offset-l2">
 						{	this.props.data.length != 0 ?
 							<EventSection events={this.props.data} /> :
-							<EmptySearch query={this.props.query} />
+							<EmptyQuery query={this.props.query} isSearch={this.props.isSearch} isSwitch={this.props.isSwitch} />
 						}
 					</div>
 				</div>
 				<div className="col l2 m3 hide-on-small-only"></div>
+			</div>
+		);
+	}
+});
+
+EmptyQuery = React.createClass({
+	render: function() {
+		return (
+			<div>
+				{ 	this.props.isSearch ?
+					<EmptySearch query={this.props.query} /> :
+					<EmptySwitch />
+				}
 			</div>
 		);
 	}
@@ -928,6 +1000,16 @@ EmptySearch = React.createClass({
 		return (
 			<div className="no-events">
 				No Search Result for "{this.props.query}"
+			</div>
+		);
+	}
+});
+
+EmptySwitch = React.createClass({
+	render: function() {
+		return (
+			<div className="no-events">
+				No Favorite Events
 			</div>
 		);
 	}
@@ -1147,8 +1229,8 @@ Event = React.createClass({
 		return (
 			<div className="collapsible" data-collapsible="accordion">
 				<li>
+					<EventFavourite id={this.props.data[EVENT_ID]} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 					<div className="collapsible-header" id={this.props.data[EVENT_ID]} >
-						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />
 						<div className="card-content">
 							<EventDate datetime={this.props.data[DATETIME]}/>
 							<EventCategory category={this.props.data[CATEGORY]} color={CATEGORY_BG_COLORS[bgColorIndex]}/>
@@ -1178,17 +1260,27 @@ Event = React.createClass({
 
 EventFavourite = React.createClass({
 	getInitialState: function() {
-		return {liked : false};
+		var like = false;
+		if(localStorage.getItem(this.props.id))
+			like = true;
+
+		return {liked: like};
 	},
 	handleClick: function(e) {
 		this.setState({liked: !this.state.liked});
+		if(localStorage.getItem(this.props.id)) {
+			localStorage.removeItem(this.props.id);
+		} else {
+			localStorage.setItem(this.props.id, true);
+		}
 	},
 	render: function() {
-		var c = this.state.liked ?
-		" yellow-text lighten-4" : " white-text" ;
+		var color = this.state.liked ?
+			" amber lighten-1" : " amber lighten-3" ;
 		return (
 			<div className={"card-left-column " + this.props.color + " lighten-2"}>
-			<i className="mdi-navigation-arrow-drop-up bookmark"></i>
+				<i className={ "mdi-action-star-rate bookmark" + color} onClick={this.handleClick}>
+				</i>
 			</div>
 		);
 	}
@@ -1300,9 +1392,8 @@ EventContact = React.createClass({
 EventSocialMedia = React.createClass({
 	render: function() {
 		var url = SERVER_SHARE_SINGLE_EVENT + this.props.cardID;
-		//var twitterURL = "https://twitter.com/home?status=" + url;
+		
 		var twitterURL = "https://twitter.com/intent/tweet?text=" + this.props.title + "&url=" + url + "&hashtags=NUSHapz";
-		//var facebookURL = "https://www.facebook.com/sharer/sharer.php?u=" + url;
 		var facebookURL = "https://www.facebook.com/dialog/feed?"
 			+ "app_id=1609950215915876" 
 			+ "&name=" + this.props.title

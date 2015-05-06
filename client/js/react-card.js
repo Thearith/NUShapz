@@ -1222,7 +1222,7 @@ CategorySections = React.createClass({
 			<div className="col l10 m12 s12 cards">
 				{CategorySectionNode}
 				{ this.hasMoreEvents(this.props.categories) ?
-					<i className="right orange waves-effect waves-light btn" onClick={this.handleClick}>Load More</i>:
+					<div className="right orange lighten-2 waves-effect waves-light btn load-more" onClick={this.handleClick}><i className="mdi-action-autorenew"></i><div className="loadmore-text">Load More...</div></div>:
 					<div></div>
 				}
 			</div>

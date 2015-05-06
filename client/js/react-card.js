@@ -540,8 +540,6 @@ ModalForm = React.createClass({
 			var startD = new Date(startDateTime).getTime();
 			var today = new Date().getTime();
 
-			console.log(startD + " " + today);
-
 			if(startD < today) {
 				this.setState({errorStartDate: "Start Date < Today"});
 			} else {

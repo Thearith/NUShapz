@@ -1094,7 +1094,7 @@ html {
 	padding: 0 10px;
 	font-size: 12px;
 	float: right;
-	color: #ffffff;
+	color: #757575;
 	border-radius: 10px;
 
 	/*
@@ -1104,7 +1104,7 @@ html {
 }
 
 .load-more:hover {
-	color: #ffd54f;
+	color: #ff9800;
 }
 
 .loadmore-text {

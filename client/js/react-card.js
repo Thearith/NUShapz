@@ -1062,7 +1062,7 @@ Timeline = React.createClass({
 				              <div className="intro-msg">
 				              <div className="intro-title">Discover</div>
 
-				              <div className="intro-content">the latest happenings/events as a community.</div>
+				              <div className="intro-content">the latest happenings / events as a community.</div>
 				              <div className="fb-iconsmall"><img src="image/facebook.png" style={style} /></div><div className="intro-likefb">Like NUSHapz on Facebook</div>
 
 				              </div>

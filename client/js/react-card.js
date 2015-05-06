@@ -1446,11 +1446,24 @@ EventSocialMedia = React.createClass({
 			+ "&redirect_uri=http://hapz.nusmods.com"
 			+ "&link=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
+
+		var style= {
+			paddingLeft: "4px",
+			paddingRight: "4px",
+			paddingTop: "6px"
+		};
+
 		return (
 			<div className="socialmed">
-				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons"><i className="fa fa-twitter"></i></a>
-				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons"><i className="fa fa-facebook"></i></a>
-				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons"><i className="fa fa-google-plus"></i></a>
+				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons">
+					<img src="../image/twitter.png" className="responsive-img center-align" style={style}/>
+				</a>
+				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons">
+					<img src="../image/facebook.png" className="responsive-img center-align" style={style}/>
+				</a>
+				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons">
+					<img src="image/google-plus.png" className="responsive-img center-align" style={style}/>
+				</a>
 			</div>
 		);
 	}

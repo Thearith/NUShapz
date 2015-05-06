@@ -675,6 +675,7 @@ ModalForm = React.createClass({
     		isError = true;
     	} else {
     		this.setState({errorEndDate: ""});
+    		console.log(endDate);
     	}
 
     	if(!endTime) {
@@ -684,10 +685,11 @@ ModalForm = React.createClass({
     		this.setState({errorEndTime: ""});
     	}
 
-    	this.verifyDate();
-
     	if(isError)
     		return;
+
+    	this.verifyDate();
+    	
 
     	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
     	var startDateTime 	= startDate.replace(",", "") + ", " + startTime;

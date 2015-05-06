@@ -1090,14 +1090,21 @@ html {
 
 .load-more {
 	text-transform: uppercase;
-	font-weight: 600;
+	font-weight: 700;
 	padding: 0 10px;
 	font-size: 12px;
 	float: right;
+	color: #ffffff;
+	border-radius: 10px;
+
 	/*
 	left: 50%;
 	transform: translateX(-50%)
 	*/
+}
+
+.load-more:hover {
+	color: #ffd54f;
 }
 
 .loadmore-text {
@@ -1107,4 +1114,5 @@ html {
 
 .mdi-action-autorenew {
 	font-size: 16px !important;
+	font-weight: 700;
 }

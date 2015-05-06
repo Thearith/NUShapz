@@ -1207,7 +1207,7 @@ CategorySections = React.createClass({
 			numEvents += prevNumEvents;
 			prevNumEvents = category[EVENTS].length; 
 			return (
-      			<EventSection events={category[EVENTS]} numEvents={numEvents} numEventsLimit={numLimit} isSearchTimeline={false} />
+      			<EventSection events={category[EVENTS]} key={index} numEvents={numEvents} numEventsLimit={numLimit} isSearchTimeline={false} />
 		    );
 			
 		});

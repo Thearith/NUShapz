@@ -1045,6 +1045,25 @@ Timeline = React.createClass({
 	render: function() {
 		return (	
 			<div className="col l10 m9 s12" id="content">
+
+				<div className="row">
+					<div className="col l2 hide-on-med-and-down"><div className="logoleft"></div></div>
+					<div className="col l10 m12 s12">
+						<div className="card small">
+							<a href="https://www.facebook.com/NUSHappenings" target="_blank">
+				            <div className="card-image">
+				              <img src="image/bg.jpg"></img>
+				              <div className="intro-msg">
+				              <div className="intro-title">Discover</div>
+				              <div className="intro-content">the latest happenings/events as a commmunity.</div>
+				              <div className="fb-iconsmall"><i className="fa fa-facebook"></i></div><div className="intro-likefb">Like NUSHapz on Facebook</div>
+				              </div>
+				            </div>
+				            </a>
+				        </div>
+					</div>
+				</div>
+
 				<div className="section scrollspy" id="section-1">
 					<TimelineSection categories={this.props.data[TIMELINE_ARRAY[TODAY_INDEX]]}
 						index={0} />

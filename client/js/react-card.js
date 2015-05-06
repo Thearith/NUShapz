@@ -458,8 +458,8 @@ ToggleSwitch = React.createClass({
 			<div className="switch">
 			    <label>
 			    	{ !this.props.isSearch ? 
-						<input type="checkbox" ref="switchInput" onChange={this.doSwitch} /> :
-						<input disabled type="checkbox" ref="switchInput" onChange={this.doSwitch} />
+						<input type="checkbox" checked="false" ref="switchInput" onChange={this.doSwitch} /> :
+						<input disabled type="checkbox" checked="false" ref="switchInput" onChange={this.doSwitch} />
 					}
 					<span className="lever">
 					</span>

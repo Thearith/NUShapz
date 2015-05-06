@@ -937,7 +937,6 @@ SearchTimeline = React.createClass({
     },
 
 	render: function() {
-		console.log(this.props.data);
 		return (
 			<div className="row">
 				<div className="col l10 m9 s12 section cards search-timeline">

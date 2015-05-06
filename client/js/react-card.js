@@ -1043,7 +1043,7 @@ Timeline = React.createClass({
 	render: function() {
 		var style = {
 			paddingTop: "2px",
-			paddingLeft: "2pFx"
+			paddingLeft: "2px"
 		}
 		return (	
 			<div className="col l10 m9 s12" id="content">

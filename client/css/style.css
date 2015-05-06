@@ -1005,7 +1005,7 @@ html {
 	top: 0;
 	font-family: 'Open Sans', sans-serif;
 	width: 100%;
-
+	text-align: left;
 
 	-webkit-transition: all 0.5s ease;
   	-moz-transition: all 0.5s ease;
@@ -1015,7 +1015,7 @@ html {
 }
 
 .intro-msg:hover {
-	color: #fff9c4;
+	text-shadow: 0 0 3px #fdd835;
 }
 
 .intro-title {
@@ -1023,15 +1023,18 @@ html {
 	margin-top: 10px;
 	margin-left: 24px;
 	font-weight: 700;
+	text-align: left;
 }
 
 .intro-content {
 	font-size: 22px;
 	font-weight: 400;
+	/*padding: 0px 20px;*/
 	text-align: center;
 }
 
 .intro-likefb {
+	text-align: left;
 	float: left;
 	font-size: 12px;
 	margin-top: 10px;
@@ -1039,6 +1042,7 @@ html {
 	font-weight: 400;
 	margin-bottom: 10px;
 	color: #ffffff;
+	text-shadow: none;
 }
 
 .intro-likefb:hover {
@@ -1063,6 +1067,7 @@ html {
 }
 
 .fb-iconsmall {
+	text-align: left;
 	margin-top: 10px;
 	height: 20px;
 	width: 20px;
@@ -1073,4 +1078,5 @@ html {
 	margin-left: 24px;
 	color: #ffffff;
 	padding-right: 3px;
+	text-shadow: none;
 }

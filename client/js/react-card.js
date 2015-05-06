@@ -26,6 +26,7 @@ var CATEGORY_BG_COLORS =  ["red", "pink", "purple", "indigo", "blue", "light-blu
 // constants
 var TITLE_MAXIMUM_LENGTH = 30;
 var NON_IDENTIFIED = "-";
+var NUM_EVENTS_ALLOWED = 5;
 
 // date
 var MONTHS = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -1047,7 +1048,7 @@ Timeline = React.createClass({
 	render: function() {
 		var style = {
 			paddingTop: "2px",
-			paddingLeft: "2px"
+			paddingLeft: "2pFx"
 		}
 		return (	
 			<div className="col l10 m9 s12" id="content">
@@ -1170,35 +1171,75 @@ NoEvents = React.createClass({
 
 //contains a lot of categories
 CategorySections = React.createClass({
-	render: function() {
-		var CategorySectionNode = this.props.categories.map(function(category, index) {
-      		return ( 
-      			<CategorySection category={category} key={index} />
-		    );
+
+	getInitialState: function() {
+		return {
+			numEventsLimit : NUM_EVENTS_ALLOWED
+		};
+	},
+	
+	numberOfEvents : function(categories) {
+		sum = 0;
+		for(i in categories)
+			sum += categories[i][EVENTS].length;
+
+		return sum;
+	},
+
+	hasMoreEvents: function(categories) {
+		return this.numberOfEvents(categories) > this.state.numEventsLimit;
+	},
+
+	handleClick: function(e) {
+		var numEventsLimit = this.state.numEventsLimit;
+		numEventsLimit += NUM_EVENTS_ALLOWED;
+		numberOfEvents = this.numberOfEvents(this.props.categories);
+		numEventsLimit = numEventsLimit < numberOfEvents ?
+					numEventsLimit : numberOfEvents;
+
+		this.setState({
+			numEventsLimit: numEventsLimit
 		});
+	},
+
+	render: function() {
+		
+		numEvents = 0;
+		prevNumEvents = 0;
+		numLimit = this.state.numEventsLimit;
+		console.log(numLimit)
+		
+		var CategorySectionNode = this.props.categories.map(function(category, index) {
+			numEvents += prevNumEvents;
+			prevNumEvents = category[EVENTS].length; 
+			return (
+      			<EventSection events={category[EVENTS]} numEvents={numEvents} numEventsLimit={numLimit} />
+		    );
+			
+		});
+
 		return (
 			<div className="col l10 m12 s12 cards">
 				{CategorySectionNode}
+				{ this.hasMoreEvents(this.props.categories) ?
+					<i className="right orange waves-effect waves-light btn" onClick={this.handleClick}>Load More</i>:
+					<div></div>
+				}
 			</div>
-		);
-	}
-});
-
-// contains a lot of events
-CategorySection = React.createClass({
-	render: function(){
-		return (
-			<EventSection events={this.props.category[EVENTS]} />
 		);
 	}
 });
 
 EventSection = React.createClass({
 	render: function() {
+		var num = this.props.numEvents;
+		var limit = this.props.numEventsLimit;
 		var EventNode = this.props.events.map(function(data, index) {
-			return (
-				<Event data={data} key={index}/>
-			);
+			num++;
+			if(num <= limit)
+				return (
+					<Event data={data} key={index}/>
+				);
 		});
 
 		return (
@@ -1336,19 +1377,6 @@ EventSynopsis = React.createClass({
 		return (
 			<div className="card-summary">
 				{removeHTML}
-			</div>
-		);
-	}
-});
-
-EventOrganizer = React.createClass({
-	render: function() {
-		var organizer = isRealValue(this.props.organizer) ?
-			this.props.organizer : NON_IDENTIFIED;
-		return (
-			<div className="organizer row">
-				<div className="col s11"><div className="showicon"><i className="fa fa-user"></i></div>
-				<div className="inline"><p className="organizer-title">{organizer}</p></div></div>
 			</div>
 		);
 	}

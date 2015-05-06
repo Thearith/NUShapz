@@ -461,6 +461,7 @@ input[type="text"]#search {
 
 .switch label input[type=checkbox]:checked+.lever:after {
 	background-color: #ffffff;
+	background-image: url("../image/bookmarked2.png");
 }
 
 .single-card .card-content {
@@ -973,11 +974,18 @@ a {
 	color: #ffffff;
 }
 
+.switch label .lever {
+	height: 16px;
+}
+
 .switch label .lever:after {
 	background-image: url(../image/bookmarked.png);
-	background-size: 10px 10px;
+	background-size: 12px 12px;
 	background-repeat: no-repeat;
 	background-position: center;
+	top: -5px;
+	width: 24px;
+	height: 24px;
 }
 
 html {

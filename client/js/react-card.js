@@ -254,17 +254,17 @@ App = React.createClass({
         }
     },
 
-    // componentDidMount: function() {
-    // 	$('.collapsible').collapsible({
-    //   		accordion : false 
-    // 	});
-    // },
+    componentDidMount: function() {
+    	$('.collapsible').collapsible({
+      		accordion : false 
+    	});
+    },
 
-    // componentDidUpdate: function() {
-    // 	$('.collapsible').collapsible({
-    //   		accordion : false 
-    // 	});
-    // },
+    componentDidUpdate: function() {
+    	$('.collapsible').collapsible({
+      		accordion : false 
+    	});
+    },
 
 	doSearch:function(queryText){
         
@@ -1224,7 +1224,7 @@ CategorySections = React.createClass({
 			<div className="col l10 m12 s12 cards">
 				{CategorySectionNode}
 				{ this.hasMoreEvents(this.props.categories) ?
-					<div className="white waves-effect waves-light btn load-more" onClick={this.handleClick}><i className="mdi-action-autorenew"></i><div className="loadmore-text">Load More</div></div>:
+					<div className="brown lighten-1 waves-effect waves-light btn load-more" onClick={this.handleClick}><i className="mdi-action-autorenew"></i><div className="loadmore-text">Load More</div></div>:
 					<div></div>
 				}
 			</div>

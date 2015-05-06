@@ -1045,6 +1045,10 @@ Timeline = React.createClass({
 		$('.scrollspy').scrollSpy();
 	},
 	render: function() {
+		var style = {
+			paddingTop: "2px",
+			paddingLeft: "2px"
+		}
 		return (	
 			<div className="col l10 m9 s12" id="content">
 
@@ -1058,7 +1062,7 @@ Timeline = React.createClass({
 				              <div className="intro-msg">
 				              <div className="intro-title">Discover</div>
 				              <div className="intro-content">the latest happenings/events as a commmunity.</div>
-				              <div className="fb-iconsmall"><i className="fa fa-facebook"></i></div><div className="intro-likefb">Like NUSHapz on Facebook</div>
+				              <div className="fb-iconsmall"><img src="image/facebook.png" style={style} /></div><div className="intro-likefb">Like NUSHapz on Facebook</div>
 				              </div>
 				            </div>
 				            </a>
@@ -1447,22 +1451,16 @@ EventSocialMedia = React.createClass({
 			+ "&link=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
 
-		var style= {
-			paddingLeft: "4px",
-			paddingRight: "4px",
-			paddingTop: "6px"
-		};
-
 		return (
 			<div className="socialmed">
 				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons">
-					<img src="../image/twitter.png" className="responsive-img center-align" style={style}/>
+					<img src="../image/twitter.png" className="responsive-img center-align socialbtn"/>
 				</a>
 				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons">
-					<img src="../image/facebook.png" className="responsive-img center-align" style={style}/>
+					<img src="../image/facebook.png" className="responsive-img center-align socialbtn"/>
 				</a>
 				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons">
-					<img src="image/google-plus.png" className="responsive-img center-align" style={style}/>
+					<img src="image/google-plus.png" className="responsive-img center-align socialbtn"/>
 				</a>
 			</div>
 		);

@@ -1047,7 +1047,7 @@ Timeline = React.createClass({
 	render: function() {
 		var style = {
 			paddingTop: "2px",
-			paddingLeft: "2px"
+			paddingLeft: "2pFx"
 		}
 		return (	
 			<div className="col l10 m9 s12" id="content">
@@ -1336,19 +1336,6 @@ EventSynopsis = React.createClass({
 		return (
 			<div className="card-summary">
 				{removeHTML}
-			</div>
-		);
-	}
-});
-
-EventOrganizer = React.createClass({
-	render: function() {
-		var organizer = isRealValue(this.props.organizer) ?
-			this.props.organizer : NON_IDENTIFIED;
-		return (
-			<div className="organizer row">
-				<div className="col s11"><div className="showicon"><i className="fa fa-user"></i></div>
-				<div className="inline"><p className="organizer-title">{organizer}</p></div></div>
 			</div>
 		);
 	}

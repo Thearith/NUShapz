@@ -254,6 +254,18 @@ App = React.createClass({
         }
     },
 
+    componentDidMount: function() {
+    	$('.collapsible').collapsible({
+      		accordion : false 
+    	});
+    },
+
+    componentDidUpdate: function() {
+    	$('.collapsible').collapsible({
+      		accordion : false 
+    	});
+    },
+
 	doSearch:function(queryText){
         
 		var queryResult = [];
@@ -928,11 +940,6 @@ MainContainer = React.createClass({
 });
 
 SearchTimeline = React.createClass({
-	componentDidMount: function() {
-    	$('.collapsible').collapsible({
-	    	accordion : false
-	    });
-    },
 
 	render: function() {
 		return (
@@ -986,11 +993,6 @@ EmptySwitch = React.createClass({
 });
 
 NoSearchTimeline = React.createClass({
-	componentDidMount: function() {
-    	$('.collapsible').collapsible({
-	    	accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	    });
-    },
 
 	render: function() {
 		return (
@@ -1181,6 +1183,12 @@ CategorySections = React.createClass({
 		return sum;
 	},
 
+	componentDidUpdate: function() {
+		$('.collapsible').collapsible({
+      		accordion : false 
+    	});
+	},
+
 	hasMoreEvents: function(categories) {
 		return this.numberOfEvents(categories) > this.state.numEventsLimit;
 	},
@@ -1225,6 +1233,7 @@ CategorySections = React.createClass({
 });
 
 EventSection = React.createClass({
+
 	render: function() {
 		var num = this.props.numEvents;
 		var limit = this.props.numEventsLimit;

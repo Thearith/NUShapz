@@ -675,6 +675,7 @@ ModalForm = React.createClass({
     		isError = true;
     	} else {
     		this.setState({errorEndDate: ""});
+    		console.log(endDate);
     	}
 
     	if(!endTime) {
@@ -684,10 +685,11 @@ ModalForm = React.createClass({
     		this.setState({errorEndTime: ""});
     	}
 
-    	this.verifyDate();
-
     	if(isError)
     		return;
+
+    	this.verifyDate();
+    	
 
     	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
     	var startDateTime 	= startDate.replace(",", "") + ", " + startTime;
@@ -1043,6 +1045,10 @@ Timeline = React.createClass({
 		$('.scrollspy').scrollSpy();
 	},
 	render: function() {
+		var style = {
+			paddingTop: "2px",
+			paddingLeft: "2px"
+		}
 		return (	
 			<div className="col l10 m9 s12" id="content">
 
@@ -1055,8 +1061,10 @@ Timeline = React.createClass({
 				              <img src="image/bg.jpg"></img>
 				              <div className="intro-msg">
 				              <div className="intro-title">Discover</div>
+
 				              <div className="intro-content">the latest happenings/events as a community.</div>
-				              <div className="fb-iconsmall"><i className="fa fa-facebook"></i></div><div className="intro-likefb">Like NUSHapz on Facebook</div>
+				              <div className="fb-iconsmall"><img src="image/facebook.png" style={style} /></div><div className="intro-likefb">Like NUSHapz on Facebook</div>
+
 				              </div>
 				            </div>
 				            </a>
@@ -1444,11 +1452,18 @@ EventSocialMedia = React.createClass({
 			+ "&redirect_uri=http://hapz.nusmods.com"
 			+ "&link=" + url;
 		var googleURL = "https://plus.google.com/share?url=" + url;
+
 		return (
 			<div className="socialmed">
-				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons"><i className="fa fa-twitter"></i></a>
-				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons"><i className="fa fa-facebook"></i></a>
-				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons"><i className="fa fa-google-plus"></i></a>
+				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons">
+					<img src="../image/twitter.png" className="responsive-img center-align socialbtn"/>
+				</a>
+				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons">
+					<img src="../image/facebook.png" className="responsive-img center-align socialbtn"/>
+				</a>
+				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons">
+					<img src="image/google-plus.png" className="responsive-img center-align socialbtn"/>
+				</a>
 			</div>
 		);
 	}

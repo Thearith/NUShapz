@@ -452,10 +452,10 @@ ModalForm = React.createClass({
     		this.setState({errorEndTime: ""});
     	}
 
-    	this.verifyDate();
-
     	if(isError)
     		return;
+
+    	this.verifyDate();
 
     	var category = CATEGORY_ARRAY[React.findDOMNode(this.refs.category).value];
     	var startDateTime 	= startDate.replace(",", "") + ", " + startTime;
@@ -727,7 +727,7 @@ Event = React.createClass({
 			}
 		
 		return (
-			<div className="container single-card z-depth-1 white" data-collapsible="accordion">
+			<div className="single-card z-depth-1 white" data-collapsible="accordion">
 				<li>
 					<div className="row" id={this.props.data[EVENT_ID]} >
 						<EventFavourite data={this.props.data} color={CATEGORY_BG_COLORS[bgColorIndex]} />

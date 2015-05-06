@@ -1069,7 +1069,8 @@ html {
 	float: left;
 	background-color: #1565c0;
 	border-radius: 2px;
-	text-align: center;
+	text-align: right;
 	margin-left: 24px;
 	color: #ffffff;
+	padding-right: 3px;
 }

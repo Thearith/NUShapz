@@ -254,17 +254,17 @@ App = React.createClass({
         }
     },
 
-    componentDidMount: function() {
-    	$('.collapsible').collapsible({
-      		accordion : false 
-    	});
-    },
+    // componentDidMount: function() {
+    // 	$('.collapsible').collapsible({
+    //   		accordion : false 
+    // 	});
+    // },
 
-    componentDidUpdate: function() {
-    	$('.collapsible').collapsible({
-      		accordion : false 
-    	});
-    },
+    // componentDidUpdate: function() {
+    // 	$('.collapsible').collapsible({
+    //   		accordion : false 
+    // 	});
+    // },
 
 	doSearch:function(queryText){
         

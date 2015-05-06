@@ -459,7 +459,7 @@ ToggleSwitch = React.createClass({
 			    <label>
 			    	{ !this.props.isSearch ? 
 						<input type="checkbox" ref="switchInput" onChange={this.doSwitch} /> :
-						<input disabled type="checkbox" ref="switchInput" onChange={this.doSwitch} />
+						<input disabled type="checkbox" checked="false" ref="switchInput" onChange={this.doSwitch} />
 					}
 					<span className="lever">
 					</span>
@@ -1043,7 +1043,7 @@ Timeline = React.createClass({
 	render: function() {
 		var style = {
 			paddingTop: "2px",
-			paddingLeft: "2pFx"
+			paddingLeft: "2px"
 		}
 		return (	
 			<div className="col l10 m9 s12" id="content">

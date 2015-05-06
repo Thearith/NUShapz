@@ -1484,10 +1484,10 @@ EventSocialMedia = React.createClass({
 		return (
 			<div className="socialmed">
 				<a href={twitterURL} title="Share on Twitter" target="_blank"  className="btn-floating waves-effect waves-light blue lighten-1 social-icons">
-					<img src="../image/twitter.png" className="responsive-img center-align socialbtn"/>
+					<img src="image/twitter.png" className="responsive-img center-align socialbtn"/>
 				</a>
 				<a href={facebookURL} target="_blank" className="btn-floating waves-effect waves-light indigo lighten-1 social-icons">
-					<img src="../image/facebook.png" className="responsive-img center-align socialbtn"/>
+					<img src="image/facebook.png" className="responsive-img center-align socialbtn"/>
 				</a>
 				<a href={googleURL} target="_blank" className="btn-floating waves-effect waves-light red lighten-1 social-icons">
 					<img src="image/google-plus.png" className="responsive-img center-align socialbtn"/>

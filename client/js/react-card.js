@@ -676,7 +676,6 @@ ModalForm = React.createClass({
     		isError = true;
     	} else {
     		this.setState({errorEndDate: ""});
-    		console.log(endDate);
     	}
 
     	if(!endTime) {
@@ -707,8 +706,6 @@ ModalForm = React.createClass({
   			"Contact": contact,
   			"Price": price
 		};
-
-		console.log(post);
 
   		$.ajax({
         	url: this.props.urlPost,
@@ -940,12 +937,13 @@ SearchTimeline = React.createClass({
     },
 
 	render: function() {
+		console.log(this.props.data);
 		return (
 			<div className="row">
 				<div className="col l10 m9 s12 section cards search-timeline">
 					<div className="col l10 m9 s12 offset-l2">
 						{	this.props.data.length != 0 ?
-							<EventSection events={this.props.data} /> :
+							<EventSection events={this.props.data} isSearchTimeline={true}/> :
 							<EmptyQuery query={this.props.query} isSearch={this.props.isSearch} isSwitch={this.props.isSwitch} />
 						}
 					</div>
@@ -1207,13 +1205,12 @@ CategorySections = React.createClass({
 		numEvents = 0;
 		prevNumEvents = 0;
 		numLimit = this.state.numEventsLimit;
-		console.log(numLimit)
 		
 		var CategorySectionNode = this.props.categories.map(function(category, index) {
 			numEvents += prevNumEvents;
 			prevNumEvents = category[EVENTS].length; 
 			return (
-      			<EventSection events={category[EVENTS]} numEvents={numEvents} numEventsLimit={numLimit} />
+      			<EventSection events={category[EVENTS]} numEvents={numEvents} numEventsLimit={numLimit} isSearchTimeline={false} />
 		    );
 			
 		});
@@ -1234,9 +1231,10 @@ EventSection = React.createClass({
 	render: function() {
 		var num = this.props.numEvents;
 		var limit = this.props.numEventsLimit;
+		var isSearchTimeline = this.props.isSearchTimeline;
 		var EventNode = this.props.events.map(function(data, index) {
 			num++;
-			if(num <= limit)
+			if(num <= limit || isSearchTimeline)
 				return (
 					<Event data={data} key={index}/>
 				);

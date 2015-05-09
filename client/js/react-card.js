@@ -301,6 +301,8 @@ App = React.createClass({
             isSearch: true,
             isSwitch: false
         });
+        
+		console.log("searching------");
     },
 
     doSwitch: function(val) {
@@ -1045,7 +1047,7 @@ Timeline = React.createClass({
 	render: function() {
 		var style = {
 			paddingTop: "2px",
-			paddingLeft: "2px"
+			paddingLeft: "3px"
 		}
 		return (	
 			<div className="col l10 m9 s12" id="content">
@@ -1260,6 +1262,7 @@ Event = React.createClass({
 
 	getInitialState: function() {
 		var like = false;
+		console.log(this.props.data[EVENT_ID]);
 		if(localStorage.getItem(this.props.data[EVENT_ID]))
 			like = true;
 
